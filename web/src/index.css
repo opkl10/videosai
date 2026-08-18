@@ -134,12 +134,29 @@ button:disabled {
   padding: 14px;
 }
 
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
 .result h3 {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--accent-2);
+}
+
+.engine {
+  font-size: 0.7rem;
+  color: #c9c2ff;
+  background: #2f2a63;
+  border: 1px solid #443c86;
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 
 .summary {
@@ -219,6 +236,56 @@ textarea:focus {
 
 .custom form button {
   align-self: flex-start;
+}
+
+.settings {
+  margin-top: 8px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: -6px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 620px;
+  background: var(--panel);
+  border: 1px solid #2c3050;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.settings-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.settings-form label.toggle {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.settings-form label.toggle input {
+  width: auto;
+}
+
+.settings-form button {
+  align-self: flex-start;
+}
+
+.settings-msg {
+  margin: 0;
+  color: var(--good);
+  font-size: 0.85rem;
 }
 
 .error {

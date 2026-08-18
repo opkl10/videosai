@@ -11,6 +11,42 @@ export interface AnalysisResult {
   tags: string[];
   sentiment: "positive" | "neutral" | "negative";
   readingTimeSeconds: number;
+  engine?: string;
+}
+
+export interface Criteria {
+  positive: string[];
+  negative: string[];
+}
+
+export interface AgentConfig {
+  enabled: boolean;
+  url: string;
+  token?: string;
+}
+
+export interface Settings {
+  criteria: Criteria;
+  agent: AgentConfig;
+}
+
+export async function getSettings(): Promise<Settings> {
+  const res = await fetch("/api/settings");
+  if (!res.ok) throw new Error(`Failed to load settings (${res.status})`);
+  return res.json();
+}
+
+export async function updateSettings(patch: Partial<Settings>): Promise<Settings> {
+  const res = await fetch("/api/settings", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? `Failed to save settings (${res.status})`);
+  }
+  return res.json();
 }
 
 export async function fetchVideos(): Promise<VideoSummary[]> {

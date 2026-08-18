@@ -10,11 +10,21 @@ export interface AnalysisRequest {
   transcript?: string;
 }
 
+export type Sentiment = "positive" | "neutral" | "negative";
+
 export interface AnalysisResult {
   summary: string;
   tags: string[];
-  sentiment: "positive" | "neutral" | "negative";
+  sentiment: Sentiment;
   readingTimeSeconds: number;
+  /** Which engine produced this result: the built-in scorer or an external agent. */
+  engine?: string;
+}
+
+/** User-configurable parameters that define what counts as "good" vs "not good". */
+export interface Criteria {
+  positive: string[];
+  negative: string[];
 }
 
 const STOP_WORDS = new Set([
@@ -25,8 +35,10 @@ const STOP_WORDS = new Set([
   "about", "into", "over", "than", "then", "so", "if", "not", "no", "yes",
 ]);
 
-const POSITIVE = ["great", "amazing", "love", "best", "awesome", "beautiful", "win", "happy", "improve", "success"];
-const NEGATIVE = ["bad", "worst", "hate", "boring", "fail", "sad", "angry", "problem", "bug", "broken"];
+export const DEFAULT_CRITERIA: Criteria = {
+  positive: ["great", "amazing", "love", "best", "awesome", "beautiful", "win", "happy", "improve", "success"],
+  negative: ["bad", "worst", "hate", "boring", "fail", "sad", "angry", "problem", "bug", "broken"],
+};
 
 function tokenize(text: string): string[] {
   return text
@@ -47,19 +59,24 @@ export function extractTags(text: string, max = 5): string[] {
     .map(([word]) => word);
 }
 
-function scoreSentiment(text: string): AnalysisResult["sentiment"] {
-  const words = tokenize(text);
+function normalizeTerms(terms: string[]): Set<string> {
+  return new Set(terms.map((t) => t.trim().toLowerCase()).filter(Boolean));
+}
+
+export function scoreSentiment(text: string, criteria: Criteria = DEFAULT_CRITERIA): Sentiment {
+  const positive = normalizeTerms(criteria.positive);
+  const negative = normalizeTerms(criteria.negative);
   let score = 0;
-  for (const w of words) {
-    if (POSITIVE.includes(w)) score += 1;
-    if (NEGATIVE.includes(w)) score -= 1;
+  for (const w of tokenize(text)) {
+    if (positive.has(w)) score += 1;
+    if (negative.has(w)) score -= 1;
   }
   if (score > 0) return "positive";
   if (score < 0) return "negative";
   return "neutral";
 }
 
-export function analyze(req: AnalysisRequest): AnalysisResult {
+export function analyze(req: AnalysisRequest, criteria: Criteria = DEFAULT_CRITERIA): AnalysisResult {
   const title = (req.title ?? "").trim();
   if (!title) {
     throw new Error("title is required");
@@ -68,17 +85,19 @@ export function analyze(req: AnalysisRequest): AnalysisResult {
   const tags = extractTags(corpus);
   const topic = tags[0] ?? "this video";
   const wordCount = corpus.split(/\s+/).filter(Boolean).length;
+  const sentiment = scoreSentiment(corpus, criteria);
 
   const summary =
     `"${title}" focuses on ${topic}` +
     (tags.length > 1 ? `, covering ${tags.slice(1, 3).join(" and ")}. ` : ". ") +
-    `The content is ${wordCount} words long and reads with a ${scoreSentiment(corpus)} tone.`;
+    `The content is ${wordCount} words long and reads with a ${sentiment} tone.`;
 
   return {
     summary,
     tags,
-    sentiment: scoreSentiment(corpus),
+    sentiment,
     // ~3 words/second narration estimate
     readingTimeSeconds: Math.max(1, Math.round(wordCount / 3)),
+    engine: "builtin",
   };
 }

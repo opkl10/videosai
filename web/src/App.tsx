@@ -3,7 +3,10 @@ import {
   analyzeCustom,
   analyzeVideo,
   fetchVideos,
+  getSettings,
+  updateSettings,
   type AnalysisResult,
+  type Settings,
   type VideoSummary,
 } from "./api";
 
@@ -16,7 +19,10 @@ function formatDuration(seconds: number): string {
 function ResultCard({ result }: { result: AnalysisResult }) {
   return (
     <div className="result" data-testid="analysis-result">
-      <h3>AI summary</h3>
+      <div className="result-head">
+        <h3>AI summary</h3>
+        {result.engine && <span className="engine">{result.engine}</span>}
+      </div>
       <p className="summary">{result.summary}</p>
       <div className="tags">
         {result.tags.map((tag) => (
@@ -44,11 +50,57 @@ export function App() {
   const [customResult, setCustomResult] = useState<AnalysisResult | null>(null);
   const [customBusy, setCustomBusy] = useState(false);
 
+  // Settings: good/bad criteria + external agent config.
+  const [positive, setPositive] = useState("");
+  const [negative, setNegative] = useState("");
+  const [agentUrl, setAgentUrl] = useState("");
+  const [agentEnabled, setAgentEnabled] = useState(false);
+  const [settingsMsg, setSettingsMsg] = useState<string | null>(null);
+  const [settingsBusy, setSettingsBusy] = useState(false);
+
+  function applySettings(s: Settings) {
+    setPositive(s.criteria.positive.join(", "));
+    setNegative(s.criteria.negative.join(", "));
+    setAgentUrl(s.agent.url);
+    setAgentEnabled(s.agent.enabled);
+  }
+
   useEffect(() => {
     fetchVideos()
       .then(setVideos)
       .catch((e) => setError(String(e)));
+    getSettings()
+      .then(applySettings)
+      .catch((e) => setError(String(e)));
   }, []);
+
+  function parseTerms(value: string): string[] {
+    return value
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+  }
+
+  async function handleSaveSettings(e: React.FormEvent) {
+    e.preventDefault();
+    setSettingsBusy(true);
+    setSettingsMsg(null);
+    setError(null);
+    try {
+      const saved = await updateSettings({
+        criteria: { positive: parseTerms(positive), negative: parseTerms(negative) },
+        agent: { enabled: agentEnabled, url: agentUrl.trim() },
+      });
+      applySettings(saved);
+      setSettingsMsg(
+        `Saved. Engine: ${saved.agent.enabled ? `custom agent (${saved.agent.url})` : "built-in"}.`,
+      );
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSettingsBusy(false);
+    }
+  }
 
   async function handleAnalyze(id: string) {
     setLoadingId(id);
@@ -87,6 +139,63 @@ export function App() {
       </header>
 
       {error && <div className="error">{error}</div>}
+
+      <section className="settings">
+        <h2>Scoring criteria &amp; agent</h2>
+        <p className="hint">
+          Define the good/bad parameters used for sentiment, and optionally route analysis to a
+          custom agent you build.
+        </p>
+        <form onSubmit={handleSaveSettings} className="settings-form">
+          <label>
+            Good signals (comma separated)
+            <input
+              type="text"
+              value={positive}
+              onChange={(e) => setPositive(e.target.value)}
+              placeholder="great, amazing, love"
+              data-testid="positive-input"
+            />
+          </label>
+          <label>
+            Bad signals (comma separated)
+            <input
+              type="text"
+              value={negative}
+              onChange={(e) => setNegative(e.target.value)}
+              placeholder="bad, broken, boring"
+              data-testid="negative-input"
+            />
+          </label>
+          <label>
+            Custom agent URL
+            <input
+              type="text"
+              value={agentUrl}
+              onChange={(e) => setAgentUrl(e.target.value)}
+              placeholder="http://localhost:4000/analyze"
+              data-testid="agent-url-input"
+            />
+          </label>
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={agentEnabled}
+              onChange={(e) => setAgentEnabled(e.target.checked)}
+              data-testid="agent-enabled"
+            />
+            Use custom agent (falls back to built-in on failure)
+          </label>
+          <button type="submit" disabled={settingsBusy} data-testid="save-settings">
+            {settingsBusy ? "Saving…" : "Save settings"}
+          </button>
+          {settingsMsg && (
+            <p className="settings-msg" data-testid="settings-msg">
+              {settingsMsg}
+            </p>
+          )}
+        </form>
+      </section>
 
       <section>
         <h2>Video library</h2>
@@ -137,7 +246,7 @@ export function App() {
       </section>
 
       <footer>
-        <span>VideosAI starter · offline demo engine</span>
+        <span>VideosAI starter · configurable criteria · pluggable agent</span>
       </footer>
     </div>
   );
