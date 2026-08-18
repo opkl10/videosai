@@ -38,6 +38,7 @@ def test_out_rejects_multiple_files(capsys: pytest.CaptureFixture[str], tmp_path
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_text_report_is_printed(clips, capsys: pytest.CaptureFixture[str]):
     assert main(["analyze", str(clips["good"]), "--platform", "tiktok"]) == EXIT_OK
 
@@ -47,6 +48,7 @@ def test_text_report_is_printed(clips, capsys: pytest.CaptureFixture[str]):
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_json_format_is_machine_readable(clips, capsys: pytest.CaptureFixture[str]):
     assert main(["analyze", str(clips["good"]), "-f", "json"]) == EXIT_OK
 
@@ -56,6 +58,7 @@ def test_json_format_is_machine_readable(clips, capsys: pytest.CaptureFixture[st
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_english_markdown_is_written_to_a_file(clips, tmp_path: Path):
     destination = tmp_path / "nested" / "report.md"
     exit_code = main(
@@ -69,6 +72,7 @@ def test_english_markdown_is_written_to_a_file(clips, tmp_path: Path):
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_html_report_embeds_exported_thumbnails(clips, tmp_path: Path):
     destination = tmp_path / "report.html"
     exit_code = main(
@@ -93,6 +97,7 @@ def test_html_report_embeds_exported_thumbnails(clips, tmp_path: Path):
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_fail_under_flags_a_weak_video(clips, capsys: pytest.CaptureFixture[str]):
     assert main(["analyze", str(clips["dark_silent"]), "--fail-under", "70"]) == EXIT_BELOW_THRESHOLD
     assert main(["analyze", str(clips["good"]), "--fail-under", "70"]) == EXIT_OK
@@ -100,6 +105,7 @@ def test_fail_under_flags_a_weak_video(clips, capsys: pytest.CaptureFixture[str]
 
 
 @requires_ffmpeg
+@pytest.mark.integration
 def test_multiple_files_are_analyzed_in_one_run(clips, capsys: pytest.CaptureFixture[str]):
     exit_code = main(["analyze", str(clips["good"]), str(clips["quiet"]), "-f", "text"])
 

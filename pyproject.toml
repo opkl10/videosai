@@ -24,6 +24,7 @@ include = ["videosai*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+markers = ["integration: generates real video files with ffmpeg"]
 
 [tool.ruff]
 line-length = 100

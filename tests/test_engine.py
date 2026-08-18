@@ -13,7 +13,7 @@ from videosai.media import measure_audio, probe, scene_cuts
 
 from .conftest import requires_ffmpeg
 
-pytestmark = requires_ffmpeg
+pytestmark = [requires_ffmpeg, pytest.mark.integration]
 
 
 def codes(report) -> set[str]:
