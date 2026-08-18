@@ -67,7 +67,7 @@ function analyze(payload) {
   const verdict = score > 0 ? "recommended ✅" : score < 0 ? "needs work ⚠️" : "neutral";
   const matched = [...new Set([...hits.positive, ...hits.negative])].slice(0, 5);
   const summary =
-    `[custom-agent] "${title}" scored ${score} against your criteria and is ${verdict}. ` +
+    `[custom-agent] "${title}" scored ${score} against your criteria — ${verdict}. ` +
     (matched.length
       ? `Matched signals: ${matched.join(", ")}.`
       : "No configured good/bad signals were found.");
