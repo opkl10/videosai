@@ -42,20 +42,20 @@ def timeline_from(frames: list[np.ndarray], fps: float = 4.0, **kwargs) -> Timel
 
 
 def make_info(**overrides) -> MediaInfo:
-    defaults = dict(
-        path="clip.mp4",
-        duration=20.0,
-        width=1080,
-        height=1920,
-        fps=30.0,
-        video_codec="h264",
-        video_bitrate=8_000_000,
-        total_bitrate=8_200_000,
-        has_audio=True,
-        audio_codec="aac",
-        audio_channels=2,
-        audio_sample_rate=48000,
-    )
+    defaults = {
+        "path": "clip.mp4",
+        "duration": 20.0,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30.0,
+        "video_codec": "h264",
+        "video_bitrate": 8_000_000,
+        "total_bitrate": 8_200_000,
+        "has_audio": True,
+        "audio_codec": "aac",
+        "audio_channels": 2,
+        "audio_sample_rate": 48000,
+    }
     defaults.update(overrides)
     return MediaInfo(**defaults)
 
@@ -84,14 +84,14 @@ def make_keyframes(
 
 
 def make_audio(**overrides) -> AudioStats:
-    defaults = dict(
-        integrated_lufs=-14.0,
-        loudness_range=6.0,
-        true_peak_db=-1.5,
-        silences=[],
-        duration=20.0,
-        loudness_source="loudnorm",
-    )
+    defaults = {
+        "integrated_lufs": -14.0,
+        "loudness_range": 6.0,
+        "true_peak_db": -1.5,
+        "silences": [],
+        "duration": 20.0,
+        "loudness_source": "loudnorm",
+    }
     defaults.update(overrides)
     return AudioStats(**defaults)
 

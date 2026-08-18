@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 from ..models import CategoryResult
 from . import audio, duration, framing, hook, pacing, visual

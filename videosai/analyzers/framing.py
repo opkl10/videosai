@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from ..models import CategoryResult, Finding, Severity
-from .base import AnalysisContext, score_from, scaled_penalty
+from .base import AnalysisContext, scaled_penalty, score_from
 
 KEY = "framing"
 #: How much busier than the centre a safe zone may be before it looks like

@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from ..models import CategoryResult, Finding, Severity
-from .base import AnalysisContext, score_from, scaled_penalty
+from .base import AnalysisContext, scaled_penalty, score_from
 
 KEY = "visual"
 SOFT_SHARPNESS = 80.0

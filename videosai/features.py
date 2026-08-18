@@ -7,14 +7,18 @@ sharpness and cover frame selection.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
-from typing import Iterable, Sequence
 
 import numpy as np
 
 from .media import MediaInfo, extract_frame, sample_frames
 
 _LUMA_WEIGHTS = np.array([0.299, 0.587, 0.114], dtype=np.float32)
+
+
+def _as_array(values: Sequence[float]) -> np.ndarray:
+    return np.asarray(values, dtype=np.float32)
 
 
 def to_luma(frame: np.ndarray) -> np.ndarray:
@@ -139,8 +143,8 @@ def build_timeline(
     for timestamp, frame in source:
         luma = to_luma(frame)
         height = luma.shape[0]
-        top_rows = max(1, int(round(height * safe_zone_top)))
-        bottom_rows = max(1, int(round(height * safe_zone_bottom)))
+        top_rows = max(1, round(height * safe_zone_top))
+        bottom_rows = max(1, round(height * safe_zone_bottom))
 
         times.append(timestamp)
         luma_means.append(float(np.mean(luma)))
@@ -154,19 +158,18 @@ def build_timeline(
         motions.append(0.0 if previous is None else float(np.mean(np.abs(luma - previous))))
         previous = luma
 
-    as_array = lambda values: np.asarray(values, dtype=np.float32)  # noqa: E731
     return Timeline(
         fps=fps,
-        times=as_array(times),
-        luma=as_array(luma_means),
-        contrast=as_array(contrasts),
-        clipped_high=as_array(clipped_high),
-        clipped_low=as_array(clipped_low),
-        saturation=as_array(saturations),
-        motion=as_array(motions),
-        edge_top=as_array(edge_top),
-        edge_bottom=as_array(edge_bottom),
-        edge_middle=as_array(edge_middle),
+        times=_as_array(times),
+        luma=_as_array(luma_means),
+        contrast=_as_array(contrasts),
+        clipped_high=_as_array(clipped_high),
+        clipped_low=_as_array(clipped_low),
+        saturation=_as_array(saturations),
+        motion=_as_array(motions),
+        edge_top=_as_array(edge_top),
+        edge_bottom=_as_array(edge_bottom),
+        edge_middle=_as_array(edge_middle),
     )
 
 

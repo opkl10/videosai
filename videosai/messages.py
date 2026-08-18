@@ -628,7 +628,7 @@ def metric_label(key: str, lang: str = DEFAULT_LANGUAGE) -> str:
     return METRIC_LABELS.get(key, {}).get(lang, key)
 
 
-def _auto_params(finding: "Finding") -> dict[str, Any]:
+def _auto_params(finding: Finding) -> dict[str, Any]:
     return {
         "at_fmt": format_time(finding.at),
         "times_fmt": ", ".join(format_time(t) for t in finding.timestamps),
@@ -645,7 +645,7 @@ def _localize_platform(params: dict[str, Any], lang: str) -> dict[str, Any]:
     return {**params, "platform": platform.label(lang)}
 
 
-def render(finding: "Finding", lang: str = DEFAULT_LANGUAGE) -> MessageText:
+def render(finding: Finding, lang: str = DEFAULT_LANGUAGE) -> MessageText:
     """Turn a finding into human readable title / detail / fix."""
     lang = normalize_language(lang)
     entry = CATALOG.get(finding.code)

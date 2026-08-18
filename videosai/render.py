@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import html
 import json
-from typing import Iterable
+from collections.abc import Iterable
+from functools import partial
 
 from . import messages
 from .messages import format_time
@@ -56,7 +57,7 @@ def _finding_line(finding: Finding, lang: str, with_fix: bool = True) -> str:
 
 def to_markdown(report: Report, lang: str = messages.DEFAULT_LANGUAGE) -> str:
     lang = messages.normalize_language(lang)
-    ui = lambda key: messages.ui(key, lang)  # noqa: E731
+    ui = partial(messages.ui, lang=lang)
     lines: list[str] = []
 
     lines.append(f"# {ui('report_title')}")
@@ -153,17 +154,19 @@ def _format_value(value: object) -> str:
 def to_text(report: Report, lang: str = messages.DEFAULT_LANGUAGE) -> str:
     """Compact summary for the terminal."""
     lang = messages.normalize_language(lang)
-    ui = lambda key: messages.ui(key, lang)  # noqa: E731
+    ui = partial(messages.ui, lang=lang)
     lines = [
         f"{ui('report_title')}: {report.file}",
-        f"{ui('platform')}: {_platform_label(report, lang)} | "
-        f"{ui('overall')}: {report.score:.1f}/100 ({report.grade})",
+        (
+            f"{ui('platform')}: {_platform_label(report, lang)} | "
+            f"{ui('overall')}: {report.score:.1f}/100 ({report.grade})"
+        ),
         "",
     ]
 
     for category in report.categories:
         label = messages.category_label(category.key, lang)
-        bar_length = int(round(category.score / 10))
+        bar_length = round(category.score / 10)
         bar = "#" * bar_length + "." * (10 - bar_length)
         lines.append(f"  {bar} {category.score:5.1f}  {label}")
     lines.append("")
@@ -302,7 +305,7 @@ def _cards(findings: Iterable[Finding], lang: str, with_fix: bool = True) -> str
 def to_html(report: Report, lang: str = messages.DEFAULT_LANGUAGE) -> str:
     """A single self-contained HTML file, no assets required."""
     lang = messages.normalize_language(lang)
-    ui = lambda key: messages.ui(key, lang)  # noqa: E731
+    ui = partial(messages.ui, lang=lang)
     media = report.media
 
     facts = "".join(

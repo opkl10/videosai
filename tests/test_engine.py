@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -126,7 +127,7 @@ def test_thumbnails_are_exported_and_spread_out(clips, tmp_path: Path):
 
     assert len(report.thumbnail_candidates) == 3
     times = sorted(c.time for c in report.thumbnail_candidates)
-    assert all(later - earlier >= 1.0 for earlier, later in zip(times, times[1:]))
+    assert all(later - earlier >= 1.0 for earlier, later in pairwise(times))
     for candidate in report.thumbnail_candidates:
         assert candidate.file is not None
         assert Path(candidate.file).stat().st_size > 0
