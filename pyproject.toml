@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "videosai"
+version = "0.1.0"
+description = "Automated feedback for content creators: analyze a video and get what works, what does not, and what to fix first"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["video", "analysis", "ffmpeg", "content-creators", "tiktok", "reels", "shorts"]
+dependencies = ["numpy>=1.23"]
+
+[project.optional-dependencies]
+server = ["fastapi>=0.110", "uvicorn[standard]>=0.27", "python-multipart>=0.0.9"]
+dev = ["pytest>=7.0", "httpx>=0.27", "ruff>=0.5"]
+
+[project.scripts]
+videosai = "videosai.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["videosai*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["integration: generates real video files with ffmpeg"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
