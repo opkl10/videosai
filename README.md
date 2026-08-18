@@ -42,6 +42,7 @@ sudo apt install ffmpeg        # Debian/Ubuntu
 brew install ffmpeg            # macOS
 
 pip install -e .               # מהתיקייה של הפרויקט
+pip install -e ".[server]"     # כולל השרת (FastAPI + uvicorn)
 pip install -e ".[dev]"        # כולל pytest
 ```
 
@@ -56,6 +57,36 @@ videosai analyze clip.mp4 -f html -o report.html \
 videosai analyze *.mp4 --fail-under 70                       # קוד יציאה 1 אם הציון נמוך מ-70 (שימושי ב-CI)
 videosai platforms                                          # רשימת הפלטפורמות הנתמכות
 ```
+
+## הרצה כשרת
+
+```bash
+videosai serve                                  # http://127.0.0.1:8000
+videosai serve --host 0.0.0.0 --port 8000 \
+    --max-upload-mb 256 --workdir /var/lib/videosai
+```
+
+בדפדפן: דף העלאה עם בחירת פלטפורמה ושפה, ואחרי הניתוח מתקבל דוח HTML מלא באותו עיצוב, כולל הפריימים
+המוצעים לתמונה ראשית. הקובץ שהועלה נמחק מיד לאחר הניתוח (`--keep-uploads` משאיר אותו לצורכי דיבוג),
+ותיקיות עבודה ישנות נמחקות אוטומטית אחרי שעה.
+
+| נתיב | מה הוא עושה |
+| --- | --- |
+| `GET /` | דף העלאה (`?lang=en` לאנגלית) |
+| `POST /analyze` | העלאת multipart, מחזיר את דוח ה-HTML |
+| `POST /api/analyze` | אותו דבר, מחזיר JSON |
+| `GET /api/platforms` | הגדרות הפלטפורמות |
+| `GET /healthz` | בדיקת חיים, כולל האם ffmpeg זמין |
+| `GET /docs` | תיעוד ה-API (OpenAPI) |
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/analyze \
+     -F "file=@clip.mp4" -F "platform=tiktok" -F "thumbnails=true"
+```
+
+הניתוח רץ ב-thread pool עם תקרה של שתי הרצות במקביל (ffmpeg הוא צוואר הבקבוק), יש מגבלת גודל להעלאה,
+ובדיקת סיומת וסוג קובץ לפני שמתחילים לעבוד. לפרודקשן: הרצה מאחורי reverse proxy עם TLS, והגדלת
+המקביליות לפי מספר ה-vCPU.
 
 מ-Python:
 
@@ -100,6 +131,7 @@ videosai/
   messages.py       קטלוג ההודעות בעברית ובאנגלית (הליבה מייצרת קודים בלבד)
   render.py         טקסט / Markdown / JSON / HTML עצמאי
   engine.py         הצינור: מודדים פעם אחת, מריצים את כל האנלייזרים
+  server.py         שרת FastAPI: דף העלאה, דוח HTML ו-API ב-JSON
   cli.py            שורת הפקודה
 ```
 
@@ -112,7 +144,7 @@ videosai/
 ## בדיקות
 
 ```bash
-pytest                          # 126 בדיקות
+pytest                          # 146 בדיקות
 pytest -m "not integration"     # רק בדיקות היחידה, בלי יצירת קבצי וידאו (מהיר)
 ```
 
@@ -151,6 +183,10 @@ pytest -m "not integration"     # רק בדיקות היחידה, בלי יצי�
 **7. שילוב בזרימת העבודה.** בדיקת CI לפני העלאה (`--fail-under` כבר קיים), תוסף לעורך, ניטור תיקיית
 Dropbox/Drive, ודשבורד שמראה מגמות לאורך סרטונים - איפה הערוץ משתפר ואיפה נסחב.
 
+**8. השרת כשירות.** המצב הנוכחי הוא שירות של מכונה אחת: בקשה נכנסת, ffmpeg עובד, דוח יוצא. הצעד הבא
+הוא תור עבודות (Redis/RQ) עם עדכון התקדמות, אחסון אובייקטים לקבצים ולפריימים, חשבונות משתמש והיסטוריית
+סרטונים - וזה גם מה שיאפשר להריץ את המודלים הכבדים (תמלול, OCR) בלי לחסום את הבקשה.
+
 ## English summary
 
 `videosai` analyzes a video file locally with FFmpeg and numpy and returns a scored report: what works,
@@ -162,4 +198,5 @@ Hebrew or English.
 ```bash
 videosai analyze clip.mp4 --platform tiktok --lang en
 videosai analyze clip.mp4 -f html -o report.html --thumbnails covers/
+videosai serve --host 0.0.0.0 --port 8000     # browser upload page + JSON API
 ```

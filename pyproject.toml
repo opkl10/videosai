@@ -13,7 +13,8 @@ keywords = ["video", "analysis", "ffmpeg", "content-creators", "tiktok", "reels"
 dependencies = ["numpy>=1.23"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0"]
+server = ["fastapi>=0.110", "uvicorn[standard]>=0.27", "python-multipart>=0.0.9"]
+dev = ["pytest>=7.0", "httpx>=0.27", "ruff>=0.5"]
 
 [project.scripts]
 videosai = "videosai.cli:main"

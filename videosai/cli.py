@@ -93,6 +93,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     subparsers.add_parser("platforms", help="list the supported platform presets")
+
+    serve = subparsers.add_parser("serve", help="run the upload server in a browser")
+    serve.add_argument("--host", default="127.0.0.1", help="bind address (default: 127.0.0.1)")
+    serve.add_argument("--port", type=int, default=8000, help="port (default: 8000)")
+    serve.add_argument(
+        "--workdir", type=Path, help="where uploads and exported frames live (default: temp dir)"
+    )
+    serve.add_argument(
+        "--max-upload-mb", type=int, default=512, help="reject uploads above this size"
+    )
+    serve.add_argument(
+        "--keep-uploads", action="store_true", help="keep uploaded videos instead of deleting them"
+    )
+    serve.add_argument("--log-level", default="info", help="uvicorn log level")
     return parser
 
 
@@ -106,6 +120,28 @@ def _print_platforms(lang: str) -> int:
             f"aspect {aspect:<6} {minimum:.0f}-{maximum:.0f}s  {platform.min_height}p+"
         )
     print("\n".join(rows))
+    return EXIT_OK
+
+
+def _run_serve(args: argparse.Namespace) -> int:
+    try:
+        from .server import ServerSettings, serve
+    except ImportError:
+        print(
+            'The server needs the optional extra: pip install "videosai[server]"',
+            file=sys.stderr,
+        )
+        return EXIT_ERROR
+
+    settings = ServerSettings(
+        max_upload_bytes=args.max_upload_mb * 1024 * 1024,
+        keep_uploads=args.keep_uploads,
+    )
+    if args.workdir:
+        settings.workdir = args.workdir
+
+    print(f"videosai {__version__} serving on http://{args.host}:{args.port}")
+    serve(host=args.host, port=args.port, settings=settings, log_level=args.log_level)
     return EXIT_OK
 
 
@@ -153,6 +189,8 @@ def main(argv: list[str] | None = None) -> int:
         return _print_platforms(messages.DEFAULT_LANGUAGE)
     if args.command == "analyze":
         return _run_analyze(args)
+    if args.command == "serve":
+        return _run_serve(args)
 
     parser.print_help()
     return EXIT_ERROR

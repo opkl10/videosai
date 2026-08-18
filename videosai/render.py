@@ -224,6 +224,8 @@ body {{ margin: 0; padding: 32px 20px 64px; font-family: -apple-system, "Segoe U
 h1 {{ font-size: 26px; margin: 0 0 4px; }}
 h2 {{ font-size: 19px; margin: 36px 0 12px; }}
 .sub {{ color: #99a2b3; font-size: 14px; margin-bottom: 24px; word-break: break-all; }}
+a {{ color: #7cc4ff; }}
+.nav {{ margin-bottom: 24px; font-size: 14px; }}
 .hero {{ display: flex; align-items: center; gap: 24px; background: #171a21; border: 1px solid #23283340;
   border-radius: 16px; padding: 22px; flex-wrap: wrap; }}
 .ring {{ width: 128px; height: 128px; border-radius: 50%; display: grid; place-items: center;
@@ -261,6 +263,7 @@ footer {{ margin-top: 40px; color: #6f7787; font-size: 12px; }}
 <div class="wrap">
 <h1>{title}</h1>
 <div class="sub">{file}</div>
+{nav}
 <div class="hero">
   <div class="ring"><div><b>{score:.0f}</b><span>{grade}</span></div></div>
   <div class="facts">{facts}</div>
@@ -302,8 +305,11 @@ def _cards(findings: Iterable[Finding], lang: str, with_fix: bool = True) -> str
     return "".join(parts)
 
 
-def to_html(report: Report, lang: str = messages.DEFAULT_LANGUAGE) -> str:
-    """A single self-contained HTML file, no assets required."""
+def to_html(report: Report, lang: str = messages.DEFAULT_LANGUAGE, back_link: str | None = None) -> str:
+    """A single self-contained HTML file, no assets required.
+
+    ``back_link`` adds an "analyze another video" link, used by the server.
+    """
     lang = messages.normalize_language(lang)
     ui = partial(messages.ui, lang=lang)
     media = report.media
@@ -380,11 +386,18 @@ def to_html(report: Report, lang: str = messages.DEFAULT_LANGUAGE) -> str:
     if metric_tables:
         sections.append(f'<h2>{ui("metrics")}</h2>{"".join(metric_tables)}')
 
+    nav = (
+        f'<div class="nav"><a href="{html.escape(back_link, quote=True)}">'
+        f'{html.escape(ui("analyze_another"))}</a></div>'
+        if back_link
+        else ""
+    )
     return _HTML_TEMPLATE.format(
         lang=lang,
         direction="rtl" if lang == "he" else "ltr",
         title=html.escape(ui("report_title")),
         file=html.escape(report.file),
+        nav=nav,
         score=report.score,
         score_color=_score_color(report.score),
         score_deg=report.score / 100 * 360,
