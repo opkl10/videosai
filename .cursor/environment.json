@@ -1,0 +1,24 @@
+{
+  "name": "videosai",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "npm run dev:server"
+    },
+    {
+      "name": "web",
+      "command": "npm run dev:web"
+    },
+    {
+      "name": "agent",
+      "command": "npm run dev:agent",
+      "description": "Example custom analysis agent (optional). Connect it in the UI at http://localhost:4000/analyze."
+    }
+  ],
+  "ports": [
+    { "name": "web", "port": 5173 },
+    { "name": "api", "port": 3001 },
+    { "name": "agent", "port": 4000 }
+  ]
+}
