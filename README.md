@@ -47,6 +47,20 @@ npm run typecheck    # type-check all workspaces
 npm test             # run server unit tests
 ```
 
+## Run as a single production server
+
+In production the Express server serves both the API and the built React app on
+one port (no separate dev server / proxy):
+
+```bash
+npm run serve            # build, then serve on http://localhost:3001
+# or choose a port:
+PORT=8080 npm run serve
+```
+
+`npm run start` runs the already-built server (`server/dist/index.js`). The API
+lives under `/api/*` and every other GET route returns the SPA `index.html`.
+
 ## API quick check
 
 ```bash

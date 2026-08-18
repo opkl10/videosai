@@ -1,3 +1,6 @@
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import express from "express";
 import cors from "cors";
 import { analyze, type AnalysisRequest, type AnalysisResult } from "./ai.js";
@@ -10,6 +13,9 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = Number(process.env.PORT ?? 3001);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// server/src or server/dist -> ../../web/dist
+const WEB_DIST = path.resolve(__dirname, "../../web/dist");
 
 /**
  * Run analysis through the configured external agent when enabled, otherwise
@@ -92,10 +98,26 @@ app.post("/api/videos/:id/analyze", async (req, res) => {
   }
 });
 
+// In production, serve the built React app from this same server so the whole
+// stack runs as a single process. Falls back to index.html for client-side routes.
+const hasWebBuild = fs.existsSync(path.join(WEB_DIST, "index.html"));
+if (hasWebBuild) {
+  app.use(express.static(WEB_DIST));
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api")) return next();
+    res.sendFile(path.join(WEB_DIST, "index.html"));
+  });
+}
+
 // Only listen when run directly (not when imported by tests).
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`videosai-server listening on http://localhost:${PORT}`);
+    console.log(
+      hasWebBuild
+        ? `serving web app from ${WEB_DIST}`
+        : "no web build found (run `npm run build`); API only",
+    );
   });
 }
 
