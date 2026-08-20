@@ -107,7 +107,11 @@ const state = {
   busy: false,
 };
 
-const cropper = new ImageCropper(ui.cropperHost, { aspect: 1, showGrid: true });
+const cropper = new ImageCropper(ui.cropperHost, {
+  aspect: 1,
+  showGrid: true,
+  canvasId: 'crop-canvas',
+});
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -150,8 +154,25 @@ function fileStem(name) {
     .slice(0, 70);
 }
 
+/**
+ * Wraps a value in Unicode isolate marks (FSI…PDI).
+ *
+ * Without this, Latin text and digits mixed into a Hebrew sentence are
+ * reordered by the bidi algorithm — "14 KB · 1200×1500 · WEBP" would render as
+ * "KB 1 · 1200×1,500 · WEBP 14". Isolation keeps every value readable while the
+ * sentence itself stays right to left.
+ */
+function isolate(value) {
+  return `\u2068${value}\u2069`;
+}
+
+/** Plain digits, no thousands separator: a comma inside an isolate still splits. */
+function dimensions(width, height) {
+  return isolate(`${Math.round(width)}×${Math.round(height)}`);
+}
+
 function formatNumber(value) {
-  return Number(value).toLocaleString('he-IL');
+  return isolate(Number(value).toLocaleString('he-IL'));
 }
 
 /* -------------------------------------------------------------------- theme */
@@ -186,7 +207,10 @@ function addFiles(fileLikeList) {
   const accepted = [];
   for (const file of incoming) {
     if (file.size > state.maxUploadBytes) {
-      toast(`הקובץ "${file.name}" גדול מהמותר (${formatBytes(state.maxUploadBytes)})`, 'error');
+      toast(
+        `הקובץ ${isolate(file.name)} גדול מהמותר (${isolate(formatBytes(state.maxUploadBytes))})`,
+        'error',
+      );
       continue;
     }
     idCounter += 1;
@@ -275,7 +299,7 @@ function renderFileList() {
       <span class="file-item__meta">
         <span class="file-item__name">${escapeHtml(file.name)}</span>
         <span class="file-item__sub" ${file.savedName ? 'data-state="saved"' : ''}>
-          ${file.savedName ? 'נשמר לאתר' : formatBytes(file.size)}
+          ${file.savedName ? 'נשמר לאתר' : escapeHtml(isolate(formatBytes(file.size)))}
         </span>
       </span>
     `;
@@ -412,10 +436,10 @@ function syncFromCropper(snapshot) {
 
   ui.zoomSlider.min = String(snapshot.minZoom ?? 1);
   setSliderValue(ui.zoomSlider, snapshot.zoom);
-  ui.zoomOutput.textContent = `${Math.round(snapshot.zoom * 100)}%`;
+  ui.zoomOutput.textContent = isolate(`${Math.round(snapshot.zoom * 100)}%`);
 
   setSliderValue(ui.rotationSlider, snapshot.rotation);
-  ui.rotationOutput.textContent = `${snapshot.rotation.toFixed(1).replace(/\.0$/u, '')}°`;
+  ui.rotationOutput.textContent = isolate(`${snapshot.rotation.toFixed(1).replace(/\.0$/u, '')}°`);
 
   const available = snapshot.panAvailable ?? { x: 0, y: 0 };
   const ratio = snapshot.panRatio ?? { x: 0, y: 0 };
@@ -462,13 +486,13 @@ function describePan(ratio, available, [negative, positive]) {
   if (available <= 0.5) return 'אין מרווח';
   const percent = Math.round(Math.abs(ratio) * 100);
   if (percent === 0) return 'מרכז';
-  return `${percent}% ${ratio > 0 ? positive : negative}`;
+  return `${isolate(`${percent}%`)} ${ratio > 0 ? positive : negative}`;
 }
 
 function formatAdjustment(key, value) {
   const definition = ADJUSTMENTS.find((item) => item.key === key);
   const rounded = definition.step < 1 ? Number(value).toFixed(1) : Math.round(value);
-  return `${rounded}${definition.unit}`;
+  return isolate(`${rounded}${definition.unit}`);
 }
 
 function updateStageMeta(snapshot) {
@@ -478,10 +502,11 @@ function updateStageMeta(snapshot) {
   }
   const nativeWidth = cropper.getNativeCropWidth();
   const nativeHeight = Math.round(nativeWidth / snapshot.aspect);
-  ui.stageMeta.textContent =
-    `מקור ${formatNumber(snapshot.image.width)}×${formatNumber(snapshot.image.height)} · `
-    + `חיתוך ${formatNumber(nativeWidth)}×${formatNumber(nativeHeight)} · `
-    + `זום ${Math.round(snapshot.zoom * 100)}%`;
+  ui.stageMeta.textContent = [
+    `מקור ${dimensions(snapshot.image.width, snapshot.image.height)}`,
+    `חיתוך ${dimensions(nativeWidth, nativeHeight)}`,
+    `זום ${isolate(`${Math.round(snapshot.zoom * 100)}%`)}`,
+  ].join(' · ');
 }
 
 /* -------------------------------------------------------------- adjustments */
@@ -554,7 +579,7 @@ function updateOutputSizeLabel() {
   }
   const width = currentOutputWidth();
   const height = Math.max(1, Math.round(width / cropper.getState().aspect));
-  ui.outputSizeOutput.textContent = `${formatNumber(width)}×${formatNumber(height)}`;
+  ui.outputSizeOutput.textContent = dimensions(width, height);
 }
 
 let estimateTimer = 0;
@@ -578,8 +603,18 @@ async function runEstimate() {
       quality: currentQuality(),
     });
     if (token !== estimateToken) return;
-    ui.outputEstimate.textContent =
-      `גודל משוער: ${formatBytes(result.blob.size)} · ${formatNumber(result.width)}×${formatNumber(result.height)} · ${describeFormat(result.format)}`;
+    const parts = [
+      `גודל משוער: ${isolate(formatBytes(result.blob.size))}`,
+      dimensions(result.width, result.height),
+      isolate(describeFormat(result.format)),
+    ];
+
+    // Exporting wider than the crop actually contains only interpolates pixels.
+    const native = cropper.getNativeCropWidth();
+    const upscaled = native > 0 && result.width > native * 1.02;
+    if (upscaled) parts.push(`מעל הגודל המקורי (${dimensions(native, native / cropper.getState().aspect)})`);
+    ui.outputEstimate.dataset.state = upscaled ? 'warn' : '';
+    ui.outputEstimate.textContent = parts.join(' · ');
   } catch {
     if (token === estimateToken) ui.outputEstimate.textContent = 'גודל משוער: לא ניתן לחשב';
   }
@@ -613,7 +648,7 @@ async function downloadCurrent() {
     link.download = outputFileName();
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    toast(`הורדה: ${link.download}`, 'success');
+    toast(`הורדה: ${isolate(link.download)}`, 'success');
   } catch (error) {
     toast(error.message || 'ההורדה נכשלה', 'error');
   }
@@ -655,7 +690,7 @@ async function saveCurrent({ silent = false } = {}) {
   if (file) file.savedName = saved.name;
   renderFileList();
   if (!silent) {
-    toast(`נשמר לאתר: ${saved.name}`, 'success');
+    toast(`נשמר לאתר: ${isolate(saved.name)}`, 'success');
     announce(`התמונה נשמרה בשם ${saved.name}`);
   }
   return saved;
@@ -751,15 +786,16 @@ function renderLibrary(images) {
     const item = document.createElement('li');
     item.className = 'library-item';
 
-    const dimensions = image.metadata?.width
-      ? `${formatNumber(image.metadata.width)}×${formatNumber(image.metadata.height)}`
+    const size = isolate(formatBytes(image.size));
+    const shape = image.metadata?.width
+      ? ` · ${dimensions(image.metadata.width, image.metadata.height)}`
       : '';
 
     item.innerHTML = `
       <img class="library-item__preview" src="${image.url}" alt="${escapeHtml(image.name)}" loading="lazy" />
       <div class="library-item__body">
         <span class="library-item__name" title="${escapeHtml(image.name)}">${escapeHtml(image.name)}</span>
-        <span class="library-item__meta">${formatBytes(image.size)}${dimensions ? ` · ${dimensions}` : ''}</span>
+        <span class="library-item__meta">${escapeHtml(size + shape)}</span>
         <div class="library-item__actions">
           <button type="button" class="button button--small" data-copy>העתקת קישור</button>
           <button type="button" class="button button--small button--danger-ghost" data-delete>מחיקה</button>
@@ -970,7 +1006,7 @@ async function checkConnection() {
     const config = await api.fetchConfig();
     state.requiresToken = Boolean(config?.requiresToken);
     state.maxUploadBytes = Number(config?.maxUploadBytes) || MAX_UPLOAD_BYTES_FALLBACK;
-    ui.sizeLimitHint.textContent = `· עד ${formatBytes(state.maxUploadBytes)} לתמונה`;
+    ui.sizeLimitHint.textContent = `· עד ${isolate(formatBytes(state.maxUploadBytes))} לתמונה`;
 
     if (state.requiresToken && !api.getToken()) {
       state.serverAvailable = false;

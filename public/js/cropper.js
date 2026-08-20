@@ -76,11 +76,14 @@ export class ImageCropper {
   #state = createDefaultState();
   #showGrid = true;
 
-  constructor(container, { aspect = 1, showGrid = true } = {}) {
+  #canvasId;
+
+  constructor(container, { aspect = 1, showGrid = true, canvasId = '' } = {}) {
     if (!container) throw new Error('ImageCropper requires a container element');
     this.#container = container;
     this.#state.aspect = aspect > 0 ? aspect : 1;
     this.#showGrid = showGrid;
+    this.#canvasId = canvasId;
 
     this.#buildDom();
     this.#bindEvents();
@@ -100,8 +103,10 @@ export class ImageCropper {
 
     this.#canvas = doc.createElement('canvas');
     this.#canvas.className = 'cropper__canvas';
+    if (this.#canvasId) this.#canvas.id = this.#canvasId;
     this.#canvas.tabIndex = 0;
     this.#canvas.setAttribute('role', 'application');
+    this.#canvas.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown ArrowLeft ArrowRight + - [ ] 0');
     this.#canvas.setAttribute(
       'aria-label',
       'אזור החיתוך. גרירה עם העכבר מזיזה את התמונה, גלגלת מקרבת ומרחיקה. '
@@ -702,7 +707,11 @@ export class ImageCropper {
     this.#container.classList.add('cropper--dragging');
 
     if (this.#pointers.size === 2) this.#gesture = this.#createGesture();
+    // preventDefault stops text selection while dragging, but it also cancels
+    // the default focus, so focus explicitly: keyboard control has to keep
+    // working right after a click.
     event.preventDefault();
+    this.#canvas.focus({ preventScroll: true });
   };
 
   #onPointerMove = (event) => {

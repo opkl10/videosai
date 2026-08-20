@@ -471,6 +471,16 @@ code {
   outline-offset: -2px;
 }
 
+/* Makes it obvious that the arrow keys now drive the crop area. */
+.stage:has(.cropper__canvas:focus-visible) {
+  border-color: var(--accent);
+  box-shadow: var(--ring);
+}
+
+.cropper__canvas:focus-visible ~ .cropper__frame {
+  box-shadow: 0 0 0 100vmax var(--mask), inset 0 0 0 2px var(--accent);
+}
+
 .cropper__backdrop {
   position: absolute;
   border-radius: 2px;
@@ -819,6 +829,10 @@ code {
   color: var(--text-muted);
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
+}
+
+.estimate[data-state='warn'] {
+  color: #d99a3a;
 }
 
 /* ------------------------------------------------------------------ ranges */
