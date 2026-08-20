@@ -75,8 +75,7 @@ export class ImageCropper {
   #imageMeta = null;
   #state = createDefaultState();
   #showGrid = true;
-
-  #canvasId;
+  #canvasId = '';
 
   constructor(container, { aspect = 1, showGrid = true, canvasId = '' } = {}) {
     if (!container) throw new Error('ImageCropper requires a container element');

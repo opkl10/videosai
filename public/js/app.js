@@ -175,6 +175,12 @@ function formatNumber(value) {
   return isolate(Number(value).toLocaleString('he-IL'));
 }
 
+/** Hebrew needs a different form for one item than for many. */
+function imageCount(count) {
+  if (count === 1) return 'תמונה אחת';
+  return `${count} תמונות`;
+}
+
 /* -------------------------------------------------------------------- theme */
 
 function initTheme() {
@@ -231,7 +237,7 @@ function addFiles(fileLikeList) {
   announce(
     accepted.length === 1
       ? `נוספה התמונה ${accepted[0].name}`
-      : `נוספו ${accepted.length} תמונות לעריכה`,
+      : `נוספו ${imageCount(accepted.length)} לעריכה`,
   );
   if (!state.activeId) selectFile(accepted[0].id);
 }
@@ -722,10 +728,10 @@ async function handleSaveAll() {
       await saveCurrent({ silent: true });
       saved += 1;
     }
-    toast(`נשמרו ${saved} תמונות לאתר`, 'success');
+    toast(`${imageCount(saved)} נשמרו לאתר`, 'success');
     await refreshLibrary();
   } catch (error) {
-    handleApiError(error, `השמירה נעצרה אחרי ${saved} תמונות`);
+    handleApiError(error, `השמירה נעצרה אחרי ${imageCount(saved)}`);
   } finally {
     if (originalId && originalId !== state.activeId) await selectFile(originalId);
     setBusy(false);
@@ -740,8 +746,16 @@ function applyToAllFiles() {
     file.snapshot = { ...snapshot, adjustments: { ...snapshot.adjustments } };
     count += 1;
   }
-  toast(`ההגדרות הוחלו על ${count} תמונות נוספות`, 'success');
-  announce(`ההגדרות הוחלו על ${count} תמונות`);
+
+  if (!count) {
+    toast('אין תמונות נוספות להחלה', 'error');
+    return;
+  }
+  const message = count === 1
+    ? 'ההגדרות הוחלו על תמונה אחת נוספת'
+    : `ההגדרות הוחלו על ${count} תמונות נוספות`;
+  toast(message, 'success');
+  announce(message);
 }
 
 function setBusy(busy) {
