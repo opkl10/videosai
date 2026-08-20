@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>אולפן התמונות — מערכת פנימית לחיתוך ועיצוב</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Targets the canvas itself, so the link hands keyboard control straight
+         to the crop area instead of just scrolling to it. -->
+    <a class="skip-link" href="#crop-canvas">דלג לאזור החיתוך</a>
+
+    <header class="app-bar">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M6 3v13a2 2 0 0 0 2 2h13" stroke-linecap="round" />
+            <path d="M3 6h13a2 2 0 0 1 2 2v13" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="brand__text">
+          <strong>אולפן התמונות</strong>
+          <small>חיתוך, מיקום ועיצוב של תמונות לאתר</small>
+        </span>
+      </div>
+
+      <div class="app-bar__actions">
+        <p class="status-pill" id="connection-status" role="status">מתחבר…</p>
+        <button type="button" class="button button--ghost" id="help-button" aria-haspopup="dialog">
+          קיצורי מקלדת
+        </button>
+        <button type="button" class="button button--ghost" id="theme-button" aria-pressed="false">
+          מצב בהיר
+        </button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- ------------------------------------------------ sources column -->
+      <section class="panel panel--sources" aria-labelledby="sources-title">
+        <h2 class="panel__title" id="sources-title">התמונות שלי</h2>
+
+        <div
+          class="dropzone"
+          id="dropzone"
+          role="button"
+          tabindex="0"
+          aria-describedby="dropzone-hint"
+        >
+          <svg class="dropzone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linecap="round" />
+          </svg>
+          <strong>גררו תמונות לכאן</strong>
+          <span>או לחצו לבחירת קבצים מהמחשב</span>
+          <input
+            class="visually-hidden"
+            type="file"
+            id="file-input"
+            accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
+            multiple
+          />
+        </div>
+        <p class="hint" id="dropzone-hint">
+          PNG · JPG · WebP · AVIF · GIF <span id="size-limit-hint"></span>. אפשר גם להדביק תמונה
+          מהלוח עם <kbd>Ctrl</kbd> + <kbd>V</kbd>.
+        </p>
+
+        <ul class="file-list" id="file-list" aria-label="תמונות שנטענו לעריכה"></ul>
+        <p class="empty-note" id="file-list-empty">עדיין לא נטענו תמונות.</p>
+      </section>
+
+      <!-- -------------------------------------------------- stage column -->
+      <section class="panel panel--stage" aria-labelledby="stage-title">
+        <div class="stage-head">
+          <h2 class="panel__title" id="stage-title">אזור החיתוך</h2>
+          <p class="stage-meta" id="stage-meta">לא נבחרה תמונה</p>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="cropper-host" id="cropper-host"></div>
+          <p class="stage-placeholder" id="stage-placeholder">
+            בחרו תמונה מהרשימה כדי להתחיל לחתוך
+          </p>
+        </div>
+
+        <div class="toolbar" role="toolbar" aria-label="פעולות עריכה מהירות">
+          <button type="button" class="button" data-action="rotate-left" title="סיבוב 90° שמאלה">
+            <span aria-hidden="true">⟲</span> 90° שמאלה
+          </button>
+          <button type="button" class="button" data-action="rotate-right" title="סיבוב 90° ימינה">
+            <span aria-hidden="true">⟳</span> 90° ימינה
+          </button>
+          <button type="button" class="button" data-action="flip-h" aria-pressed="false">היפוך אופקי</button>
+          <button type="button" class="button" data-action="flip-v" aria-pressed="false">היפוך אנכי</button>
+          <span class="toolbar__divider" role="separator"></span>
+          <button type="button" class="button" data-action="fill" title="מילוי המסגרת בלי שוליים">מלא מסגרת</button>
+          <button type="button" class="button" data-action="fit" title="הצגת כל התמונה עם רקע">התאמה מלאה</button>
+          <button type="button" class="button" data-action="grid" aria-pressed="true">רשת שלישים</button>
+          <button type="button" class="button button--danger-ghost" data-action="reset">איפוס</button>
+        </div>
+
+        <p class="stage-hint">
+          גרירה עם העכבר מזיזה את התמונה · גלגלת מקרבת ומרחיקה · לחיצה כפולה מתקרבת ·
+          שתי אצבעות במסך מגע לזום וסיבוב · אפשר גם להפעיל הכול מהמקלדת ומהסליידרים.
+        </p>
+      </section>
+
+      <!-- ----------------------------------------------- controls column -->
+      <section class="panel panel--controls" aria-labelledby="controls-title">
+        <h2 class="panel__title" id="controls-title">הגדרות</h2>
+        <div class="controls-scroll">
+          <fieldset class="group">
+            <legend class="group__title">יחס גובה־רוחב</legend>
+            <div class="preset-grid" id="aspect-presets" role="group" aria-label="יחסים מוכנים"></div>
+            <div class="ratio-inputs">
+              <label class="field">
+                <span>רוחב</span>
+                <input type="number" id="ratio-width" min="1" max="10000" step="1" value="1" />
+              </label>
+              <span class="ratio-colon" aria-hidden="true">:</span>
+              <label class="field">
+                <span>גובה</span>
+                <input type="number" id="ratio-height" min="1" max="10000" step="1" value="1" />
+              </label>
+              <button type="button" class="button button--small" id="ratio-apply">החל יחס</button>
+            </div>
+
+            <label class="field">
+              <span>יעדים מוכנים באתר</span>
+              <select id="target-preset"></select>
+            </label>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">מיקום וזום</legend>
+            <div class="control">
+              <div class="control__head">
+                <label for="zoom-slider">זום</label>
+                <output for="zoom-slider" id="zoom-output">100%</output>
+              </div>
+              <input type="range" id="zoom-slider" min="1" max="10" step="0.01" value="1" />
+            </div>
+
+            <div class="control">
+              <div class="control__head">
+                <label for="rotation-slider">סיבוב</label>
+                <output for="rotation-slider" id="rotation-output">0°</output>
+              </div>
+              <input type="range" id="rotation-slider" min="-180" max="180" step="0.5" value="0" />
+              <div class="control__buttons">
+                <button type="button" class="button button--small" data-rotate="-1">1°−</button>
+                <button type="button" class="button button--small" data-rotate="1">1°+</button>
+                <button type="button" class="button button--small" data-rotate="reset">ישר</button>
+              </div>
+            </div>
+
+            <div class="control">
+              <div class="control__head">
+                <label for="pan-x-slider">מיקום אופקי</label>
+                <output for="pan-x-slider" id="pan-x-output">מרכז</output>
+              </div>
+              <input type="range" id="pan-x-slider" min="-100" max="100" step="1" value="0" />
+            </div>
+
+            <div class="control">
+              <div class="control__head">
+                <label for="pan-y-slider">מיקום אנכי</label>
+                <output for="pan-y-slider" id="pan-y-output">מרכז</output>
+              </div>
+              <input type="range" id="pan-y-slider" min="-100" max="100" step="1" value="0" />
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">
+              עיצוב הצבע
+              <button type="button" class="button button--small button--ghost" id="reset-adjustments">
+                איפוס
+              </button>
+            </legend>
+            <div id="adjustment-controls"></div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">רקע (למצב התאמה מלאה)</legend>
+            <div class="background-row">
+              <label class="field field--color">
+                <span>צבע</span>
+                <input type="color" id="background-color" value="#ffffff" />
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="background-transparent" checked />
+                <span>רקע שקוף (PNG / WebP)</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="group__title">קובץ הפלט</legend>
+            <div class="control">
+              <div class="control__head">
+                <label for="output-width">רוחב בפיקסלים</label>
+                <output for="output-width" id="output-size-output">—</output>
+              </div>
+              <input type="range" id="output-width-slider" min="64" max="4096" step="8" value="1200" />
+              <div class="control__buttons">
+                <input type="number" id="output-width" min="16" max="12000" step="1" value="1200" aria-label="רוחב הפלט בפיקסלים" />
+                <button type="button" class="button button--small" id="output-native">גודל מקורי</button>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>פורמט</span>
+              <select id="output-format">
+                <option value="image/jpeg">JPEG — קטן ומהיר</option>
+                <option value="image/webp" selected>WebP — איכות מול משקל</option>
+                <option value="image/png">PNG — איכות מלאה ושקיפות</option>
+              </select>
+            </label>
+
+            <div class="control" id="quality-control">
+              <div class="control__head">
+                <label for="quality-slider">איכות</label>
+                <output for="quality-slider" id="quality-output">88%</output>
+              </div>
+              <input type="range" id="quality-slider" min="40" max="100" step="1" value="88" />
+            </div>
+
+            <label class="field">
+              <span>שם הקובץ</span>
+              <input type="text" id="output-name" placeholder="banner-home" autocomplete="off" />
+            </label>
+
+            <p class="estimate" id="output-estimate" aria-live="polite">גודל משוער: —</p>
+          </fieldset>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="button button--primary" id="save-button" disabled>
+            שמירה לאתר
+          </button>
+          <button type="button" class="button" id="download-button" disabled>הורדה למחשב</button>
+          <button type="button" class="button button--ghost" id="apply-all-button" disabled>
+            החל את ההגדרות על כל התמונות
+          </button>
+          <button type="button" class="button button--ghost" id="save-all-button" disabled>
+            שמור את כל התמונות לאתר
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <section class="panel panel--library" aria-labelledby="library-title">
+      <div class="library-head">
+        <h2 class="panel__title" id="library-title">ספריית התמונות באתר</h2>
+        <button type="button" class="button button--small button--ghost" id="refresh-library">רענון</button>
+      </div>
+      <ul class="library" id="library"></ul>
+      <p class="empty-note" id="library-empty">עוד לא נשמרו תמונות.</p>
+    </section>
+
+    <p class="toast" id="toast" role="status" aria-live="polite" hidden></p>
+    <p class="visually-hidden" id="live-region" role="status" aria-live="polite"></p>
+
+    <dialog class="dialog" id="help-dialog" aria-labelledby="help-title">
+      <h2 id="help-title">שליטה מלאה מהמקלדת</h2>
+      <p class="dialog__lead">
+        כשהמיקוד נמצא על אזור החיתוך (אפשר להגיע אליו עם <kbd>Tab</kbd>):
+      </p>
+      <dl class="shortcuts">
+        <dt><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></dt>
+        <dd>הזזת התמונה. עם <kbd>Shift</kbd> — צעדים גדולים.</dd>
+        <dt><kbd>+</kbd> / <kbd>−</kbd></dt>
+        <dd>התקרבות והתרחקות.</dd>
+        <dt><kbd>[</kbd> / <kbd>]</kbd></dt>
+        <dd>סיבוב במעלה אחת. עם <kbd>Shift</kbd> — 15 מעלות.</dd>
+        <dt><kbd>0</kbd></dt>
+        <dd>איפוס המיקום, הזום והסיבוב.</dd>
+      </dl>
+      <p class="dialog__lead">
+        כל פעולה זמינה גם בסליידרים שבצד, כך שאפשר לעבוד בדיוק מלא גם בלי עכבר.
+      </p>
+      <form method="dialog">
+        <button type="submit" class="button button--primary">סגירה</button>
+      </form>
+    </dialog>
+
+    <dialog class="dialog" id="token-dialog" aria-labelledby="token-title">
+      <h2 id="token-title">נדרש מפתח גישה</h2>
+      <p class="dialog__lead">
+        המערכת מוגנת. הזינו את המפתח הפנימי (המשתנה <code>ADMIN_TOKEN</code> בשרת) כדי לשמור
+        תמונות. המפתח נשמר לחלון הדפדפן הנוכחי בלבד.
+      </p>
+      <form id="token-form">
+        <label class="field">
+          <span>מפתח גישה</span>
+          <input type="password" id="token-input" autocomplete="current-password" />
+        </label>
+        <div class="dialog__actions">
+          <button type="submit" class="button button--primary">שמירה</button>
+          <button type="button" class="button button--ghost" id="token-cancel">ביטול</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
