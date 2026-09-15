@@ -1,0 +1,548 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Social Hub 1.0.0\n"
+"Language: he_IL\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-15 12:00+0000\n"
+"PO-Revision-Date: 2026-09-15 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Domain: social-hub\n"
+
+#: social-hub/includes/admin/class-admin.php:67 social-hub/includes/admin/class-admin.php:68 social-hub/includes/admin/class-meta-box.php:49 social-hub/includes/admin/class-settings-page.php:39
+msgid "Social Hub"
+msgstr "Social Hub"
+
+#: social-hub/includes/admin/class-admin.php:132
+msgid "Checking…"
+msgstr "בודק…"
+
+#: social-hub/includes/admin/class-admin.php:133
+msgid "Sharing…"
+msgstr "משתף…"
+
+#: social-hub/includes/admin/class-admin.php:134
+msgid "The request failed. Please try again."
+msgstr "הבקשה נכשלה. נסו שוב."
+
+#: social-hub/includes/admin/class-admin.php:135
+msgid "Choose a fallback preview image"
+msgstr "בחירת תמונת ברירת מחדל לתצוגה מקדימה"
+
+#: social-hub/includes/admin/class-admin.php:136
+msgid "Use this image"
+msgstr "שימוש בתמונה הזו"
+
+#: social-hub/includes/admin/class-admin.php:151
+msgid "Settings"
+msgstr "הגדרות"
+
+#: social-hub/includes/admin/class-admin.php:166 social-hub/includes/admin/class-admin.php:252
+msgid "You are not allowed to do that."
+msgstr "אין לכם הרשאה לבצע את הפעולה הזו."
+
+#: social-hub/includes/admin/class-admin.php:188
+msgid "Unknown network."
+msgstr "רשת לא מוכרת."
+
+#: social-hub/includes/admin/class-admin.php:201
+msgid "Connected: %s"
+msgstr "מחובר: %s"
+
+#: social-hub/includes/admin/class-admin.php:219
+msgid "You are not allowed to share this post."
+msgstr "אין לכם הרשאה לשתף את הפוסט הזה."
+
+#: social-hub/includes/admin/class-admin.php:223
+msgid "Publish the post before sharing it."
+msgstr "יש לפרסם את הפוסט לפני השיתוף."
+
+#: social-hub/includes/admin/class-admin.php:227 social-hub/includes/admin/class-meta-box.php:73
+msgid "No network is connected yet."
+msgstr "עדיין לא חוברה אף רשת."
+
+#: social-hub/includes/admin/class-admin.php:248
+msgid "Your session expired. Reload the page and try again."
+msgstr "פג תוקף החיבור. רעננו את העמוד ונסו שוב."
+
+#: social-hub/includes/admin/class-meta-box.php:74
+msgid "Connect one"
+msgstr "חיבור רשת"
+
+#: social-hub/includes/admin/class-meta-box.php:81
+msgid "Will be shared to: %s"
+msgstr "ישותף אל: %s"
+
+#: social-hub/includes/admin/class-meta-box.php:103
+msgid "Do not share this post"
+msgstr "לא לשתף את הפוסט הזה"
+
+#: social-hub/includes/admin/class-meta-box.php:108
+msgid "Custom message"
+msgstr "הודעה מותאמת"
+
+#: social-hub/includes/admin/class-meta-box.php:124
+msgid "Share now"
+msgstr "שיתוף עכשיו"
+
+#: social-hub/includes/admin/class-meta-box.php:127
+msgid "Sharing now posts again even if this post was already shared."
+msgstr "שיתוף עכשיו מפרסם שוב, גם אם הפוסט כבר שותף."
+
+#: social-hub/includes/admin/class-meta-box.php:199 social-hub/includes/admin/class-settings-page.php:599
+msgid "View"
+msgstr "צפייה"
+
+#: social-hub/includes/admin/class-meta-box.php:211
+msgid "shared %s ago"
+msgstr "שותף לפני %s"
+
+#: social-hub/includes/admin/class-meta-box.php:231
+msgid "Nothing was shared."
+msgstr "לא שותף דבר."
+
+#: social-hub/includes/admin/class-meta-box.php:243
+msgid "%s: done"
+msgstr "%s: בוצע"
+
+#: social-hub/includes/admin/class-meta-box.php:248
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#: social-hub/includes/admin/class-settings-page.php:31
+msgid "You are not allowed to access this page."
+msgstr "אין לכם הרשאה לגשת לעמוד הזה."
+
+#: social-hub/includes/admin/class-settings-page.php:41
+msgid "Publish new posts to your social pages automatically, add share buttons for your readers, and make sure shared links show the right title and image."
+msgstr "פרסמו פוסטים חדשים לעמודי הסושיאל שלכם באופן אוטומטי, הוסיפו כפתורי שיתוף לקוראים, וודאו שקישורים משותפים מציגים את הכותרת והתמונה הנכונות."
+
+#: social-hub/includes/admin/class-settings-page.php:99
+msgid "General"
+msgstr "כללי"
+
+#: social-hub/includes/admin/class-settings-page.php:100 social-hub/includes/class-share-buttons.php:38
+msgid "Facebook"
+msgstr "פייסבוק"
+
+#: social-hub/includes/admin/class-settings-page.php:101 social-hub/includes/class-share-buttons.php:56 social-hub/includes/providers/class-telegram.php:36
+msgid "Telegram"
+msgstr "טלגרם"
+
+#: social-hub/includes/admin/class-settings-page.php:102
+msgid "Share buttons"
+msgstr "כפתורי שיתוף"
+
+#: social-hub/includes/admin/class-settings-page.php:103
+msgid "Link previews"
+msgstr "תצוגת קישורים"
+
+#: social-hub/includes/admin/class-settings-page.php:104
+msgid "Activity log"
+msgstr "יומן פעילות"
+
+#: social-hub/includes/admin/class-settings-page.php:119
+msgid "Connected and sharing"
+msgstr "מחובר ומשתף"
+
+#: social-hub/includes/admin/class-settings-page.php:122
+msgid "Configured but switched off"
+msgstr "מוגדר אך כבוי"
+
+#: social-hub/includes/admin/class-settings-page.php:125
+msgid "Not connected"
+msgstr "לא מחובר"
+
+#: social-hub/includes/admin/class-settings-page.php:148
+msgid "Automatic sharing"
+msgstr "שיתוף אוטומטי"
+
+#: social-hub/includes/admin/class-settings-page.php:151
+msgid "Share a post to the connected networks when it is published"
+msgstr "לשתף פוסט לרשתות המחוברות ברגע שהוא מתפרסם"
+
+#: social-hub/includes/admin/class-settings-page.php:153
+msgid "Only the first transition to \"published\" triggers a share, so editing an old post will not repost it."
+msgstr "רק המעבר הראשון למצב \"פורסם\" מפעיל שיתוף, כך שעריכה של פוסט ישן לא תפרסם אותו מחדש."
+
+#: social-hub/includes/admin/class-settings-page.php:157
+msgid "Post types"
+msgstr "סוגי תוכן"
+
+#: social-hub/includes/admin/class-settings-page.php:162
+msgid "Delay before sharing"
+msgstr "השהיה לפני השיתוף"
+
+#: social-hub/includes/admin/class-settings-page.php:175
+msgid "seconds"
+msgstr "שניות"
+
+#: social-hub/includes/admin/class-settings-page.php:176
+msgid "A short delay gives you time to fix a typo, and lets caches warm up before the link preview is fetched."
+msgstr "השהיה קצרה נותנת לכם זמן לתקן שגיאת כתיב, ומאפשרת למטמון להתעדכן לפני שהרשת שולפת את התצוגה המקדימה."
+
+#: social-hub/includes/admin/class-settings-page.php:181
+msgid "Message template"
+msgstr "תבנית ההודעה"
+
+#: social-hub/includes/admin/class-settings-page.php:191
+msgid "Available placeholders:"
+msgstr "משתנים זמינים:"
+
+#: social-hub/includes/admin/class-settings-page.php:198
+msgid "Uninstall"
+msgstr "הסרה"
+
+#: social-hub/includes/admin/class-settings-page.php:204
+msgid "Delete all Social Hub settings and logs when the plugin is deleted"
+msgstr "למחוק את כל ההגדרות והיומנים של Social Hub בעת מחיקת התוסף"
+
+#: social-hub/includes/admin/class-settings-page.php:222 social-hub/includes/admin/class-settings-page.php:311 social-hub/includes/admin/class-settings-page.php:375
+msgid "Status"
+msgstr "סטטוס"
+
+#: social-hub/includes/admin/class-settings-page.php:225
+msgid "Share new posts to this Facebook Page"
+msgstr "לשתף פוסטים חדשים לעמוד הפייסבוק הזה"
+
+#: social-hub/includes/admin/class-settings-page.php:231
+msgid "Page ID"
+msgstr "מזהה עמוד (Page ID)"
+
+#: social-hub/includes/admin/class-settings-page.php:242
+msgid "Facebook Page settings → About → Page ID. A numeric ID works best."
+msgstr "הגדרות עמוד הפייסבוק ← אודות ← מזהה עמוד. עדיף מזהה מספרי."
+
+#: social-hub/includes/admin/class-settings-page.php:247
+msgid "Page access token"
+msgstr "אסימון גישה לעמוד (Page access token)"
+
+#: social-hub/includes/admin/class-settings-page.php:251
+msgid "Use a long-lived Page access token with the pages_manage_posts permission. It is stored in your database, so treat it like a password."
+msgstr "השתמשו באסימון גישה ארוך-טווח לעמוד עם ההרשאה pages_manage_posts. הוא נשמר במסד הנתונים שלכם, אז התייחסו אליו כמו לסיסמה."
+
+#: social-hub/includes/admin/class-settings-page.php:256
+msgid "Post format"
+msgstr "סוג הפוסט"
+
+#: social-hub/includes/admin/class-settings-page.php:261
+msgid "Link post (Facebook builds the preview)"
+msgstr "פוסט קישור (פייסבוק בונה את התצוגה המקדימה)"
+
+#: social-hub/includes/admin/class-settings-page.php:264
+msgid "Photo post using the featured image"
+msgstr "פוסט תמונה עם התמונה הראשית"
+
+#: social-hub/includes/admin/class-settings-page.php:271
+msgid "Graph API version"
+msgstr "גרסת Graph API"
+
+#: social-hub/includes/admin/class-settings-page.php:281
+msgid "Meta retires each version after about two years. Bump this when you migrate."
+msgstr "מטא מוציאה כל גרסה משימוש אחרי כשנתיים. עדכנו את השדה הזה כשאתם עוברים גרסה."
+
+#: social-hub/includes/admin/class-settings-page.php:285 social-hub/includes/admin/class-settings-page.php:357
+msgid "Connection"
+msgstr "חיבור"
+
+#: social-hub/includes/admin/class-settings-page.php:291
+msgid "Getting a Page access token"
+msgstr "איך משיגים אסימון גישה לעמוד"
+
+#: social-hub/includes/admin/class-settings-page.php:293
+msgid "Create an app at developers.facebook.com and add the \"Facebook Login\" product."
+msgstr "צרו אפליקציה ב-developers.facebook.com והוסיפו את המוצר \"Facebook Login\"."
+
+#: social-hub/includes/admin/class-settings-page.php:294
+msgid "Open the Graph API Explorer, pick your app, and request the pages_manage_posts, pages_read_engagement and pages_show_list permissions."
+msgstr "פתחו את Graph API Explorer, בחרו את האפליקציה שלכם ובקשו את ההרשאות pages_manage_posts, pages_read_engagement ו-pages_show_list."
+
+#: social-hub/includes/admin/class-settings-page.php:295
+msgid "Select your Page in the token dropdown to swap the user token for a Page token."
+msgstr "בחרו את העמוד שלכם בתפריט האסימונים כדי להחליף את אסימון המשתמש באסימון עמוד."
+
+#: social-hub/includes/admin/class-settings-page.php:296
+msgid "Exchange it for a long-lived token in the Access Token Debugger, then paste it above."
+msgstr "המירו אותו לאסימון ארוך-טווח ב-Access Token Debugger, והדביקו אותו למעלה."
+
+#: social-hub/includes/admin/class-settings-page.php:314
+msgid "Share new posts to this Telegram chat"
+msgstr "לשתף פוסטים חדשים לצ׳אט הטלגרם הזה"
+
+#: social-hub/includes/admin/class-settings-page.php:320
+msgid "Bot token"
+msgstr "אסימון הבוט"
+
+#: social-hub/includes/admin/class-settings-page.php:324
+msgid "Create a bot with @BotFather and paste the token it gives you."
+msgstr "צרו בוט דרך @BotFather והדביקו את האסימון שהוא נותן לכם."
+
+#: social-hub/includes/admin/class-settings-page.php:329
+msgid "Channel or chat ID"
+msgstr "מזהה ערוץ או צ׳אט"
+
+#: social-hub/includes/admin/class-settings-page.php:341
+msgid "Use @channelname for a public channel, or the numeric ID for a private one. The bot must be an administrator there."
+msgstr "השתמשו ב-@channelname לערוץ ציבורי, או במזהה המספרי לערוץ פרטי. הבוט חייב להיות מנהל שם."
+
+#: social-hub/includes/admin/class-settings-page.php:345
+msgid "Link preview"
+msgstr "תצוגה מקדימה של קישור"
+
+#: social-hub/includes/admin/class-settings-page.php:351
+msgid "Send messages without the link preview card"
+msgstr "לשלוח הודעות בלי כרטיס תצוגה מקדימה"
+
+#: social-hub/includes/admin/class-settings-page.php:378
+msgid "Show share buttons for readers"
+msgstr "להציג כפתורי שיתוף לקוראים"
+
+#: social-hub/includes/admin/class-settings-page.php:383
+msgid "Networks"
+msgstr "רשתות"
+
+#: social-hub/includes/admin/class-settings-page.php:403
+msgid "Position"
+msgstr "מיקום"
+
+#: social-hub/includes/admin/class-settings-page.php:407
+msgid "After the content"
+msgstr "אחרי התוכן"
+
+#: social-hub/includes/admin/class-settings-page.php:408
+msgid "Before the content"
+msgstr "לפני התוכן"
+
+#: social-hub/includes/admin/class-settings-page.php:409
+msgid "Before and after"
+msgstr "לפני ואחרי"
+
+#: social-hub/includes/admin/class-settings-page.php:410
+msgid "Only where I place them"
+msgstr "רק במקום שאני אבחר"
+
+#: social-hub/includes/admin/class-settings-page.php:413
+msgid "Place them yourself with the shortcode"
+msgstr "אפשר למקם בעצמכם עם השורטקוד"
+
+#: social-hub/includes/admin/class-settings-page.php:415
+msgid "or in a template with"
+msgstr "או בקובץ תבנית עם"
+
+#: social-hub/includes/admin/class-settings-page.php:421
+msgid "Show on"
+msgstr "להציג ב"
+
+#: social-hub/includes/admin/class-settings-page.php:426
+msgid "Heading"
+msgstr "כותרת"
+
+#: social-hub/includes/admin/class-settings-page.php:435 social-hub/includes/class-share-buttons.php:238
+msgid "Share this post"
+msgstr "שתפו את הפוסט"
+
+#: social-hub/includes/admin/class-settings-page.php:440
+msgid "Appearance"
+msgstr "עיצוב"
+
+#: social-hub/includes/admin/class-settings-page.php:443
+msgid "Filled"
+msgstr "מלא"
+
+#: social-hub/includes/admin/class-settings-page.php:444
+msgid "Outline"
+msgstr "מתאר"
+
+#: social-hub/includes/admin/class-settings-page.php:448
+msgid "Show network names next to the icons"
+msgstr "להציג את שמות הרשתות ליד האייקונים"
+
+#: social-hub/includes/admin/class-settings-page.php:468
+msgid "An SEO plugin that already outputs Open Graph tags was detected. Social Hub stays out of its way unless you turn the option below off."
+msgstr "זוהה תוסף SEO שכבר מוסיף תגיות Open Graph. ‏Social Hub לא יתערב, אלא אם תכבו את האפשרות שלמטה."
+
+#: social-hub/includes/admin/class-settings-page.php:474
+msgid "Open Graph tags"
+msgstr "תגיות Open Graph"
+
+#: social-hub/includes/admin/class-settings-page.php:477
+msgid "Add Open Graph and Twitter card tags to the page head"
+msgstr "להוסיף תגיות Open Graph ו-Twitter card ל-head של העמוד"
+
+#: social-hub/includes/admin/class-settings-page.php:479
+msgid "Skip them when an SEO plugin already handles previews"
+msgstr "לדלג עליהן כשתוסף SEO כבר מטפל בתצוגות המקדימות"
+
+#: social-hub/includes/admin/class-settings-page.php:485
+msgid "Fallback image"
+msgstr "תמונת ברירת מחדל"
+
+#: social-hub/includes/admin/class-settings-page.php:500
+msgid "Choose image"
+msgstr "בחירת תמונה"
+
+#: social-hub/includes/admin/class-settings-page.php:501
+msgid "Remove"
+msgstr "הסרה"
+
+#: social-hub/includes/admin/class-settings-page.php:504
+msgid "Used when a post has no featured image. 1200×630 pixels works well everywhere."
+msgstr "בשימוש כשלפוסט אין תמונה ראשית. מידות 1200×630 פיקסלים עובדות טוב בכל מקום."
+
+#: social-hub/includes/admin/class-settings-page.php:509
+msgid "Facebook App ID"
+msgstr "מזהה אפליקציית פייסבוק"
+
+#: social-hub/includes/admin/class-settings-page.php:519
+msgid "Optional. Adds the fb:app_id tag so your Page shows up in Meta insights."
+msgstr "אופציונלי. מוסיף את התגית fb:app_id כדי שהעמוד שלכם יופיע בנתוני מטא."
+
+#: social-hub/includes/admin/class-settings-page.php:524
+msgid "X / Twitter handle"
+msgstr "שם המשתמש ב-X / טוויטר"
+
+#: social-hub/includes/admin/class-settings-page.php:538
+msgid "Card size"
+msgstr "גודל הכרטיס"
+
+#: social-hub/includes/admin/class-settings-page.php:542
+msgid "Large image"
+msgstr "תמונה גדולה"
+
+#: social-hub/includes/admin/class-settings-page.php:545
+msgid "Small thumbnail"
+msgstr "תמונה ממוזערת"
+
+#: social-hub/includes/admin/class-settings-page.php:563
+msgid "The log was cleared."
+msgstr "היומן נוקה."
+
+#: social-hub/includes/admin/class-settings-page.php:569
+msgid "When"
+msgstr "מתי"
+
+#: social-hub/includes/admin/class-settings-page.php:570
+msgid "Network"
+msgstr "רשת"
+
+#: social-hub/includes/admin/class-settings-page.php:571
+msgid "Post"
+msgstr "פוסט"
+
+#: social-hub/includes/admin/class-settings-page.php:572
+msgid "Result"
+msgstr "תוצאה"
+
+#: social-hub/includes/admin/class-settings-page.php:577
+msgid "Nothing has been shared yet."
+msgstr "עדיין לא שותף דבר."
+
+#: social-hub/includes/admin/class-settings-page.php:611
+msgid "Clear log"
+msgstr "ניקוי היומן"
+
+#: social-hub/includes/admin/class-settings-page.php:705
+msgid "Saved — leave blank to keep it"
+msgstr "נשמר — השאירו ריק כדי לשמור עליו"
+
+#: social-hub/includes/admin/class-settings-page.php:706
+msgid "Paste the token here"
+msgstr "הדביקו כאן את האסימון"
+
+#: social-hub/includes/admin/class-settings-page.php:712
+msgid "Delete the stored token"
+msgstr "מחיקת האסימון השמור"
+
+#: social-hub/includes/admin/class-settings-page.php:727
+msgid "Test connection"
+msgstr "בדיקת חיבור"
+
+#: social-hub/includes/admin/class-settings-page.php:732
+msgid "Save your changes first — the test uses the stored credentials."
+msgstr "שמרו קודם את השינויים — הבדיקה משתמשת בפרטים השמורים."
+
+#: social-hub/includes/class-publisher.php:157
+msgid "Shared to %s."
+msgstr "שותף אל %s."
+
+#: social-hub/includes/class-share-buttons.php:44
+msgid "X"
+msgstr "X"
+
+#: social-hub/includes/class-share-buttons.php:50
+msgid "WhatsApp"
+msgstr "וואטסאפ"
+
+#: social-hub/includes/class-share-buttons.php:62
+msgid "LinkedIn"
+msgstr "לינקדאין"
+
+#: social-hub/includes/class-share-buttons.php:68
+msgid "Email"
+msgstr "אימייל"
+
+#: social-hub/includes/class-share-buttons.php:74
+msgid "Copy link"
+msgstr "העתקת קישור"
+
+#: social-hub/includes/class-share-buttons.php:107
+msgid "Link copied"
+msgstr "הקישור הועתק"
+
+#: social-hub/includes/class-share-buttons.php:108
+msgid "Copy failed"
+msgstr "ההעתקה נכשלה"
+
+#: social-hub/includes/class-share-buttons.php:308
+msgid "Share on %s"
+msgstr "שיתוף ב-%s"
+
+#: social-hub/includes/providers/class-facebook.php:37
+msgid "Facebook Page"
+msgstr "עמוד פייסבוק"
+
+#: social-hub/includes/providers/class-facebook.php:68
+msgid "Add a Facebook Page ID and access token before sharing."
+msgstr "הוסיפו מזהה עמוד פייסבוק ואסימון גישה לפני השיתוף."
+
+#: social-hub/includes/providers/class-facebook.php:118
+msgid "Facebook accepted the request but did not return a post ID."
+msgstr "פייסבוק קיבלה את הבקשה אבל לא החזירה מזהה פוסט."
+
+#: social-hub/includes/providers/class-facebook.php:137
+msgid "Add a Facebook Page ID and access token first."
+msgstr "הוסיפו קודם מזהה עמוד פייסבוק ואסימון גישה."
+
+#: social-hub/includes/providers/class-facebook.php:158
+msgid "The token works but no Page name was returned. Make sure you used a Page access token."
+msgstr "האסימון עובד אבל לא הוחזר שם עמוד. ודאו שהשתמשתם באסימון גישה של עמוד."
+
+#: social-hub/includes/providers/class-provider.php:132
+msgid "%1$s returned an unreadable response (HTTP %2$d)."
+msgstr "%1$s החזירה תשובה לא קריאה (HTTP %2$d)."
+
+#: social-hub/includes/providers/class-provider.php:163
+msgid "%1$s rejected the request (HTTP %2$d)."
+msgstr "%1$s דחתה את הבקשה (HTTP %2$d)."
+
+#: social-hub/includes/providers/class-telegram.php:67
+msgid "Add a Telegram bot token and chat ID before sharing."
+msgstr "הוסיפו אסימון בוט טלגרם ומזהה צ׳אט לפני השיתוף."
+
+#: social-hub/includes/providers/class-telegram.php:97
+msgid "Telegram accepted the request but did not return a message ID."
+msgstr "טלגרם קיבלה את הבקשה אבל לא החזירה מזהה הודעה."
+
+#: social-hub/includes/providers/class-telegram.php:117
+msgid "Add a Telegram bot token first."
+msgstr "הוסיפו קודם אסימון בוט טלגרם."
+
+#: social-hub/includes/providers/class-telegram.php:126
+msgid "unknown bot"
+msgstr "בוט לא ידוע"
+
+#: social-hub/includes/providers/class-telegram.php:155
+msgid "%1$s posting to %2$s"
+msgstr "%1$s מפרסם אל %2$s"
