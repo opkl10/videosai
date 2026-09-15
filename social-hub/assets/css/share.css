@@ -1,0 +1,99 @@
+.social-hub-share {
+	margin-block: 2em;
+	font-size: 15px;
+	line-height: 1.4;
+}
+
+.social-hub-share__heading {
+	margin: 0 0 0.75em;
+	font-size: 0.95em;
+	font-weight: 600;
+	opacity: 0.75;
+}
+
+.social-hub-share__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.social-hub-share__item {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.social-hub-share__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 9px 14px;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	background-color: var(--social-hub-color, #40464f);
+	color: #fff;
+	font: inherit;
+	font-size: 0.9em;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	cursor: pointer;
+	transition: transform 0.15s ease, filter 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.social-hub-share__button:hover,
+.social-hub-share__button:focus-visible {
+	color: #fff;
+	text-decoration: none;
+	filter: brightness(1.08);
+	transform: translateY(-1px);
+}
+
+.social-hub-share__button:focus-visible {
+	outline: 2px solid var(--social-hub-color, #40464f);
+	outline-offset: 2px;
+}
+
+.social-hub-share--outline .social-hub-share__button {
+	background-color: transparent;
+	border-color: currentColor;
+	color: var(--social-hub-color, #40464f);
+}
+
+.social-hub-share--outline .social-hub-share__button:hover,
+.social-hub-share--outline .social-hub-share__button:focus-visible {
+	background-color: var(--social-hub-color, #40464f);
+	color: #fff;
+}
+
+.social-hub-share--icons-only .social-hub-share__button {
+	padding: 10px;
+	border-radius: 50%;
+}
+
+.social-hub-share__icon {
+	flex: 0 0 auto;
+	width: 20px;
+	height: 20px;
+}
+
+.social-hub-share__button.is-copied {
+	filter: none;
+	background-color: #1a7f4b;
+	border-color: #1a7f4b;
+	color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.social-hub-share__button {
+		transition: none;
+	}
+
+	.social-hub-share__button:hover,
+	.social-hub-share__button:focus-visible {
+		transform: none;
+	}
+}
