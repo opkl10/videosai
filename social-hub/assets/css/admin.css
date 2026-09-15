@@ -1,0 +1,141 @@
+.social-hub-intro {
+	max-width: 46em;
+	color: #50575e;
+}
+
+.social-hub-status {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 16px 0;
+	padding: 0;
+	list-style: none;
+}
+
+.social-hub-status__item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	padding: 8px 14px;
+	border: 1px solid #dcdcde;
+	border-inline-start-width: 4px;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.social-hub-status__item span {
+	color: #646970;
+}
+
+.social-hub-status__item--ok {
+	border-inline-start-color: #00a32a;
+}
+
+.social-hub-status__item--warn {
+	border-inline-start-color: #dba617;
+}
+
+.social-hub-status__item--off {
+	border-inline-start-color: #c3c4c7;
+}
+
+.social-hub-tabs {
+	margin-bottom: 20px;
+}
+
+.social-hub-inline,
+.social-hub-network {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-inline-end: 16px;
+	margin-block-end: 6px;
+}
+
+.social-hub-network__swatch {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.social-hub-test-result {
+	margin-inline-start: 10px;
+	font-weight: 600;
+}
+
+.social-hub-test-result.is-success {
+	color: #007017;
+}
+
+.social-hub-test-result.is-error {
+	color: #b32d2e;
+}
+
+.social-hub-help {
+	max-width: 46em;
+	margin-top: 24px;
+	padding: 4px 20px 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.social-hub-media__preview img {
+	max-width: 320px;
+	height: auto;
+	margin-block: 8px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+}
+
+.social-hub-log__result--error {
+	color: #b32d2e;
+}
+
+.social-hub-log__result--success {
+	color: #007017;
+}
+
+.social-hub-log__clear {
+	margin-top: 16px;
+}
+
+.social-hub-box__networks,
+.social-hub-box__empty {
+	color: #50575e;
+}
+
+.social-hub-box__statuses {
+	margin: 0 0 12px;
+	padding: 0;
+	list-style: none;
+}
+
+.social-hub-box__status {
+	margin: 0 0 4px;
+	padding-inline-start: 10px;
+	border-inline-start: 3px solid #c3c4c7;
+}
+
+.social-hub-box__status--success {
+	border-inline-start-color: #00a32a;
+}
+
+.social-hub-box__status--error {
+	border-inline-start-color: #d63638;
+}
+
+.social-hub-box__result {
+	display: inline-block;
+	margin-inline-start: 6px;
+}
+
+.social-hub-box__result.is-success {
+	color: #007017;
+}
+
+.social-hub-box__result.is-error {
+	color: #b32d2e;
+}
