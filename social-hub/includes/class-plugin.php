@@ -48,6 +48,7 @@ final class Plugin {
 	 */
 	public function boot() {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
+		add_filter( 'site_transient_update_plugins', array( $this, 'block_foreign_updates' ) );
 
 		$this->publisher = new Publisher();
 		$this->publisher->register();
@@ -80,6 +81,28 @@ final class Plugin {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'social-hub', false, dirname( plugin_basename( SOCIAL_HUB_FILE ) ) . '/languages' );
+	}
+
+	/**
+	 * Drops update offers aimed at this plugin.
+	 *
+	 * The social-hub slug belongs to an unrelated plugin on WordPress.org, and
+	 * WordPress matches updates by folder name, so an auto-update would replace
+	 * this plugin with that one.
+	 *
+	 * @param mixed $updates Update transient value.
+	 * @return mixed
+	 */
+	public function block_foreign_updates( $updates ) {
+		if ( ! is_object( $updates ) ) {
+			return $updates;
+		}
+
+		$basename = plugin_basename( SOCIAL_HUB_FILE );
+
+		unset( $updates->response[ $basename ], $updates->no_update[ $basename ] );
+
+		return $updates;
 	}
 
 	/**
