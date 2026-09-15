@@ -40,6 +40,12 @@ class Settings_Page {
 		?>
 		<div class="wrap social-hub-wrap">
 			<h1><?php esc_html_e( 'Social Hub', 'social-hub' ); ?></h1>
+
+			<?php
+			// A top level page does not print these for us the way an options page does.
+			settings_errors( Settings::OPTION );
+			?>
+
 			<p class="social-hub-intro">
 				<?php esc_html_e( 'Publish new posts to your social pages automatically, add share buttons for your readers, and make sure shared links show the right title and image.', 'social-hub' ); ?>
 			</p>

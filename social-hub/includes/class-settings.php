@@ -381,15 +381,14 @@ class Settings {
 			);
 		}
 
-		$days = array_map( 'absint', isset( $value['skip_days'] ) ? (array) $value['skip_days'] : array() );
+		$submitted = isset( $value['skip_days'] ) ? (array) $value['skip_days'] : array();
+		$days      = array_intersect( array_map( 'absint', $submitted ), range( 0, 6 ) );
 
 		return array(
 			'enabled'   => ! empty( $value['enabled'] ),
 			'start'     => $start,
 			'end'       => $end,
-			'skip_days' => array_values( array_unique( array_filter( $days, static function ( $day ) {
-				return $day >= 0 && $day <= 6;
-			} ) ) ),
+			'skip_days' => array_values( array_unique( $days ) ),
 		);
 	}
 
