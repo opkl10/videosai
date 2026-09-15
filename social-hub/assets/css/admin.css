@@ -129,11 +129,6 @@
 	color: #646970;
 }
 
-.social-hub-checklist--compact .social-hub-checklist__item {
-	padding: 6px 10px;
-	font-size: 12px;
-}
-
 .social-hub-tips {
 	max-width: 48em;
 }
@@ -154,11 +149,6 @@
 .social-hub-tips li {
 	margin-bottom: 10px;
 	line-height: 1.7;
-}
-
-.social-hub-box__score {
-	margin-bottom: 4px;
-	font-weight: 600;
 }
 
 .social-hub-box__scheduled {

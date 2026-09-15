@@ -29,9 +29,8 @@ Graph API and the Telegram Bot API.
   and copy link, in a filled or outline style, with or without labels.
 * Open Graph and Twitter Card tags, skipped automatically when an SEO plugin
   already prints them.
-* A readiness check on every post before it goes out: preview image size,
-  headline length, hand-written excerpt, share text length, tags, and whether
-  the text asks anything worth replying to.
+* A readiness checklist for the site: connected network, link previews,
+  fallback image, readable permalinks and tracking.
 * A sharing window that holds a post written at 03:00 until the morning, with
   days you can skip.
 * UTM tagging on every outgoing link, separately for automatic shares and for
@@ -96,5 +95,5 @@ link button always copies the clean URL.
 
 = 1.0.0 =
 * First release: Facebook Page and Telegram publishing, share buttons, Open
-  Graph tags, promotion advisor, sharing window, UTM tagging, activity log and
+  Graph tags, readiness checklist, sharing window, UTM tagging, activity log and
   Hebrew translation.

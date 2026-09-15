@@ -7,7 +7,6 @@
 
 namespace SocialHub\Admin;
 
-use SocialHub\Advisor;
 use SocialHub\Plugin;
 use SocialHub\Providers;
 use SocialHub\Publisher;
@@ -114,8 +113,6 @@ class Meta_Box {
 
 			<div data-social-hub-status><?php echo self::status_html( $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped while built. ?></div>
 
-			<?php echo self::checklist_html( $post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped while built. ?>
-
 			<p>
 				<label>
 					<input type="checkbox" name="social_hub_skip" value="1" <?php checked( $skip ); ?> />
@@ -190,52 +187,6 @@ class Meta_Box {
 		} else {
 			update_post_meta( $post_id, Publisher::META_MESSAGE, $message );
 		}
-	}
-
-	/**
-	 * Builds the readiness checklist of a post, listing only what is worth fixing.
-	 *
-	 * @param WP_Post $post Post being edited.
-	 * @return string
-	 */
-	public static function checklist_html( WP_Post $post ) {
-		$checks = Advisor::post_checks( $post );
-
-		if ( ! $checks ) {
-			return '';
-		}
-
-		$passed    = Advisor::passed( $checks );
-		$remaining = array_filter(
-			$checks,
-			static function ( $check ) {
-				return Advisor::PASS !== $check['status'];
-			}
-		);
-
-		$items = '';
-
-		foreach ( $remaining as $check ) {
-			$items .= sprintf(
-				'<li class="social-hub-checklist__item social-hub-checklist__item--%1$s"><span class="social-hub-checklist__label">%2$s</span><span class="social-hub-checklist__hint">%3$s</span></li>',
-				esc_attr( $check['status'] ),
-				esc_html( $check['label'] ),
-				esc_html( $check['hint'] )
-			);
-		}
-
-		return sprintf(
-			'<p class="social-hub-box__score">%1$s</p>%2$s',
-			esc_html(
-				sprintf(
-					/* translators: %1$d: passed checks, %2$d: total checks. */
-					__( 'Ready to share: %1$d of %2$d', 'social-hub' ),
-					$passed,
-					count( $checks )
-				)
-			),
-			$items ? '<ul class="social-hub-checklist social-hub-checklist--compact">' . $items . '</ul>' : ''
-		);
 	}
 
 	/**

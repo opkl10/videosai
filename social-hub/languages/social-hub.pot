@@ -10,7 +10,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Domain: social-hub\n"
 
-#: social-hub/includes/admin/class-admin.php:67 social-hub/includes/admin/class-admin.php:68 social-hub/includes/admin/class-meta-box.php:50 social-hub/includes/admin/class-settings-page.php:42
+#: social-hub/includes/admin/class-admin.php:67 social-hub/includes/admin/class-admin.php:68 social-hub/includes/admin/class-meta-box.php:49 social-hub/includes/admin/class-settings-page.php:42
 msgid "Social Hub"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Publish the post before sharing it."
 msgstr ""
 
-#: social-hub/includes/admin/class-admin.php:227 social-hub/includes/admin/class-meta-box.php:74
+#: social-hub/includes/admin/class-admin.php:227 social-hub/includes/admin/class-meta-box.php:73
 msgid "No network is connected yet."
 msgstr ""
 
@@ -66,55 +66,51 @@ msgstr ""
 msgid "Your session expired. Reload the page and try again."
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:75
+#: social-hub/includes/admin/class-meta-box.php:74
 msgid "Connect one"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:82
+#: social-hub/includes/admin/class-meta-box.php:81
 msgid "Will be shared to: %s"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:108
+#: social-hub/includes/admin/class-meta-box.php:107
 msgid "Queued for %s"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:122
+#: social-hub/includes/admin/class-meta-box.php:119
 msgid "Do not share this post"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:127
+#: social-hub/includes/admin/class-meta-box.php:124
 msgid "Custom message"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:143
+#: social-hub/includes/admin/class-meta-box.php:140
 msgid "Share now"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:146
+#: social-hub/includes/admin/class-meta-box.php:143
 msgid "Sharing now posts again even if this post was already shared."
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:232
-msgid "Ready to share: %1$d of %2$d"
-msgstr ""
-
-#: social-hub/includes/admin/class-meta-box.php:264 social-hub/includes/admin/class-settings-page.php:840
+#: social-hub/includes/admin/class-meta-box.php:215 social-hub/includes/admin/class-settings-page.php:846
 msgid "View"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:276
+#: social-hub/includes/admin/class-meta-box.php:227
 msgid "shared %s ago"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:296
+#: social-hub/includes/admin/class-meta-box.php:247
 msgid "Nothing was shared."
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:308
+#: social-hub/includes/admin/class-meta-box.php:259
 msgid "%s: done"
 msgstr ""
 
-#: social-hub/includes/admin/class-meta-box.php:313
+#: social-hub/includes/admin/class-meta-box.php:264
 msgid "%1$s: %2$s"
 msgstr ""
 
@@ -122,704 +118,612 @@ msgstr ""
 msgid "You are not allowed to access this page."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:44
+#: social-hub/includes/admin/class-settings-page.php:50
 msgid "Publish new posts to your social pages automatically, add share buttons for your readers, and make sure shared links show the right title and image."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:107
+#: social-hub/includes/admin/class-settings-page.php:113
 msgid "General"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:108 social-hub/includes/class-share-buttons.php:40
+#: social-hub/includes/admin/class-settings-page.php:114 social-hub/includes/class-share-buttons.php:40
 msgid "Facebook"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:109 social-hub/includes/class-share-buttons.php:58 social-hub/includes/providers/class-telegram.php:36
+#: social-hub/includes/admin/class-settings-page.php:115 social-hub/includes/class-share-buttons.php:58 social-hub/includes/providers/class-telegram.php:36
 msgid "Telegram"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:110
+#: social-hub/includes/admin/class-settings-page.php:116
 msgid "Share buttons"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:111
+#: social-hub/includes/admin/class-settings-page.php:117
 msgid "Link previews"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:112
+#: social-hub/includes/admin/class-settings-page.php:118
 msgid "Promotion"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:113
+#: social-hub/includes/admin/class-settings-page.php:119
 msgid "Tips"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:114
+#: social-hub/includes/admin/class-settings-page.php:120
 msgid "Activity log"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:129
+#: social-hub/includes/admin/class-settings-page.php:135
 msgid "Connected and sharing"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:132
+#: social-hub/includes/admin/class-settings-page.php:138
 msgid "Configured but switched off"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:135
+#: social-hub/includes/admin/class-settings-page.php:141
 msgid "Not connected"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:158
+#: social-hub/includes/admin/class-settings-page.php:164
 msgid "Automatic sharing"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:161
+#: social-hub/includes/admin/class-settings-page.php:167
 msgid "Share a post to the connected networks when it is published"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:163
+#: social-hub/includes/admin/class-settings-page.php:169
 msgid "Only the first transition to \"published\" triggers a share, so editing an old post will not repost it."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:167
+#: social-hub/includes/admin/class-settings-page.php:173
 msgid "Post types"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:172
+#: social-hub/includes/admin/class-settings-page.php:178
 msgid "Delay before sharing"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:185
+#: social-hub/includes/admin/class-settings-page.php:191
 msgid "seconds"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:186
+#: social-hub/includes/admin/class-settings-page.php:192
 msgid "A short delay gives you time to fix a typo, and lets caches warm up before the link preview is fetched."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:191
+#: social-hub/includes/admin/class-settings-page.php:197
 msgid "Message template"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:201
+#: social-hub/includes/admin/class-settings-page.php:207
 msgid "Available placeholders:"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:208
+#: social-hub/includes/admin/class-settings-page.php:214
 msgid "Uninstall"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:214
+#: social-hub/includes/admin/class-settings-page.php:220
 msgid "Delete all Social Hub settings and logs when the plugin is deleted"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:232 social-hub/includes/admin/class-settings-page.php:323 social-hub/includes/admin/class-settings-page.php:388
+#: social-hub/includes/admin/class-settings-page.php:238 social-hub/includes/admin/class-settings-page.php:329 social-hub/includes/admin/class-settings-page.php:394
 msgid "Status"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:235
+#: social-hub/includes/admin/class-settings-page.php:241
 msgid "Share new posts to this Facebook Page"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:241
+#: social-hub/includes/admin/class-settings-page.php:247
 msgid "Page ID"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:253
+#: social-hub/includes/admin/class-settings-page.php:259
 msgid "Facebook Page settings → About → Page ID. A numeric ID works best."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:258
+#: social-hub/includes/admin/class-settings-page.php:264
 msgid "Page access token"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:262
+#: social-hub/includes/admin/class-settings-page.php:268
 msgid "Use a long-lived Page access token with the pages_manage_posts permission. It is stored in your database, so treat it like a password."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:267
+#: social-hub/includes/admin/class-settings-page.php:273
 msgid "Post format"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:272
+#: social-hub/includes/admin/class-settings-page.php:278
 msgid "Link post (Facebook builds the preview)"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:275
+#: social-hub/includes/admin/class-settings-page.php:281
 msgid "Photo post using the featured image"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:282
+#: social-hub/includes/admin/class-settings-page.php:288
 msgid "Graph API version"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:293
+#: social-hub/includes/admin/class-settings-page.php:299
 msgid "Meta retires each version after about two years. Bump this when you migrate."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:297 social-hub/includes/admin/class-settings-page.php:370
+#: social-hub/includes/admin/class-settings-page.php:303 social-hub/includes/admin/class-settings-page.php:376
 msgid "Connection"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:303
+#: social-hub/includes/admin/class-settings-page.php:309
 msgid "Getting a Page access token"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:305
+#: social-hub/includes/admin/class-settings-page.php:311
 msgid "Create an app at developers.facebook.com and add the \"Facebook Login\" product."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:306
+#: social-hub/includes/admin/class-settings-page.php:312
 msgid "Open the Graph API Explorer, pick your app, and request the pages_manage_posts, pages_read_engagement and pages_show_list permissions."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:307
+#: social-hub/includes/admin/class-settings-page.php:313
 msgid "Select your Page in the token dropdown to swap the user token for a Page token."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:308
+#: social-hub/includes/admin/class-settings-page.php:314
 msgid "Exchange it for a long-lived token in the Access Token Debugger, then paste it above."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:326
+#: social-hub/includes/admin/class-settings-page.php:332
 msgid "Share new posts to this Telegram chat"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:332
+#: social-hub/includes/admin/class-settings-page.php:338
 msgid "Bot token"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:336
+#: social-hub/includes/admin/class-settings-page.php:342
 msgid "Create a bot with @BotFather and paste the token it gives you."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:341
+#: social-hub/includes/admin/class-settings-page.php:347
 msgid "Channel or chat ID"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:354
+#: social-hub/includes/admin/class-settings-page.php:360
 msgid "Use @channelname for a public channel, or the numeric ID for a private one. The bot must be an administrator there."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:358
+#: social-hub/includes/admin/class-settings-page.php:364
 msgid "Link preview"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:364
+#: social-hub/includes/admin/class-settings-page.php:370
 msgid "Send messages without the link preview card"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:391
+#: social-hub/includes/admin/class-settings-page.php:397
 msgid "Show share buttons for readers"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:396
+#: social-hub/includes/admin/class-settings-page.php:402
 msgid "Networks"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:416
+#: social-hub/includes/admin/class-settings-page.php:422
 msgid "Position"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:420
+#: social-hub/includes/admin/class-settings-page.php:426
 msgid "After the content"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:421
+#: social-hub/includes/admin/class-settings-page.php:427
 msgid "Before the content"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:422
+#: social-hub/includes/admin/class-settings-page.php:428
 msgid "Before and after"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:423
+#: social-hub/includes/admin/class-settings-page.php:429
 msgid "Only where I place them"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:426
+#: social-hub/includes/admin/class-settings-page.php:432
 msgid "Place them yourself with the shortcode"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:428
+#: social-hub/includes/admin/class-settings-page.php:434
 msgid "or in a template with"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:434
+#: social-hub/includes/admin/class-settings-page.php:440
 msgid "Show on"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:439
+#: social-hub/includes/admin/class-settings-page.php:445
 msgid "Heading"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:448 social-hub/includes/class-share-buttons.php:240
+#: social-hub/includes/admin/class-settings-page.php:454 social-hub/includes/class-share-buttons.php:240
 msgid "Share this post"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:453
+#: social-hub/includes/admin/class-settings-page.php:459
 msgid "Appearance"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:456
+#: social-hub/includes/admin/class-settings-page.php:462
 msgid "Filled"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:457
+#: social-hub/includes/admin/class-settings-page.php:463
 msgid "Outline"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:461
+#: social-hub/includes/admin/class-settings-page.php:467
 msgid "Show network names next to the icons"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:481
+#: social-hub/includes/admin/class-settings-page.php:487
 msgid "An SEO plugin that already outputs Open Graph tags was detected. Social Hub stays out of its way unless you turn the option below off."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:487
+#: social-hub/includes/admin/class-settings-page.php:493
 msgid "Open Graph tags"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:490
+#: social-hub/includes/admin/class-settings-page.php:496
 msgid "Add Open Graph and Twitter card tags to the page head"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:492
+#: social-hub/includes/admin/class-settings-page.php:498
 msgid "Skip them when an SEO plugin already handles previews"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:498
+#: social-hub/includes/admin/class-settings-page.php:504
 msgid "Fallback image"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:513
+#: social-hub/includes/admin/class-settings-page.php:519
 msgid "Choose image"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:514
+#: social-hub/includes/admin/class-settings-page.php:520
 msgid "Remove"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:517
+#: social-hub/includes/admin/class-settings-page.php:523
 msgid "Used when a post has no featured image. 1200×630 pixels works well everywhere."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:522
+#: social-hub/includes/admin/class-settings-page.php:528
 msgid "Facebook App ID"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:533
+#: social-hub/includes/admin/class-settings-page.php:539
 msgid "Optional. Adds the fb:app_id tag so your Page shows up in Meta insights."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:538
+#: social-hub/includes/admin/class-settings-page.php:544
 msgid "X / Twitter handle"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:553
+#: social-hub/includes/admin/class-settings-page.php:559
 msgid "Card size"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:557
+#: social-hub/includes/admin/class-settings-page.php:563
 msgid "Large image"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:560
+#: social-hub/includes/admin/class-settings-page.php:566
 msgid "Small thumbnail"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:579
+#: social-hub/includes/admin/class-settings-page.php:585
 msgid "How ready is this site?"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:584
+#: social-hub/includes/admin/class-settings-page.php:590
 msgid "%1$d of %2$d checks passed."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:592
+#: social-hub/includes/admin/class-settings-page.php:598
 msgid "Sharing window"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:595
+#: social-hub/includes/admin/class-settings-page.php:601
 msgid "Hold shares"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:601
+#: social-hub/includes/admin/class-settings-page.php:607
 msgid "Only publish to the networks inside the hours below"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:604
+#: social-hub/includes/admin/class-settings-page.php:610
 msgid "A post published outside the window waits for the next opening instead of going out to an empty feed."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:608
+#: social-hub/includes/admin/class-settings-page.php:614
 msgid "Hours"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:611
+#: social-hub/includes/admin/class-settings-page.php:617
 msgid "From"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:619
+#: social-hub/includes/admin/class-settings-page.php:625
 msgid "until"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:630
+#: social-hub/includes/admin/class-settings-page.php:636
 msgid "Site time zone: %s."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:638
+#: social-hub/includes/admin/class-settings-page.php:644
 msgid "Days to skip"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:653
+#: social-hub/includes/admin/class-settings-page.php:659
 msgid "Shares that fall on a skipped day move to the next day inside the window."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:658
+#: social-hub/includes/admin/class-settings-page.php:664
 msgid "Link tracking"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:661
+#: social-hub/includes/admin/class-settings-page.php:667
 msgid "UTM parameters"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:664
+#: social-hub/includes/admin/class-settings-page.php:670
 msgid "Tag links published by Social Hub"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:666
+#: social-hub/includes/admin/class-settings-page.php:672
 msgid "Tag links shared by readers through the share buttons"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:669
+#: social-hub/includes/admin/class-settings-page.php:675
 msgid "Without tags, analytics lumps every social visit together and you cannot tell which network is worth your time."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:674
+#: social-hub/includes/admin/class-settings-page.php:680
 msgid "utm_medium"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:689
+#: social-hub/includes/admin/class-settings-page.php:695
 msgid "utm_campaign"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:701
+#: social-hub/includes/admin/class-settings-page.php:707
 msgid "Placeholders:"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:721
+#: social-hub/includes/admin/class-settings-page.php:727
 msgid "Before you publish"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:723
+#: social-hub/includes/admin/class-settings-page.php:729
 msgid "Give every post a 1200×630 image. In a feed the image is the advertisement and the text is the footnote — a bare link takes a fraction of the space and gets a fraction of the clicks."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:724
+#: social-hub/includes/admin/class-settings-page.php:730
 msgid "Keep the headline under about 70 characters so a phone shows all of it instead of cutting it mid-sentence."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:725
+#: social-hub/includes/admin/class-settings-page.php:731
 msgid "Write the excerpt yourself. It becomes the description under the link, and the opening sentence of an article is rarely its best pitch."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:726
+#: social-hub/includes/admin/class-settings-page.php:732
 msgid "Do not paste the title twice. The share text should be the one sentence that makes somebody stop scrolling — the surprising number, the mistake you made, the thing they can use today."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:727
+#: social-hub/includes/admin/class-settings-page.php:733
 msgid "End with a question. Comments push a post to people who do not follow you, and the first hour of comments sets the reach for the rest of the day."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:731
+#: social-hub/includes/admin/class-settings-page.php:737
 msgid "Timing and frequency"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:733
+#: social-hub/includes/admin/class-settings-page.php:739
 msgid "Publish when readers are awake. Weekday mornings around 08:00–10:00 and evenings around 19:00–22:00 work for most Hebrew-speaking audiences. The sharing window on the Promotion tab holds a 03:00 post until the morning."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:734
+#: social-hub/includes/admin/class-settings-page.php:740
 msgid "An Israeli week is not an American week. Friday afternoon and Saturday behave differently here, so check your own numbers before you copy a schedule from a blog post."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:735
+#: social-hub/includes/admin/class-settings-page.php:741
 msgid "Three good posts a week beat ten thin ones. Networks judge each post by its engagement, so a weak post quietly costs you reach on the next one."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:736
+#: social-hub/includes/admin/class-settings-page.php:742
 msgid "Reshare evergreen posts after two or three months with a new opening line. Almost nobody saw them the first time."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:740
+#: social-hub/includes/admin/class-settings-page.php:746
 msgid "Getting it in front of people"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:742
+#: social-hub/includes/admin/class-settings-page.php:748
 msgid "Answer every comment in the first hour. It is the cheapest reach you will ever buy."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:743
+#: social-hub/includes/admin/class-settings-page.php:749
 msgid "Boost only what already works. Putting a small budget behind a post that is doing well organically beats guessing in advance which post deserves it."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:744
+#: social-hub/includes/admin/class-settings-page.php:750
 msgid "In groups and communities, contribute to the discussion and let the link follow. Dropping links is how accounts get muted."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:745
+#: social-hub/includes/admin/class-settings-page.php:751
 msgid "For Hebrew-speaking audiences, WhatsApp and Telegram often send more traffic than Facebook, because sharing there is one tap into a private conversation. Keep both buttons switched on."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:746
+#: social-hub/includes/admin/class-settings-page.php:752
 msgid "Cut one post into several formats: a quote card, a short video, a carousel. Same idea, different surfaces, more chances to be seen."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:750
+#: social-hub/includes/admin/class-settings-page.php:756
 msgid "Measuring"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:752
+#: social-hub/includes/admin/class-settings-page.php:758
 msgid "Tag every link with UTM parameters and judge a network by the sessions it sends, not by the likes it collects."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:753
+#: social-hub/includes/admin/class-settings-page.php:759
 msgid "Watch clicks and saves rather than reach. Reach is what the network decided to give you; a click is what your audience decided to give you."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:754
+#: social-hub/includes/admin/class-settings-page.php:760
 msgid "Once a month, look at your three best posts and ask what they had in common. Then do that again on purpose."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:760
-msgid "The short version of what tends to work. The Promotion tab turns most of it into settings, and the box in the post editor checks each post against it before it goes out."
-msgstr ""
-
-#: social-hub/includes/admin/class-settings-page.php:804
-msgid "The log was cleared."
+#: social-hub/includes/admin/class-settings-page.php:766
+msgid "The short version of what tends to work. The Promotion tab turns the parts a plugin can handle into settings; the rest is up to you."
 msgstr ""
 
 #: social-hub/includes/admin/class-settings-page.php:810
+msgid "The log was cleared."
+msgstr ""
+
+#: social-hub/includes/admin/class-settings-page.php:816
 msgid "When"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:811
+#: social-hub/includes/admin/class-settings-page.php:817
 msgid "Network"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:812
+#: social-hub/includes/admin/class-settings-page.php:818
 msgid "Post"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:813
+#: social-hub/includes/admin/class-settings-page.php:819
 msgid "Result"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:818
+#: social-hub/includes/admin/class-settings-page.php:824
 msgid "Nothing has been shared yet."
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:852
+#: social-hub/includes/admin/class-settings-page.php:858
 msgid "Clear log"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:946
+#: social-hub/includes/admin/class-settings-page.php:952
 msgid "Saved — leave blank to keep it"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:947
+#: social-hub/includes/admin/class-settings-page.php:953
 msgid "Paste the token here"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:953
+#: social-hub/includes/admin/class-settings-page.php:959
 msgid "Delete the stored token"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:968
+#: social-hub/includes/admin/class-settings-page.php:974
 msgid "Test connection"
 msgstr ""
 
-#: social-hub/includes/admin/class-settings-page.php:973
+#: social-hub/includes/admin/class-settings-page.php:979
 msgid "Save your changes first — the test uses the stored credentials."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:83
+#: social-hub/includes/class-advisor.php:36
 msgid "Connected networks: %d"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:86
+#: social-hub/includes/class-advisor.php:39
 msgid "No network is connected"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:87
+#: social-hub/includes/class-advisor.php:40
 msgid "Nothing is published automatically until at least one network is connected and switched on."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:94
+#: social-hub/includes/class-advisor.php:47
 msgid "Link previews are handled"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:94
+#: social-hub/includes/class-advisor.php:47
 msgid "Nothing controls your link previews"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:95
+#: social-hub/includes/class-advisor.php:48
 msgid "Without Open Graph tags the networks guess the title and image, and usually guess badly."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:102
+#: social-hub/includes/class-advisor.php:55
 msgid "A fallback preview image is set"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:102
+#: social-hub/includes/class-advisor.php:55
 msgid "No fallback preview image"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:103
+#: social-hub/includes/class-advisor.php:56
 msgid "Posts without a featured image fall back to this one instead of sharing a bare link."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:110
+#: social-hub/includes/class-advisor.php:63
 msgid "Readers can share your posts"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:110
+#: social-hub/includes/class-advisor.php:63
 msgid "Share buttons are switched off"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:111
+#: social-hub/includes/class-advisor.php:64
 msgid "A share from a reader reaches an audience your own page never touches."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:118
+#: social-hub/includes/class-advisor.php:71
 msgid "Shared links are tagged for analytics"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:118
+#: social-hub/includes/class-advisor.php:71
 msgid "Shared links are not tagged"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:119
+#: social-hub/includes/class-advisor.php:72
 msgid "UTM tags are the only way to see which network actually sends you readers, rather than guessing from likes."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:126
+#: social-hub/includes/class-advisor.php:79
 msgid "Readable permalinks"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:126
+#: social-hub/includes/class-advisor.php:79
 msgid "Permalinks look like ?p=123"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:127
+#: social-hub/includes/class-advisor.php:80
 msgid "A readable URL gets clicked more often, and survives being pasted into a chat."
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:134
+#: social-hub/includes/class-advisor.php:87
 msgid "Shares wait for your best hours"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:134
+#: social-hub/includes/class-advisor.php:87
 msgid "Shares go out the moment you publish"
 msgstr ""
 
-#: social-hub/includes/class-advisor.php:135
+#: social-hub/includes/class-advisor.php:88
 msgid "A post published at 03:00 burns its first hour of reach while everyone sleeps."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:178
-msgid "Using the fallback image"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:178
-msgid "No featured image"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:181
-msgid "A post with a %1$d×%2$d image takes several times more space in the feed than a bare link."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:198
-msgid "Featured image is %1$d×%2$d"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:204
-msgid "Below %1$d×%2$d the networks upscale the image and it looks soft."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:214
-msgid "Featured image is large enough"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:234
-msgid "Title is %d characters"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:239
-msgid "Preview cards cut the title around %d characters on a phone."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:245
-msgid "Title fits a preview card"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:259
-msgid "No manual excerpt"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:260
-msgid "The excerpt is the description under the link. Writing it yourself beats the first sentence of the post."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:264
-msgid "Excerpt written by hand"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:282
-msgid "Share text is %d characters"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:287
-msgid "Feeds fold anything past roughly %d characters behind a \"see more\" link."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:293
-msgid "Share text stays above the fold"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:310
-msgid "No tags"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:311
-msgid "Two or three tags become hashtags in the share text, and give people a reason to find the post later."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:321
-msgid "%d tags"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:324
-msgid "Only the first six become hashtags. A wall of them reads as spam anyway."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:328
-msgid "Tags will become hashtags"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:345
-msgid "The share text asks nothing"
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:346
-msgid "A question at the end earns comments, and comments are what push a post to people who do not follow you."
-msgstr ""
-
-#: social-hub/includes/class-advisor.php:350
-msgid "The share text invites a reply"
 msgstr ""
 
 #: social-hub/includes/class-publisher.php:157

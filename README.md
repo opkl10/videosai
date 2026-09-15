@@ -21,7 +21,7 @@
 | שליטה לכל פוסט | תיבה בעורך: הודעה מותאמת, "לא לשתף את הפוסט הזה", וכפתור "שיתוף עכשיו" |
 | כפתורי שיתוף | פייסבוק, X, וואטסאפ, טלגרם, לינקדאין, אימייל והעתקת קישור — מעל/מתחת לתוכן, בשורטקוד או בקוד התבנית |
 | תצוגת קישורים | תגיות Open Graph ו-Twitter Card, עם זיהוי אוטומטי של תוספי SEO כדי לא לייצר כפילות |
-| בדיקת מוכנות | לפני שפוסט יוצא, התוסף בודק אותו: תמונה 1200×630, אורך כותרת, תקציר ידני, אורך טקסט, תגיות, ושאלה שמזמינה תגובות |
+| רשימת מוכנות | בדיקה של האתר עצמו: רשת מחוברת, תצוגת קישורים, תמונת ברירת מחדל, קישורים קריאים ומדידה |
 | חלון שעות שיא | פוסט שמתפרסם ב-03:00 ממתין ל-09:00 במקום לשרוף את שעת החשיפה הראשונה על פיד ריק; אפשר גם לדלג על ימים |
 | מדידה | פרמטרי UTM אוטומטיים על כל קישור יוצא, בנפרד לפרסום אוטומטי ולשיתופים של קוראים |
 | טיפים בתוך הממשק | לשונית עם מה שבאמת מזיז את המספרים, ומדריך מלא ב-[`docs/social-playbook-he.md`](docs/social-playbook-he.md) |
@@ -92,8 +92,9 @@
   מדידה?), חלון השעות שבו מותר לשתף, ופרמטרי ה-UTM.
 - **טיפים** — הגרסה הקצרה והמעשית: מה לעשות לפני הפרסום, מתי לפרסם, איך להפיץ,
   ומה למדוד. המדריך המלא נמצא ב-[`docs/social-playbook-he.md`](docs/social-playbook-he.md).
-- **התיבה בעורך** — לפני שהפוסט יוצא היא מציגה "מוכנות לשיתוף: 4 מתוך 6" ומפרטת רק
-  את מה שכדאי לתקן, עם הסבר קצר למה זה משנה.
+
+עורך הפוסטים נשאר כפי שהיה — אין שם טופס נוסף למלא. התיבה מציגה רק את סטטוס
+השיתוף, ואם השיתוף ממתין לחלון השעות, את השעה שבה הוא ייצא.
 
 ![לשונית הקידום: רשימת מוכנות, חלון שעות ופרמטרי UTM](docs/promote-hebrew.png)
 
@@ -130,7 +131,7 @@ add_filter( 'social_hub_message', function ( $message, $post ) {
 שהתוסף משתמש בהן, וה-HTTP ממוקק, כך שאף בקשה אמיתית לא יוצאת החוצה:
 
 ```bash
-php tests/run.php          # 49 בדיקות: הגדרות, פרסום, ספקים, כפתורים, תזמון, UTM, בדיקות מוכנות
+php tests/run.php          # 46 בדיקות: הגדרות, פרסום, ספקים, כפתורים, תזמון, UTM, רשימת מוכנות
 php tests/preview.php > preview.html   # עמוד תצוגה של כפתורי השיתוף
 ```
 
@@ -146,7 +147,7 @@ social-hub/
 ├── includes/
 │   ├── class-settings.php      קריאה, כתיבה וסניטציה של ההגדרות
 │   ├── class-publisher.php     מה משותף, מתי, ועם איזה טקסט
-│   ├── class-advisor.php       בדיקות המוכנות לפוסט ולאתר
+│   ├── class-advisor.php       רשימת המוכנות של האתר
 │   ├── class-timing.php        חלון שעות השיא
 │   ├── class-tracking.php      פרמטרי UTM
 │   ├── class-providers.php     רישום הרשתות
@@ -173,9 +174,8 @@ social-hub/
   copy link) via auto-append, shortcode or template tag.
 - **Open Graph / Twitter Card** tags, skipped automatically when an SEO plugin
   already outputs them.
-- A **promotion advisor**: per-post readiness checks (image size, headline length,
-  hand-written excerpt, share text length, tags, a question that invites replies)
-  and a site-wide checklist.
+- A **readiness checklist** for the site: connected network, link previews,
+  fallback image, readable permalinks, tracking.
 - A **sharing window** so a post written at 03:00 goes out at 09:00, and **UTM
   tagging** so analytics can tell the networks apart.
 - A **Tips** tab in the admin, plus a full Hebrew playbook in

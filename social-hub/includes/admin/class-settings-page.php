@@ -763,7 +763,7 @@ class Settings_Page {
 		);
 		?>
 		<div class="social-hub-tips">
-			<p class="description"><?php esc_html_e( 'The short version of what tends to work. The Promotion tab turns most of it into settings, and the box in the post editor checks each post against it before it goes out.', 'social-hub' ); ?></p>
+			<p class="description"><?php esc_html_e( 'The short version of what tends to work. The Promotion tab turns the parts a plugin can handle into settings; the rest is up to you.', 'social-hub' ); ?></p>
 
 			<?php foreach ( $sections as $section ) : ?>
 				<h2><?php echo esc_html( $section['title'] ); ?></h2>
