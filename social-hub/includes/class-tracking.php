@@ -97,13 +97,31 @@ class Tracking {
 
 		$replacements = array(
 			'{network}' => sanitize_key( $network ),
-			'{slug}'    => $post instanceof WP_Post ? $post->post_name : '',
+			'{slug}'    => $post instanceof WP_Post ? self::slug( $post ) : '',
 			'{year}'    => $post instanceof WP_Post ? get_post_time( 'Y', false, $post ) : gmdate( 'Y' ),
 			'{month}'   => $post instanceof WP_Post ? get_post_time( 'm', false, $post ) : gmdate( 'm' ),
 		);
 
 		$campaign = str_replace( array_keys( $replacements ), array_values( $replacements ), $template );
+		$campaign = preg_replace( '/[^A-Za-z0-9_\-]+/', '-', $campaign );
+		$campaign = preg_replace( '/[-_]{2,}/', '-', (string) $campaign );
 
-		return trim( (string) preg_replace( '/[^A-Za-z0-9_\-]+/', '_', $campaign ), '_' );
+		return trim( (string) $campaign, '-_' );
+	}
+
+	/**
+	 * Returns a slug an analytics report can display.
+	 *
+	 * A Hebrew permalink is stored percent-encoded, which turns into unreadable
+	 * noise in a campaign name, so those posts fall back to their id.
+	 *
+	 * @param WP_Post $post Post being shared.
+	 * @return string
+	 */
+	private static function slug( WP_Post $post ) {
+		$slug = preg_replace( '/[^A-Za-z0-9_-]+/', '-', urldecode( (string) $post->post_name ) );
+		$slug = trim( (string) $slug, '-' );
+
+		return strlen( $slug ) >= 2 ? $slug : 'post-' . $post->ID;
 	}
 }

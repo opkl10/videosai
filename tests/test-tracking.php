@@ -71,6 +71,32 @@ sh_test(
 );
 
 sh_test(
+	'a Hebrew slug falls back to something a report can show',
+	static function () {
+		sh_set_tracking(
+			array(
+				'enabled'  => true,
+				'campaign' => '{network}-{slug}',
+			)
+		);
+
+		$post = sh_add_post(
+			array(
+				'ID'        => 33,
+				// WordPress stores non-latin slugs percent-encoded.
+				'post_name' => '%d7%a7%d7%a4%d7%94',
+			)
+		);
+
+		sh_assert_contains(
+			'utm_campaign=facebook-post-33',
+			Tracking::for_share( 'https://example.com/post', 'facebook', $post ),
+			'the post id is used instead of percent escapes'
+		);
+	}
+);
+
+sh_test(
 	'reader shares are tagged separately from automatic ones',
 	static function () {
 		sh_set_tracking(
