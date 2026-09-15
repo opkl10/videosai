@@ -238,6 +238,7 @@ class Settings_Page {
 						name="<?php echo esc_attr( $this->name( 'facebook[page_id]' ) ); ?>"
 						value="<?php echo esc_attr( (string) Settings::get( 'facebook.page_id' ) ); ?>"
 						autocomplete="off"
+						dir="ltr"
 					/>
 					<p class="description"><?php esc_html_e( 'Facebook Page settings → About → Page ID. A numeric ID works best.', 'social-hub' ); ?></p>
 				</td>
@@ -277,6 +278,7 @@ class Settings_Page {
 						class="small-text"
 						name="<?php echo esc_attr( $this->name( 'facebook[api_version]' ) ); ?>"
 						value="<?php echo esc_attr( (string) Settings::get( 'facebook.api_version' ) ); ?>"
+						dir="ltr"
 					/>
 					<p class="description"><?php esc_html_e( 'Meta retires each version after about two years. Bump this when you migrate.', 'social-hub' ); ?></p>
 				</td>
@@ -337,6 +339,7 @@ class Settings_Page {
 						value="<?php echo esc_attr( (string) Settings::get( 'telegram.chat_id' ) ); ?>"
 						placeholder="@mychannel"
 						autocomplete="off"
+						dir="ltr"
 					/>
 					<p class="description"><?php esc_html_e( 'Use @channelname for a public channel, or the numeric ID for a private one. The bot must be an administrator there.', 'social-hub' ); ?></p>
 				</td>
@@ -515,6 +518,7 @@ class Settings_Page {
 						class="regular-text"
 						name="<?php echo esc_attr( $this->name( 'open_graph[fb_app_id]' ) ); ?>"
 						value="<?php echo esc_attr( (string) Settings::get( 'open_graph.fb_app_id' ) ); ?>"
+						dir="ltr"
 					/>
 					<p class="description"><?php esc_html_e( 'Optional. Adds the fb:app_id tag so your Page shows up in Meta insights.', 'social-hub' ); ?></p>
 				</td>
@@ -531,6 +535,7 @@ class Settings_Page {
 						name="<?php echo esc_attr( $this->name( 'open_graph[twitter_site]' ) ); ?>"
 						value="<?php echo esc_attr( (string) Settings::get( 'open_graph.twitter_site' ) ); ?>"
 						placeholder="mysite"
+						dir="ltr"
 					/>
 				</td>
 			</tr>
@@ -697,7 +702,7 @@ class Settings_Page {
 		$stored = (string) Settings::get( $group . '.' . $key );
 
 		printf(
-			'<input type="password" id="%1$s" class="regular-text" name="%2$s" value="" autocomplete="new-password" placeholder="%3$s" />',
+			'<input type="password" id="%1$s" class="regular-text" name="%2$s" value="" autocomplete="new-password" placeholder="%3$s" dir="ltr" />',
 			esc_attr( $id ),
 			esc_attr( $this->name( $group . '[' . $key . ']' ) ),
 			esc_attr(
