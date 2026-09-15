@@ -58,6 +58,18 @@ class Settings {
 				'style'       => 'filled',
 				'show_labels' => true,
 			),
+			'timing'                   => array(
+				'enabled'   => false,
+				'start'     => '09:00',
+				'end'       => '21:00',
+				'skip_days' => array(),
+			),
+			'tracking'                 => array(
+				'enabled'  => false,
+				'buttons'  => false,
+				'medium'   => 'social',
+				'campaign' => 'social_hub',
+			),
 			'open_graph'               => array(
 				'enabled'             => true,
 				'respect_seo_plugins' => true,
@@ -81,6 +93,7 @@ class Settings {
 			'telegram' => array( 'telegram' ),
 			'buttons'  => array( 'buttons' ),
 			'preview'  => array( 'open_graph' ),
+			'promote'  => array( 'timing', 'tracking' ),
 		);
 	}
 
@@ -225,6 +238,14 @@ class Settings {
 				case 'open_graph':
 					$settings['open_graph'] = self::sanitize_open_graph( (array) $value );
 					break;
+
+				case 'timing':
+					$settings['timing'] = self::sanitize_timing( (array) $value );
+					break;
+
+				case 'tracking':
+					$settings['tracking'] = self::sanitize_tracking( (array) $value );
+					break;
 			}
 		}
 
@@ -337,6 +358,87 @@ class Settings {
 			'twitter_site'        => preg_replace( '/[^0-9A-Za-z_]/', '', $site ),
 			'twitter_card'        => in_array( $card, $cards, true ) ? $card : 'summary_large_image',
 		);
+	}
+
+	/**
+	 * Sanitizes the sharing window group.
+	 *
+	 * @param array $value Submitted values.
+	 * @return array
+	 */
+	private static function sanitize_timing( array $value ) {
+		$start = self::sanitize_time( isset( $value['start'] ) ? $value['start'] : '', '09:00' );
+		$end   = self::sanitize_time( isset( $value['end'] ) ? $value['end'] : '', '21:00' );
+
+		if ( $start >= $end ) {
+			$start = '09:00';
+			$end   = '21:00';
+
+			add_settings_error(
+				self::OPTION,
+				'social_hub_timing',
+				__( 'The sharing window must end after it starts, so it was reset to 09:00–21:00.', 'social-hub' )
+			);
+		}
+
+		$days = array_map( 'absint', isset( $value['skip_days'] ) ? (array) $value['skip_days'] : array() );
+
+		return array(
+			'enabled'   => ! empty( $value['enabled'] ),
+			'start'     => $start,
+			'end'       => $end,
+			'skip_days' => array_values( array_unique( array_filter( $days, static function ( $day ) {
+				return $day >= 0 && $day <= 6;
+			} ) ) ),
+		);
+	}
+
+	/**
+	 * Normalises an HH:MM value.
+	 *
+	 * @param mixed  $value    Submitted time.
+	 * @param string $fallback Value used when the input is not a valid time.
+	 * @return string
+	 */
+	private static function sanitize_time( $value, $fallback ) {
+		$value = trim( (string) $value );
+
+		if ( ! preg_match( '/^([01]\d|2[0-3]):([0-5]\d)$/', $value ) ) {
+			return $fallback;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Sanitizes the link tracking group.
+	 *
+	 * @param array $value Submitted values.
+	 * @return array
+	 */
+	private static function sanitize_tracking( array $value ) {
+		$medium   = isset( $value['medium'] ) ? (string) $value['medium'] : '';
+		$campaign = isset( $value['campaign'] ) ? (string) $value['campaign'] : '';
+
+		return array(
+			'enabled'  => ! empty( $value['enabled'] ),
+			'buttons'  => ! empty( $value['buttons'] ),
+			'medium'   => self::sanitize_utm( $medium, 'social' ),
+			'campaign' => self::sanitize_utm( $campaign, 'social_hub' ),
+		);
+	}
+
+	/**
+	 * Keeps UTM values to characters that survive a URL untouched.
+	 *
+	 * @param string $value    Submitted value.
+	 * @param string $fallback Value used when nothing usable is left.
+	 * @return string
+	 */
+	private static function sanitize_utm( $value, $fallback ) {
+		$value = preg_replace( '/[^A-Za-z0-9_\-{}]/', '', trim( $value ) );
+
+		return '' !== (string) $value ? (string) $value : $fallback;
 	}
 
 	/**

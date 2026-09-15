@@ -7,6 +7,8 @@
 
 namespace SocialHub;
 
+use WP_Post;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -243,7 +245,7 @@ class Share_Buttons {
 		$items = '';
 
 		foreach ( $networks as $id ) {
-			$items .= $this->render_item( $id, $available[ $id ], $url, $title, (bool) $args['show_labels'] );
+			$items .= $this->render_item( $id, $available[ $id ], $url, $title, (bool) $args['show_labels'], $post );
 		}
 
 		$markup = sprintf(
@@ -268,12 +270,13 @@ class Share_Buttons {
 	 *
 	 * @param string $id          Network id.
 	 * @param array  $network     Network definition.
-	 * @param string $url         Shared URL.
-	 * @param string $title       Shared title.
-	 * @param bool   $show_labels Whether to print the text label.
+	 * @param string  $url         Shared URL.
+	 * @param string  $title       Shared title.
+	 * @param bool    $show_labels Whether to print the text label.
+	 * @param WP_Post $post        Post being shared.
 	 * @return string
 	 */
-	private function render_item( $id, array $network, $url, $title, $show_labels ) {
+	private function render_item( $id, array $network, $url, $title, $show_labels, $post ) {
 		$icon  = sprintf(
 			'<svg class="social-hub-share__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor">%s</svg>',
 			$network['icon']
@@ -298,7 +301,7 @@ class Share_Buttons {
 
 		$href = str_replace(
 			array( '{url}', '{title}' ),
-			array( rawurlencode( $url ), rawurlencode( $title ) ),
+			array( rawurlencode( Tracking::for_button( $url, $id, $post ) ), rawurlencode( $title ) ),
 			$network['template']
 		);
 

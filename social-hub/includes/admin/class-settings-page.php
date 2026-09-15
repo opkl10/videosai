@@ -7,12 +7,15 @@
 
 namespace SocialHub\Admin;
 
+use SocialHub\Advisor;
 use SocialHub\Log;
 use SocialHub\Open_Graph;
 use SocialHub\Plugin;
 use SocialHub\Providers;
 use SocialHub\Settings;
 use SocialHub\Share_Buttons;
+use SocialHub\Timing;
+use SocialHub\Tracking;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -55,6 +58,8 @@ class Settings_Page {
 			<?php
 			if ( 'log' === $tab ) {
 				$this->render_log();
+			} elseif ( 'tips' === $tab ) {
+				$this->render_tips();
 			} else {
 				?>
 				<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>">
@@ -65,6 +70,9 @@ class Settings_Page {
 					switch ( $tab ) {
 						case 'facebook':
 							$this->render_facebook();
+							break;
+						case 'promote':
+							$this->render_promote();
 							break;
 						case 'telegram':
 							$this->render_telegram();
@@ -101,6 +109,8 @@ class Settings_Page {
 			'telegram' => __( 'Telegram', 'social-hub' ),
 			'buttons'  => __( 'Share buttons', 'social-hub' ),
 			'preview'  => __( 'Link previews', 'social-hub' ),
+			'promote'  => __( 'Promotion', 'social-hub' ),
+			'tips'     => __( 'Tips', 'social-hub' ),
 			'log'      => __( 'Activity log', 'social-hub' ),
 		);
 	}
@@ -554,6 +564,232 @@ class Settings_Page {
 			</tr>
 		</table>
 		<?php
+	}
+
+	/**
+	 * Promotion tab: the site checklist, the sharing window and link tracking.
+	 *
+	 * @return void
+	 */
+	private function render_promote() {
+		$checks    = Advisor::site_checks();
+		$weekdays  = Timing::weekdays();
+		$skip_days = array_map( 'intval', (array) Settings::get( 'timing.skip_days', array() ) );
+		?>
+		<h2><?php esc_html_e( 'How ready is this site?', 'social-hub' ); ?></h2>
+		<p class="description">
+			<?php
+			printf(
+				/* translators: %1$d: passed checks, %2$d: total checks. */
+				esc_html__( '%1$d of %2$d checks passed.', 'social-hub' ),
+				(int) Advisor::passed( $checks ),
+				count( $checks )
+			);
+			?>
+		</p>
+		<?php $this->render_checklist( $checks ); ?>
+
+		<h2><?php esc_html_e( 'Sharing window', 'social-hub' ); ?></h2>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Hold shares', 'social-hub' ); ?></th>
+				<td>
+					<?php
+					$this->checkbox(
+						'timing[enabled]',
+						Settings::get( 'timing.enabled' ),
+						__( 'Only publish to the networks inside the hours below', 'social-hub' )
+					);
+					?>
+					<p class="description"><?php esc_html_e( 'A post published outside the window waits for the next opening instead of going out to an empty feed.', 'social-hub' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Hours', 'social-hub' ); ?></th>
+				<td>
+					<label class="social-hub-inline">
+						<?php esc_html_e( 'From', 'social-hub' ); ?>
+						<input
+							type="time"
+							name="<?php echo esc_attr( $this->name( 'timing[start]' ) ); ?>"
+							value="<?php echo esc_attr( (string) Settings::get( 'timing.start' ) ); ?>"
+						/>
+					</label>
+					<label class="social-hub-inline">
+						<?php esc_html_e( 'until', 'social-hub' ); ?>
+						<input
+							type="time"
+							name="<?php echo esc_attr( $this->name( 'timing[end]' ) ); ?>"
+							value="<?php echo esc_attr( (string) Settings::get( 'timing.end' ) ); ?>"
+						/>
+					</label>
+					<p class="description">
+						<?php
+						printf(
+							/* translators: %s: site timezone name. */
+							esc_html__( 'Site time zone: %s.', 'social-hub' ),
+							esc_html( wp_timezone_string() )
+						);
+						?>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Days to skip', 'social-hub' ); ?></th>
+				<td>
+					<fieldset>
+						<?php foreach ( $weekdays as $number => $name ) : ?>
+							<label class="social-hub-inline">
+								<input
+									type="checkbox"
+									name="<?php echo esc_attr( $this->name( 'timing[skip_days][]' ) ); ?>"
+									value="<?php echo esc_attr( (string) $number ); ?>"
+									<?php checked( in_array( (int) $number, $skip_days, true ) ); ?>
+								/>
+								<?php echo esc_html( $name ); ?>
+							</label>
+						<?php endforeach; ?>
+					</fieldset>
+					<p class="description"><?php esc_html_e( 'Shares that fall on a skipped day move to the next day inside the window.', 'social-hub' ); ?></p>
+				</td>
+			</tr>
+		</table>
+
+		<h2><?php esc_html_e( 'Link tracking', 'social-hub' ); ?></h2>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><?php esc_html_e( 'UTM parameters', 'social-hub' ); ?></th>
+				<td>
+					<?php
+					$this->checkbox( 'tracking[enabled]', Settings::get( 'tracking.enabled' ), __( 'Tag links published by Social Hub', 'social-hub' ) );
+					echo '<p>';
+					$this->checkbox( 'tracking[buttons]', Settings::get( 'tracking.buttons' ), __( 'Tag links shared by readers through the share buttons', 'social-hub' ) );
+					echo '</p>';
+					?>
+					<p class="description"><?php esc_html_e( 'Without tags, analytics lumps every social visit together and you cannot tell which network is worth your time.', 'social-hub' ); ?></p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="social-hub-utm-medium"><?php esc_html_e( 'utm_medium', 'social-hub' ); ?></label>
+				</th>
+				<td>
+					<input
+						type="text"
+						id="social-hub-utm-medium"
+						class="regular-text"
+						dir="ltr"
+						name="<?php echo esc_attr( $this->name( 'tracking[medium]' ) ); ?>"
+						value="<?php echo esc_attr( (string) Settings::get( 'tracking.medium' ) ); ?>"
+					/>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="social-hub-utm-campaign"><?php esc_html_e( 'utm_campaign', 'social-hub' ); ?></label>
+				</th>
+				<td>
+					<input
+						type="text"
+						id="social-hub-utm-campaign"
+						class="regular-text"
+						dir="ltr"
+						name="<?php echo esc_attr( $this->name( 'tracking[campaign]' ) ); ?>"
+						value="<?php echo esc_attr( (string) Settings::get( 'tracking.campaign' ) ); ?>"
+					/>
+					<p class="description">
+						<?php esc_html_e( 'Placeholders:', 'social-hub' ); ?>
+						<code>{network}</code> <code>{slug}</code> <code>{year}</code> <code>{month}</code>
+					</p>
+					<p class="description" dir="ltr">
+						<?php echo esc_html( Tracking::decorate( home_url( '/example-post/' ), 'facebook' ) ); ?>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Tips tab: the short version of what actually moves the numbers.
+	 *
+	 * @return void
+	 */
+	private function render_tips() {
+		$sections = array(
+			array(
+				'title' => __( 'Before you publish', 'social-hub' ),
+				'tips'  => array(
+					__( 'Give every post a 1200×630 image. In a feed the image is the advertisement and the text is the footnote — a bare link takes a fraction of the space and gets a fraction of the clicks.', 'social-hub' ),
+					__( 'Keep the headline under about 70 characters so a phone shows all of it instead of cutting it mid-sentence.', 'social-hub' ),
+					__( 'Write the excerpt yourself. It becomes the description under the link, and the opening sentence of an article is rarely its best pitch.', 'social-hub' ),
+					__( 'Do not paste the title twice. The share text should be the one sentence that makes somebody stop scrolling — the surprising number, the mistake you made, the thing they can use today.', 'social-hub' ),
+					__( 'End with a question. Comments push a post to people who do not follow you, and the first hour of comments sets the reach for the rest of the day.', 'social-hub' ),
+				),
+			),
+			array(
+				'title' => __( 'Timing and frequency', 'social-hub' ),
+				'tips'  => array(
+					__( 'Publish when readers are awake. Weekday mornings around 08:00–10:00 and evenings around 19:00–22:00 work for most Hebrew-speaking audiences. The sharing window on the Promotion tab holds a 03:00 post until the morning.', 'social-hub' ),
+					__( 'An Israeli week is not an American week. Friday afternoon and Saturday behave differently here, so check your own numbers before you copy a schedule from a blog post.', 'social-hub' ),
+					__( 'Three good posts a week beat ten thin ones. Networks judge each post by its engagement, so a weak post quietly costs you reach on the next one.', 'social-hub' ),
+					__( 'Reshare evergreen posts after two or three months with a new opening line. Almost nobody saw them the first time.', 'social-hub' ),
+				),
+			),
+			array(
+				'title' => __( 'Getting it in front of people', 'social-hub' ),
+				'tips'  => array(
+					__( 'Answer every comment in the first hour. It is the cheapest reach you will ever buy.', 'social-hub' ),
+					__( 'Boost only what already works. Putting a small budget behind a post that is doing well organically beats guessing in advance which post deserves it.', 'social-hub' ),
+					__( 'In groups and communities, contribute to the discussion and let the link follow. Dropping links is how accounts get muted.', 'social-hub' ),
+					__( 'For Hebrew-speaking audiences, WhatsApp and Telegram often send more traffic than Facebook, because sharing there is one tap into a private conversation. Keep both buttons switched on.', 'social-hub' ),
+					__( 'Cut one post into several formats: a quote card, a short video, a carousel. Same idea, different surfaces, more chances to be seen.', 'social-hub' ),
+				),
+			),
+			array(
+				'title' => __( 'Measuring', 'social-hub' ),
+				'tips'  => array(
+					__( 'Tag every link with UTM parameters and judge a network by the sessions it sends, not by the likes it collects.', 'social-hub' ),
+					__( 'Watch clicks and saves rather than reach. Reach is what the network decided to give you; a click is what your audience decided to give you.', 'social-hub' ),
+					__( 'Once a month, look at your three best posts and ask what they had in common. Then do that again on purpose.', 'social-hub' ),
+				),
+			),
+		);
+		?>
+		<div class="social-hub-tips">
+			<p class="description"><?php esc_html_e( 'The short version of what tends to work. The Promotion tab turns most of it into settings, and the box in the post editor checks each post against it before it goes out.', 'social-hub' ); ?></p>
+
+			<?php foreach ( $sections as $section ) : ?>
+				<h2><?php echo esc_html( $section['title'] ); ?></h2>
+				<ul>
+					<?php foreach ( $section['tips'] as $tip ) : ?>
+						<li><?php echo esc_html( $tip ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endforeach; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Prints a list of advisor checks.
+	 *
+	 * @param array[] $checks Checks to print.
+	 * @return void
+	 */
+	private function render_checklist( array $checks ) {
+		echo '<ul class="social-hub-checklist">';
+
+		foreach ( $checks as $check ) {
+			printf(
+				'<li class="social-hub-checklist__item social-hub-checklist__item--%1$s"><span class="social-hub-checklist__label">%2$s</span>%3$s</li>',
+				esc_attr( $check['status'] ),
+				esc_html( $check['label'] ),
+				'' !== $check['hint'] ? '<span class="social-hub-checklist__hint">' . esc_html( $check['hint'] ) . '</span>' : ''
+			);
+		}
+
+		echo '</ul>';
 	}
 
 	/**

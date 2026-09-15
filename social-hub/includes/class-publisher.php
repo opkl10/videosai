@@ -75,7 +75,7 @@ class Publisher {
 
 		$delay = (int) Settings::get( 'share_delay', 30 );
 
-		wp_schedule_single_event( time() + max( 0, $delay ), self::CRON_HOOK, $args );
+		wp_schedule_single_event( Timing::next_slot( time() + max( 0, $delay ) ), self::CRON_HOOK, $args );
 	}
 
 	/**
@@ -194,8 +194,8 @@ class Publisher {
 	 */
 	public function payload( WP_Post $post, Provider $provider ) {
 		$payload = array(
-			'message'   => $this->message( $post ),
-			'url'       => get_permalink( $post ),
+			'message'   => $this->message( $post, $provider->id() ),
+			'url'       => $this->permalink( $post, $provider->id() ),
 			'title'     => wp_strip_all_tags( get_the_title( $post ) ),
 			'image_url' => $this->image_url( $post ),
 		);
@@ -213,13 +213,14 @@ class Publisher {
 	/**
 	 * Renders the share message for a post.
 	 *
-	 * @param WP_Post $post Post to share.
+	 * @param WP_Post $post    Post to share.
+	 * @param string  $network Network the message is meant for, used for link tracking.
 	 * @return string
 	 */
-	public function message( WP_Post $post ) {
+	public function message( WP_Post $post, $network = '' ) {
 		$custom   = (string) get_post_meta( $post->ID, self::META_MESSAGE, true );
 		$template = '' !== trim( $custom ) ? $custom : (string) Settings::get( 'message_template' );
-		$message  = $this->render_template( $template, $post );
+		$message  = $this->render_template( $template, $post, $network );
 
 		/**
 		 * Filters the rendered share message.
@@ -235,13 +236,14 @@ class Publisher {
 	 *
 	 * @param string  $template Template text.
 	 * @param WP_Post $post     Post providing the values.
+	 * @param string  $network  Network the message is meant for, used for link tracking.
 	 * @return string
 	 */
-	public function render_template( $template, WP_Post $post ) {
+	public function render_template( $template, WP_Post $post, $network = '' ) {
 		$replacements = array(
 			'{title}'      => wp_strip_all_tags( get_the_title( $post ) ),
 			'{excerpt}'    => $this->excerpt( $post ),
-			'{url}'        => get_permalink( $post ),
+			'{url}'        => $this->permalink( $post, $network ),
 			'{site}'       => wp_specialchars_decode( (string) get_bloginfo( 'name' ), ENT_QUOTES ),
 			'{author}'     => get_the_author_meta( 'display_name', (int) $post->post_author ),
 			'{tags}'       => $this->hashtags( $post, 'post_tag' ),
@@ -253,6 +255,19 @@ class Publisher {
 		$message = preg_replace( "/\n{3,}/", "\n\n", $message );
 
 		return trim( (string) $message );
+	}
+
+	/**
+	 * Returns the permalink of a post, tagged for analytics when tracking is on.
+	 *
+	 * @param WP_Post $post    Post object.
+	 * @param string  $network Network the link is meant for.
+	 * @return string
+	 */
+	private function permalink( WP_Post $post, $network ) {
+		$url = (string) get_permalink( $post );
+
+		return '' !== (string) $network ? Tracking::for_share( $url, $network, $post ) : $url;
 	}
 
 	/**

@@ -90,6 +90,81 @@
 	border-radius: 4px;
 }
 
+.social-hub-checklist {
+	max-width: 46em;
+	margin: 12px 0 24px;
+	padding: 0;
+	list-style: none;
+}
+
+.social-hub-checklist__item {
+	margin: 0 0 6px;
+	padding: 10px 14px;
+	border: 1px solid #dcdcde;
+	border-inline-start-width: 4px;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.social-hub-checklist__item--pass {
+	border-inline-start-color: #00a32a;
+}
+
+.social-hub-checklist__item--info {
+	border-inline-start-color: #2271b1;
+}
+
+.social-hub-checklist__item--warn {
+	border-inline-start-color: #dba617;
+}
+
+.social-hub-checklist__label {
+	display: block;
+	font-weight: 600;
+}
+
+.social-hub-checklist__hint {
+	display: block;
+	margin-top: 2px;
+	color: #646970;
+}
+
+.social-hub-checklist--compact .social-hub-checklist__item {
+	padding: 6px 10px;
+	font-size: 12px;
+}
+
+.social-hub-tips {
+	max-width: 48em;
+}
+
+.social-hub-tips h2 {
+	margin-top: 28px;
+	padding-bottom: 6px;
+	border-bottom: 1px solid #dcdcde;
+	font-size: 15px;
+}
+
+.social-hub-tips ul {
+	margin: 0;
+	list-style: disc;
+	padding-inline-start: 20px;
+}
+
+.social-hub-tips li {
+	margin-bottom: 10px;
+	line-height: 1.7;
+}
+
+.social-hub-box__score {
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.social-hub-box__scheduled {
+	color: #2271b1;
+}
+
 .social-hub-log__result--error {
 	color: #b32d2e;
 }

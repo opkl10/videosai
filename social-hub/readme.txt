@@ -29,6 +29,14 @@ Graph API and the Telegram Bot API.
   and copy link, in a filled or outline style, with or without labels.
 * Open Graph and Twitter Card tags, skipped automatically when an SEO plugin
   already prints them.
+* A readiness check on every post before it goes out: preview image size,
+  headline length, hand-written excerpt, share text length, tags, and whether
+  the text asks anything worth replying to.
+* A sharing window that holds a post written at 03:00 until the morning, with
+  days you can skip.
+* UTM tagging on every outgoing link, separately for automatic shares and for
+  shares made by readers.
+* A Tips tab with the short version of what actually moves the numbers.
 * Activity log with the exact API error behind every failed attempt.
 * Fully translated into Hebrew, and RTL friendly.
 
@@ -74,8 +82,19 @@ active, Social Hub leaves the Open Graph tags to them unless you tell it not to.
 In the plugin option, in your database. Anyone with database access can read
 them, so treat them like passwords and revoke them if the site is compromised.
 
+= Why did my post not go out immediately? =
+
+If the sharing window is on, a post published outside your chosen hours waits for
+the next opening. The post editor box shows exactly when it is queued for.
+
+= Do the UTM tags change the link my readers see? =
+
+Only the link that leaves your site. The page itself is unchanged, and the copy
+link button always copies the clean URL.
+
 == Changelog ==
 
 = 1.0.0 =
 * First release: Facebook Page and Telegram publishing, share buttons, Open
-  Graph tags, activity log and Hebrew translation.
+  Graph tags, promotion advisor, sharing window, UTM tagging, activity log and
+  Hebrew translation.

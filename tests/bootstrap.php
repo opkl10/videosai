@@ -20,8 +20,11 @@ $GLOBALS['sh_posts']      = array();
 $GLOBALS['sh_terms']      = array();
 $GLOBALS['sh_http_queue'] = array();
 $GLOBALS['sh_http_log']   = array();
-$GLOBALS['sh_enqueued']   = array();
-$GLOBALS['sh_singular']   = true;
+$GLOBALS['sh_enqueued']        = array();
+$GLOBALS['sh_singular']        = true;
+$GLOBALS['sh_timezone']        = 'Asia/Jerusalem';
+$GLOBALS['sh_image_sizes']     = array();
+$GLOBALS['sh_settings_errors'] = array();
 
 /**
  * Resets every piece of stub state between tests.
@@ -34,8 +37,12 @@ function sh_reset_state() {
 	$GLOBALS['sh_posts']      = array();
 	$GLOBALS['sh_terms']      = array();
 	$GLOBALS['sh_http_queue'] = array();
-	$GLOBALS['sh_http_log']   = array();
-	$GLOBALS['sh_enqueued']   = array();
+	$GLOBALS['sh_http_log']        = array();
+	$GLOBALS['sh_enqueued']        = array();
+	$GLOBALS['sh_scheduled']       = array();
+	$GLOBALS['sh_timezone']        = 'Asia/Jerusalem';
+	$GLOBALS['sh_image_sizes']     = array();
+	$GLOBALS['sh_settings_errors'] = array();
 
 	SocialHub\Settings::flush();
 	SocialHub\Providers::reset();
@@ -78,6 +85,7 @@ class WP_Post {
 	public $post_status = 'publish';
 	public $post_type = 'post';
 	public $post_author = 1;
+	public $post_name = '';
 
 	public function __construct( array $data = array() ) {
 		foreach ( $data as $key => $value ) {
@@ -433,6 +441,46 @@ function wp_remote_retrieve_body( $response ) {
 
 function human_time_diff( $from, $to = 0 ) {
 	return '1 minute';
+}
+
+function _n( $single, $plural, $number, $domain = null ) {
+	return 1 === (int) $number ? $single : $plural;
+}
+
+function wp_timezone() {
+	return new DateTimeZone( $GLOBALS['sh_timezone'] );
+}
+
+function wp_timezone_string() {
+	return $GLOBALS['sh_timezone'];
+}
+
+function wp_date( $format, $timestamp = null ) {
+	return gmdate( $format, (int) $timestamp );
+}
+
+function get_post_time( $format = 'U', $gmt = false, $post = null ) {
+	return gmdate( $format, 1789000000 );
+}
+
+function get_post_modified_time( $format = 'U', $gmt = false, $post = null ) {
+	return gmdate( $format, 1789000000 );
+}
+
+function wp_get_attachment_image_src( $attachment_id, $size = 'thumbnail' ) {
+	if ( ! $attachment_id ) {
+		return false;
+	}
+
+	$size = isset( $GLOBALS['sh_image_sizes'][ $attachment_id ] )
+		? $GLOBALS['sh_image_sizes'][ $attachment_id ]
+		: array( 1200, 630 );
+
+	return array( 'https://example.com/image-' . (int) $attachment_id . '.jpg', $size[0], $size[1] );
+}
+
+function add_settings_error( $setting, $code, $message, $type = 'error' ) {
+	$GLOBALS['sh_settings_errors'][] = compact( 'setting', 'code', 'message', 'type' );
 }
 
 function wp_is_post_revision( $post ) {
