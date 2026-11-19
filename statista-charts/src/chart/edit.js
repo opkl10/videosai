@@ -17,15 +17,15 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import ChartPreview from './components/chart-preview';
-import CsvImport from './components/csv-import';
-import DataTable from './components/data-table';
-import StatCard from './components/stat-card';
-import { getPalettes } from './lib/palettes';
-import { resolveTheme } from './lib/chart-factory';
+import AdvancedData from '../components/advanced-data';
+import ChartPreview from '../components/chart-preview';
+import QuickEntry from '../components/quick-entry';
+import StatCard from '../components/stat-card';
+import { getPalettes } from '../lib/palettes';
+import { resolveTheme } from '../lib/chart-factory';
 
 const CHART_TYPES = [
 	{ value: 'bar', icon: 'chart-bar', label: __( 'Bars', 'statista-charts' ) },
@@ -36,23 +36,9 @@ const CHART_TYPES = [
 	{ value: 'stat', icon: 'performance', label: __( 'Single number', 'statista-charts' ) },
 ];
 
-function sampleData() {
-	return {
-		labels: [
-			__( 'Q1', 'statista-charts' ),
-			__( 'Q2', 'statista-charts' ),
-			__( 'Q3', 'statista-charts' ),
-			__( 'Q4', 'statista-charts' ),
-		],
-		series: [
-			{ label: __( 'This year', 'statista-charts' ), data: [ 38, 52, 61, 74 ] },
-			{ label: __( 'Last year', 'statista-charts' ), data: [ 31, 44, 47, 58 ] },
-		],
-	};
-}
-
-export default function Edit( { attributes, setAttributes } ) {
-	const [ mode, setMode ] = useState( 'preview' );
+export default function Edit( { attributes, setAttributes, isSelected } ) {
+	const [ showEntry, setShowEntry ] = useState( true );
+	const [ advancedOpen, setAdvancedOpen ] = useState( false );
 	const palettes = getPalettes();
 
 	const {
@@ -83,13 +69,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		statTrend,
 		statCaption,
 	} = attributes;
-
-	useEffect( () => {
-		if ( ! labels.length && ! series.length ) {
-			setAttributes( sampleData() );
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [] );
 
 	const resolvedDirection =
 		direction === 'auto' ? ( document.dir === 'rtl' ? 'rtl' : 'ltr' ) : direction;
@@ -126,16 +105,10 @@ export default function Edit( { attributes, setAttributes } ) {
 			<BlockControls>
 				<ToolbarGroup>
 					<ToolbarButton
-						icon="chart-bar"
-						label={ __( 'Preview', 'statista-charts' ) }
-						isPressed={ mode === 'preview' }
-						onClick={ () => setMode( 'preview' ) }
-					/>
-					<ToolbarButton
-						icon="editor-table"
-						label={ __( 'Data', 'statista-charts' ) }
-						isPressed={ mode === 'data' }
-						onClick={ () => setMode( 'data' ) }
+						icon="edit"
+						label={ __( 'Edit the data', 'statista-charts' ) }
+						isPressed={ showEntry }
+						onClick={ () => setShowEntry( ! showEntry ) }
 					/>
 				</ToolbarGroup>
 				<ToolbarGroup>
@@ -372,13 +345,28 @@ export default function Edit( { attributes, setAttributes } ) {
 				) }
 
 				<PanelBody title={ __( 'Data', 'statista-charts' ) } initialOpen={ false }>
-					<CsvImport
-						labels={ labels }
-						series={ series }
-						onImport={ ( parsed ) => setAttributes( parsed ) }
-					/>
-					<Button variant="tertiary" size="compact" onClick={ () => setMode( 'data' ) }>
-						{ __( 'Open the data table', 'statista-charts' ) }
+					<p className="sc-sidebar-hint">
+						{ __( 'The data is written straight under the chart, one line per item.', 'statista-charts' ) }
+					</p>
+					<Button
+						variant="secondary"
+						size="compact"
+						onClick={ () => {
+							setShowEntry( true );
+							setAdvancedOpen( false );
+						} }
+					>
+						{ __( 'Edit the data', 'statista-charts' ) }
+					</Button>
+					<Button
+						variant="tertiary"
+						size="compact"
+						onClick={ () => {
+							setShowEntry( true );
+							setAdvancedOpen( true );
+						} }
+					>
+						{ __( 'Advanced options', 'statista-charts' ) }
 					</Button>
 				</PanelBody>
 			</InspectorControls>
@@ -397,31 +385,11 @@ export default function Edit( { attributes, setAttributes } ) {
 					</figcaption>
 				) }
 
-				{ mode === 'data' ? (
-					<div className="sc-editor-data">
-						{ ! isStat && (
-							<DataTable
-								labels={ labels }
-								series={ series }
-								onChange={ ( next ) => setAttributes( next ) }
-							/>
-						) }
-						{ isStat && (
-							<p className="sc-empty">
-								{ __( 'A single number is edited in the “Single number” panel on the right.', 'statista-charts' ) }
-							</p>
-						) }
-						<CsvImport labels={ labels } series={ series } onImport={ ( parsed ) => setAttributes( parsed ) } />
-					</div>
-				) : (
-					<>
-						{ ! showChart && (
-							<p className="sc-empty">{ __( 'The chart is hidden on the front end.', 'statista-charts' ) }</p>
-						) }
-						{ showChart && isStat && <StatCard config={ config } /> }
-						{ showChart && ! isStat && <ChartPreview config={ config } /> }
-					</>
+				{ ! showChart && (
+					<p className="sc-empty">{ __( 'The chart is hidden on the front end.', 'statista-charts' ) }</p>
 				) }
+				{ showChart && isStat && <StatCard config={ config } /> }
+				{ showChart && ! isStat && <ChartPreview config={ config } /> }
 
 				{ showSource && (
 					<p className="sc-source">
@@ -435,6 +403,22 @@ export default function Edit( { attributes, setAttributes } ) {
 							onChange={ ( event ) => setAttributes( { source: event.target.value } ) }
 						/>
 					</p>
+				) }
+
+				{ isSelected && showEntry && (
+					<div className="sc-editor-panel">
+						<QuickEntry
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							onOpenAdvanced={ () => setAdvancedOpen( true ) }
+						/>
+						<AdvancedData
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							isOpen={ advancedOpen }
+							onToggle={ () => setAdvancedOpen( ! advancedOpen ) }
+						/>
+					</div>
 				) }
 			</figure>
 		</>

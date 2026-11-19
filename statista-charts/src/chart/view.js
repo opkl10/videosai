@@ -3,7 +3,7 @@
  *
  * Loaded only on pages that actually contain a chart.
  */
-import { createChart } from './lib/chart-factory';
+import { createChart } from '../lib/chart-factory';
 
 const RENDERED = new WeakMap();
 

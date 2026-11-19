@@ -25,7 +25,7 @@ class Block {
 	 * @return void
 	 */
 	public static function init() {
-		$metadata = STATISTA_CHARTS_PATH . 'build/block.json';
+		$metadata = STATISTA_CHARTS_PATH . 'build/chart/block.json';
 
 		if ( ! file_exists( $metadata ) ) {
 			add_action( 'admin_notices', array( __CLASS__, 'build_missing_notice' ) );

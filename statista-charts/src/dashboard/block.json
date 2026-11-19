@@ -1,0 +1,104 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "statista/dashboard",
+	"version": "1.1.0",
+	"title": "Statista Dashboard",
+	"category": "media",
+	"icon": "dashboard",
+	"description": "A full dashboard inside a post: banner, KPI cards, a grid of charts and a side panel.",
+	"keywords": [ "dashboard", "kpi", "statistics", "charts", "tracker" ],
+	"textdomain": "statista-charts",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"spacing": {
+			"margin": true
+		}
+	},
+	"attributes": {
+		"brandName": {
+			"type": "string",
+			"default": ""
+		},
+		"logoUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"titleAccent": {
+			"type": "string",
+			"default": ""
+		},
+		"meta": {
+			"type": "string",
+			"default": ""
+		},
+		"updated": {
+			"type": "string",
+			"default": ""
+		},
+		"bannerImage": {
+			"type": "string",
+			"default": ""
+		},
+		"artworkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"palette": {
+			"type": "string",
+			"default": "statista"
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		},
+		"direction": {
+			"type": "string",
+			"default": "auto"
+		},
+		"kpis": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"showPanel": {
+			"type": "boolean",
+			"default": true
+		},
+		"panelImage": {
+			"type": "string",
+			"default": ""
+		},
+		"panelKicker": {
+			"type": "string",
+			"default": ""
+		},
+		"panelTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"panelText": {
+			"type": "string",
+			"default": ""
+		},
+		"panelButtonText": {
+			"type": "string",
+			"default": ""
+		},
+		"panelButtonUrl": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Statista Charts 1.0.0\n"
+"Project-Id-Version: Statista Charts 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-19T11:59:14+00:00\n"
+"POT-Creation-Date: 2026-11-19T12:51:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: statista-charts\n"
@@ -35,45 +35,58 @@ msgid "Statista Charts: the build directory is missing. Run \"npm install && npm
 msgstr ""
 
 #: includes/class-config.php:30
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:44
 #: src/lib/palettes.js:11
 msgid "Statista"
 msgstr ""
 
 #: includes/class-config.php:34
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
 #: src/lib/palettes.js:15
 msgid "Ocean"
 msgstr ""
 
 #: includes/class-config.php:38
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
 #: src/lib/palettes.js:19
 msgid "Sunset"
 msgstr ""
 
 #: includes/class-config.php:42
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
 #: src/lib/palettes.js:23
 msgid "Forest"
 msgstr ""
 
 #: includes/class-config.php:46
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
 #: src/lib/palettes.js:27
 msgid "Grape"
 msgstr ""
 
 #: includes/class-config.php:50
-#: build/index.js:1
-#: build/view.js:1
+#: build/chart/index.js:5
+#: build/chart/view.js:1
+#: build/dashboard/index.js:1
 #: src/lib/palettes.js:31
 msgid "Monochrome"
+msgstr ""
+
+#. translators: %s: date or time the data was last refreshed.
+#: includes/class-dashboard.php:281
+#, php-format
+msgid "Last updated %s"
 msgstr ""
 
 #: includes/class-renderer.php:83
@@ -81,8 +94,8 @@ msgid "No data to display yet."
 msgstr ""
 
 #: includes/class-renderer.php:93
-#: build/index.js:5
-#: src/edit.js:428
+#: build/chart/index.js:6
+#: src/chart/edit.js:396
 msgid "Source:"
 msgstr ""
 
@@ -91,14 +104,14 @@ msgid "Chart data"
 msgstr ""
 
 #: includes/class-renderer.php:175
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:82
 msgid "Category"
 msgstr ""
 
 #. translators: %d: series number.
 #: includes/class-renderer.php:182
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:63
 #, php-format,js-format
 msgid "Series %d"
@@ -142,418 +155,898 @@ msgstr ""
 msgid "You are not allowed to import chart data."
 msgstr ""
 
-#: build/index.js:1
-#: src/components/chart-preview.js:34
-msgid "Add rows in the Data tab to draw the chart."
-msgstr ""
-
 #. translators: %d: number of imported rows.
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:30
 msgid "Data imported."
 msgstr ""
 
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:21
 msgid "No rows were found. The first line must hold the column names."
 msgstr ""
 
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:61
 msgid "Paste CSV"
 msgstr ""
 
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:62
 msgid "First row: the category column followed by one column per series."
 msgstr ""
 
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:71
 msgid "Import data"
 msgstr ""
 
-#: build/index.js:3
+#: build/chart/index.js:3
 #: src/components/csv-import.js:81
 msgid "Fill from current table"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:90
 #: src/components/data-table.js:91
 msgid "Series name"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:98
 msgid "Remove column"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:110
 #: src/components/data-table.js:164
 msgid "Add column"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
+#: build/chart/index.js:6
+#: src/chart/edit.js:317
 #: src/components/data-table.js:125
-#: src/edit.js:344
 msgid "Label"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:126
 msgid "Category label"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:310
 #: src/components/data-table.js:138
-#: src/edit.js:337
+#: src/dashboard/kpi-card.js:68
 msgid "Value"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:147
 msgid "Remove row"
 msgstr ""
 
-#: build/index.js:5
+#: build/chart/index.js:5
 #: src/components/data-table.js:161
 msgid "Add row"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:31
-msgid "Bars"
+#: build/chart/index.js:5
+#: build/chart/index.js:6
+#: src/chart/edit.js:369
+#: src/components/advanced-data.js:24
+msgid "Advanced options"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:32
-msgid "Lines"
+#: build/chart/index.js:5
+#: src/components/advanced-data.js:30
+msgid "Start from a template"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:33
-msgid "Area"
+#: build/chart/index.js:5
+#: src/lib/templates.js:26
+msgid "Quarterly comparison"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:34
-msgid "Pie"
+#: build/chart/index.js:5
+#: src/lib/templates.js:29
+msgid "Views per quarter"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:35
-msgid "Doughnut"
-msgstr ""
-
-#: build/index.js:5
-#: src/edit.js:36
-#: src/edit.js:334
-msgid "Single number"
-msgstr ""
-
-#: build/index.js:5
-#: src/edit.js:42
+#: build/chart/index.js:5
+#: src/lib/templates.js:31
 msgid "Q1"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:43
+#: build/chart/index.js:5
+#: src/lib/templates.js:32
 msgid "Q2"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:44
+#: build/chart/index.js:5
+#: src/lib/templates.js:33
 msgid "Q3"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:45
+#: build/chart/index.js:5
+#: src/lib/templates.js:34
 msgid "Q4"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:48
+#: build/chart/index.js:5
+#: src/lib/templates.js:37
 msgid "This year"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:49
+#: build/chart/index.js:5
+#: src/lib/templates.js:38
 msgid "Last year"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:130
-msgid "Preview"
+#: build/chart/index.js:5
+#: src/lib/templates.js:44
+msgid "Monthly trend"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:136
-#: src/edit.js:374
-msgid "Data"
+#: build/chart/index.js:5
+#: src/lib/templates.js:47
+msgid "Monthly active users"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:144
+#: build/chart/index.js:5
+#: src/lib/templates.js:16
+#: src/lib/templates.js:49
+msgid "January"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:17
+#: src/lib/templates.js:50
+msgid "February"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:18
+#: src/lib/templates.js:51
+msgid "March"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:52
+msgid "April"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:53
+msgid "May"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:54
+msgid "June"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:61
+msgid "Share of total"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:64
+msgid "Share by platform"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:9
+#: src/lib/templates.js:67
+msgid "Mobile"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:10
+#: src/lib/templates.js:68
+msgid "Desktop"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:69
+msgid "Smart TV"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:11
+#: src/lib/templates.js:70
+msgid "Tablet"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:72
+msgid "Share"
+msgstr ""
+
+#: build/chart/index.js:5
+#: build/chart/index.js:6
+#: src/chart/edit.js:36
+#: src/chart/edit.js:307
+#: src/lib/templates.js:77
+msgid "Single number"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:80
+msgid "Yearly growth"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:60
+#: src/lib/templates.js:83
+msgid "Growth versus last year"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/lib/templates.js:84
+msgid "5.2 points"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/advanced-data.js:47
+msgid "Table with several series"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/advanced-data.js:53
+msgid "Import from CSV"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/chart-preview.js:34
+msgid "Write your data in the field below and the chart appears here."
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:51
+msgid "The number"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:58
+msgid "What it means"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:65
+msgid "Before the number"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:72
+msgid "After the number"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:86
+msgid "This chart holds more than one series, so it is edited in the table."
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:89
+msgid "Open the table"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:100
+msgid "Your data — one line per item"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:115
+msgid "Write a name, then its number — for example “January: 120”. A comma, a tab or a dash work just as well."
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:121
+msgid "Fill in this example"
+msgstr ""
+
+#: build/chart/index.js:5
+#: src/components/quick-entry.js:127
+msgid "A few lines have no number in them:"
+msgstr ""
+
+#. translators: 1: line number, 2: the line itself.
+#: build/chart/index.js:6
+#: src/components/quick-entry.js:133
+#, js-format
+msgid "Line %1$d: “%2$s”"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:31
+msgid "Bars"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:32
+msgid "Lines"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:33
+msgid "Area"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:34
+msgid "Pie"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:35
+msgid "Doughnut"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:109
+#: src/chart/edit.js:359
+msgid "Edit the data"
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:117
 msgid "Hide chart"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:144
-#: src/edit.js:168
+#: build/chart/index.js:6
+#: src/chart/edit.js:117
+#: src/chart/edit.js:141
 msgid "Show chart"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:151
+#: build/chart/index.js:6
+#: src/chart/edit.js:124
 msgid "Chart"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:169
+#: build/chart/index.js:6
+#: src/chart/edit.js:142
 msgid "Turn off to keep the data in the post without drawing it."
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:177
+#: build/chart/index.js:6
+#: src/chart/edit.js:150
 msgid "Height (px)"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:187
+#: build/chart/index.js:6
+#: src/chart/edit.js:160
 msgid "Content"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:190
+#: build/chart/index.js:6
+#: src/chart/edit.js:163
 msgid "Title"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:196
+#: build/chart/index.js:6
+#: src/chart/edit.js:169
 msgid "Show title"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:202
-#: src/edit.js:434
+#: build/chart/index.js:6
+#: src/chart/edit.js:175
+#: src/chart/edit.js:402
 msgid "Data source"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:208
+#: build/chart/index.js:6
+#: src/chart/edit.js:181
 msgid "Show data source"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:214
+#: build/chart/index.js:6
+#: src/chart/edit.js:187
 msgid "Display options"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:219
+#: build/chart/index.js:6
+#: src/chart/edit.js:192
 msgid "Legend"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:225
+#: build/chart/index.js:6
+#: src/chart/edit.js:198
 msgid "Value labels"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:232
+#: build/chart/index.js:6
+#: src/chart/edit.js:205
 msgid "Grid lines"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:240
+#: build/chart/index.js:6
+#: src/chart/edit.js:213
 msgid "Stacked bars"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:248
+#: build/chart/index.js:6
+#: src/chart/edit.js:221
 msgid "Smooth lines"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:255
+#: build/chart/index.js:6
+#: src/chart/edit.js:228
 msgid "Data table below the chart"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:256
+#: build/chart/index.js:6
+#: src/chart/edit.js:229
 msgid "The table is always in the markup for screen readers; this shows it to everyone."
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:265
+#: build/chart/index.js:6
+#: src/chart/edit.js:238
 msgid "Decimals"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:274
+#: build/chart/index.js:6
+#: src/chart/edit.js:247
 msgid "Value prefix"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:280
+#: build/chart/index.js:6
+#: src/chart/edit.js:253
 msgid "Value suffix"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:287
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:260
+#: src/dashboard/edit.js:210
 msgid "Style"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:288
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:261
+#: src/dashboard/edit.js:211
 msgid "Color palette"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:310
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:283
+#: src/dashboard/edit.js:233
 msgid "Theme"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:313
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:286
+#: src/dashboard/edit.js:236
 msgid "Light"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:314
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:287
+#: src/dashboard/edit.js:237
 msgid "Dark"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:315
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:288
+#: src/dashboard/edit.js:238
 msgid "Follow the reader’s device"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:322
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:295
+#: src/dashboard/edit.js:245
 msgid "Text direction"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:325
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:298
+#: src/dashboard/edit.js:248
 msgid "Follow the site"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:326
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:299
+#: src/dashboard/edit.js:249
 msgid "Right to left"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:327
+#: build/chart/index.js:6
+#: build/dashboard/index.js:1
+#: src/chart/edit.js:300
+#: src/dashboard/edit.js:250
 msgid "Left to right"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:338
+#: build/chart/index.js:6
+#: src/chart/edit.js:311
 msgid "Leave empty to use the first value of the table."
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:350
+#: build/chart/index.js:6
+#: src/chart/edit.js:323
 msgid "Change"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:356
+#: build/chart/index.js:6
+#: src/chart/edit.js:329
 msgid "Trend"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:359
+#: build/chart/index.js:6
+#: src/chart/edit.js:332
 msgid "Up"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:360
+#: build/chart/index.js:6
+#: src/chart/edit.js:333
 msgid "Down"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:361
+#: build/chart/index.js:6
+#: src/chart/edit.js:334
 msgid "Flat"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:367
+#: build/chart/index.js:6
+#: src/chart/edit.js:340
 msgid "Caption"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:381
-msgid "Open the data table"
+#: build/chart/index.js:6
+#: src/chart/edit.js:347
+msgid "Data"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:393
+#: build/chart/index.js:6
+#: src/chart/edit.js:349
+msgid "The data is written straight under the chart, one line per item."
+msgstr ""
+
+#: build/chart/index.js:6
+#: src/chart/edit.js:381
 msgid "Chart title…"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:394
+#: build/chart/index.js:6
+#: src/chart/edit.js:382
 msgid "Chart title"
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:411
-msgid "A single number is edited in the “Single number” panel on the right."
-msgstr ""
-
-#: build/index.js:5
-#: src/edit.js:419
+#: build/chart/index.js:6
+#: src/chart/edit.js:389
 msgid "The chart is hidden on the front end."
 msgstr ""
 
-#: build/index.js:5
-#: src/edit.js:433
+#: build/chart/index.js:6
+#: src/chart/edit.js:401
 msgid "Data source…"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:17
+msgid "Back to a single value"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:17
+msgid "Split into two values"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:24
+msgid "Remove card"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:36
+#: src/dashboard/kpi-card.js:58
+msgid "Icon"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:45
+#: src/dashboard/kpi-card.js:46
+msgid "Metric name"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:80
+msgid "Second icon"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/kpi-card.js:89
+msgid "Second value"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:26
+msgid "Revenue"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:35
+#: src/dashboard/edit.js:52
+msgid "Units sold"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:79
+msgid "Choose image"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:86
+msgid "Remove"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:158
+msgid "Dashboard"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:160
+msgid "The texts are edited straight on the dashboard. Images are chosen here."
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:45
+msgid "Product launch"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:46
+msgid "— live tracker"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:47
+msgid "Updated daily • Web and mobile"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:48
+#: src/dashboard/edit.js:306
+msgid "today"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:50
+msgid "Split by platform"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:51
+msgid "Revenue (net)"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:55
+msgid "The full story"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:56
+msgid "What the numbers mean"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:57
+msgid "A short paragraph that explains the dashboard and invites the reader to keep going."
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:58
+msgid "Download the report"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:163
+msgid "Fill in example content"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:167
+msgid "Images"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:169
+msgid "Logo"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:175
+msgid "Banner background"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:181
+msgid "Banner artwork"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:187
+msgid "Side panel image"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:194
+msgid "Side panel"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:197
+msgid "Show the side panel"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:203
+msgid "Button link"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:266
+#: src/dashboard/edit.js:267
+msgid "Brand"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:277
+#: src/dashboard/edit.js:278
+msgid "Dashboard title"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:285
+msgid "— subtitle"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:286
+msgid "Subtitle"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:296
+msgid "Updated daily • Source"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:297
+msgid "Meta line"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:301
+#: src/dashboard/edit.js:307
+msgid "Last updated"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:338
+msgid "Add a metric card"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:352
+#: src/dashboard/edit.js:353
+msgid "Small line above"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:360
+#: src/dashboard/edit.js:361
+msgid "Panel title"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:368
+msgid "A couple of sentences for the reader."
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:369
+msgid "Panel text"
+msgstr ""
+
+#: build/dashboard/index.js:1
+#: src/dashboard/edit.js:376
+#: src/dashboard/edit.js:377
+msgid "Button text"
+msgstr ""
+
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block title"
 msgid "Statista Chart"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block description"
 msgid "Add a clean, responsive chart or a single statistic anywhere inside your post."
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block keyword"
 msgid "chart"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block keyword"
 msgid "graph"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: build/dashboard/block.json
+#: src/chart/block.json
+#: src/dashboard/block.json
 msgctxt "block keyword"
 msgid "statistics"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block keyword"
 msgid "data"
 msgstr ""
 
-#: build/block.json
-#: src/block.json
+#: build/chart/block.json
+#: src/chart/block.json
 msgctxt "block keyword"
 msgid "csv"
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block title"
+msgid "Statista Dashboard"
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block description"
+msgid "A full dashboard inside a post: banner, KPI cards, a grid of charts and a side panel."
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block keyword"
+msgid "dashboard"
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block keyword"
+msgid "kpi"
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block keyword"
+msgid "charts"
+msgstr ""
+
+#: build/dashboard/block.json
+#: src/dashboard/block.json
+msgctxt "block keyword"
+msgid "tracker"
 msgstr ""

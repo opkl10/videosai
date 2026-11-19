@@ -1,0 +1,172 @@
+/**
+ * Editor-only styles: the dashboard is edited in place, so every field is an
+ * input that looks like the text it will become.
+ */
+
+.statista-dashboard.sd-editor {
+	.sd-input {
+		margin: 0;
+		padding: 2px 6px;
+		background: transparent;
+		border: 1px solid transparent;
+		border-radius: 6px;
+		color: inherit;
+		font: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		box-shadow: none;
+		max-width: 100%;
+
+		&:hover {
+			border-color: currentColor;
+			opacity: 0.95;
+		}
+
+		&:focus {
+			border-color: currentColor;
+			outline: none;
+			box-shadow: 0 0 0 1px currentColor;
+		}
+
+		&::placeholder {
+			color: currentColor;
+			opacity: 0.55;
+		}
+	}
+
+	.sd-banner .sd-input {
+		color: #ffffff;
+	}
+
+	.sd-brand__name,
+	.sd-title__main,
+	.sd-title__accent,
+	.sd-meta__item {
+		width: auto;
+		min-width: 0;
+	}
+
+	.sd-title__main {
+		flex: 1 1 260px;
+	}
+
+	.sd-meta {
+		gap: 6px 10px;
+	}
+
+	.sd-meta__item + .sd-meta__item::before {
+		content: none;
+	}
+
+	.sd-meta__updated {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.sd-meta__prefix {
+		opacity: 0.85;
+	}
+
+	.sd-kpi--editing {
+		position: relative;
+	}
+
+	.sd-kpi__toolbar {
+		position: absolute;
+		inset-block-start: 6px;
+		inset-inline-end: 6px;
+		display: flex;
+		gap: 2px;
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+
+	.sd-kpi--editing:hover .sd-kpi__toolbar,
+	.sd-kpi--editing:focus-within .sd-kpi__toolbar {
+		opacity: 1;
+	}
+
+	.sd-kpi__icon.sd-input,
+	.sd-kpi__badge.sd-input {
+		width: 32px;
+		text-align: center;
+	}
+
+	.sd-kpi__number.sd-input {
+		width: 100%;
+		max-width: 160px;
+	}
+
+	.sd-kpi--split .sd-kpi__values {
+		flex-wrap: nowrap;
+		gap: 10px;
+	}
+
+	.sd-kpi--split .sd-kpi__number.sd-input {
+		max-width: 86px;
+	}
+
+	.sd-kpi--add.components-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		min-height: 104px;
+		height: auto;
+		background: transparent;
+		border: 1px dashed var(--sd-border);
+		border-radius: 14px;
+		color: var(--sd-muted);
+		font-size: 13px;
+
+		&:hover {
+			border-color: var(--sc-accent);
+			color: var(--sc-accent);
+		}
+	}
+
+	.sd-panel__text.sd-input {
+		width: 100%;
+		resize: vertical;
+		font-size: 0.8125rem;
+		line-height: 1.6;
+	}
+
+	.sd-panel__button.sd-input {
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Keep the chart titles looking like the pills they become on the front end,
+	   even though they are editable inputs here. */
+	.sd-grid .statista-chart.sc-editor .sc-title-input {
+		width: auto;
+		max-width: 100%;
+		padding: 5px 14px;
+		background: color-mix(in srgb, var(--sd-fg) 7%, transparent);
+		border-radius: 999px;
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		text-align: center;
+		color: var(--sd-muted);
+	}
+
+	.sd-grid .block-editor-block-list__layout {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+		gap: 16px;
+	}
+}
+
+.sd-image-field {
+	margin-bottom: 16px;
+}
+
+.sd-image-field__actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 6px;
+}

@@ -31,7 +31,7 @@ export default function ChartPreview( { config } ) {
 	const hasData = ( config.labels || [] ).length > 0 && ( config.series || [] ).length > 0;
 
 	if ( ! hasData ) {
-		return <p className="sc-empty">{ __( 'Add rows in the Data tab to draw the chart.', 'statista-charts' ) }</p>;
+		return <p className="sc-empty">{ __( 'Write your data in the field below and the chart appears here.', 'statista-charts' ) }</p>;
 	}
 
 	return (

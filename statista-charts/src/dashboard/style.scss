@@ -1,0 +1,348 @@
+/**
+ * Dashboard styles, shared by the front end and the editor preview.
+ */
+
+.statista-dashboard {
+	--sd-radius: 18px;
+	--sd-surface: #ffffff;
+	--sd-card: #f8fafc;
+	--sd-fg: #0f172a;
+	--sd-muted: #64748b;
+	--sd-border: rgba(15, 23, 42, 0.1);
+	--sd-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 22px 48px -28px rgba(16, 24, 40, 0.45);
+	--sd-panel-bg: #0f172a;
+	--sc-accent: #1f6feb;
+	--sc-accent-2: #00b3a4;
+
+	box-sizing: border-box;
+	/* The layout follows the width the dashboard actually gets, not the window,
+	   so it still works inside a narrow content column. */
+	container-type: inline-size;
+	margin: 0 0 1.75rem;
+	overflow: hidden;
+	background: var(--sd-surface);
+	color: var(--sd-fg);
+	border: 1px solid var(--sd-border);
+	border-radius: var(--sd-radius);
+	box-shadow: var(--sd-shadow);
+	font-family: "Rubik", "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+	text-align: start;
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: inherit;
+	}
+
+	&.sc-theme-dark {
+		--sd-surface: #0b1220;
+		--sd-card: #131d31;
+		--sd-fg: #e5e7eb;
+		--sd-muted: #94a3b8;
+		--sd-border: rgba(226, 232, 240, 0.14);
+		--sd-panel-bg: #111c2f;
+	}
+}
+
+/* Banner. */
+.statista-dashboard .sd-banner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: clamp(18px, 2.6vw, 30px) clamp(18px, 3vw, 34px);
+	min-height: 140px;
+	background-image: var(--sd-banner);
+	background-size: cover;
+	background-position: center;
+	color: #ffffff;
+}
+
+.statista-dashboard .sd-banner__text {
+	min-width: 0;
+	flex: 1;
+}
+
+.statista-dashboard .sd-brand {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 10px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	opacity: 0.92;
+}
+
+.statista-dashboard .sd-brand__logo {
+	width: 22px;
+	height: 22px;
+	border-radius: 6px;
+	object-fit: cover;
+}
+
+.statista-dashboard .sd-title {
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0;
+	font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: #ffffff;
+}
+
+.statista-dashboard .sd-title__accent {
+	font-weight: 400;
+	opacity: 0.85;
+}
+
+.statista-dashboard .sd-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+	margin: 12px 0 0;
+	padding-top: 10px;
+	border-top: 1px solid rgba(255, 255, 255, 0.28);
+	font-size: 0.8125rem;
+	font-weight: 500;
+	opacity: 0.9;
+}
+
+.statista-dashboard .sd-meta__item + .sd-meta__item::before {
+	content: "•";
+	margin-inline-end: 10px;
+	opacity: 0.7;
+}
+
+.statista-dashboard .sd-artwork img {
+	display: block;
+	width: clamp(76px, 10vw, 104px);
+	height: clamp(76px, 10vw, 104px);
+	border-radius: 14px;
+	object-fit: cover;
+	box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Body layout. */
+.statista-dashboard .sd-body {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) clamp(220px, 22%, 280px);
+	gap: 18px;
+	padding: clamp(14px, 2vw, 20px);
+}
+
+.statista-dashboard.sd-no-panel .sd-body {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.statista-dashboard .sd-main {
+	display: grid;
+	gap: 16px;
+	min-width: 0;
+}
+
+/* KPI cards. */
+.statista-dashboard .sd-kpis {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+	gap: 14px;
+}
+
+.statista-dashboard .sd-kpi {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 16px;
+	background: var(--sd-card);
+	border: 1px solid var(--sd-border);
+	border-radius: 14px;
+}
+
+.statista-dashboard .sd-kpi__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	background: color-mix(in srgb, var(--sc-accent) 14%, transparent);
+	font-size: 16px;
+	line-height: 1;
+}
+
+.statista-dashboard .sd-kpi__label {
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--sd-muted);
+}
+
+.statista-dashboard .sd-kpi__values {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+	margin-top: 2px;
+}
+
+.statista-dashboard .sd-kpi__value {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.statista-dashboard .sd-kpi__badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 7px;
+	background: color-mix(in srgb, var(--sc-accent) 14%, transparent);
+	font-size: 14px;
+	line-height: 1;
+}
+
+.statista-dashboard .sd-kpi__number {
+	font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+	color: var(--sd-fg);
+}
+
+/* Chart grid. */
+.statista-dashboard .sd-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+	gap: 16px;
+}
+
+.statista-dashboard .sd-grid .statista-chart {
+	margin: 0;
+	height: 100%;
+	box-shadow: none;
+	background: var(--sd-card);
+	border-color: var(--sd-border);
+}
+
+.statista-dashboard .sd-grid .sc-header {
+	justify-content: center;
+}
+
+.statista-dashboard .sd-grid .sc-title {
+	display: inline-block;
+	padding: 5px 14px;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--sd-fg) 7%, transparent);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--sd-muted);
+}
+
+/* Side panel. */
+.statista-dashboard .sd-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 18px;
+	background: var(--sd-panel-bg);
+	border-radius: 16px;
+	color: #f8fafc;
+}
+
+.statista-dashboard .sd-panel__image {
+	width: 100%;
+	border-radius: 12px;
+	object-fit: cover;
+}
+
+.statista-dashboard .sd-panel__kicker {
+	margin: 0;
+	font-size: 1.0625rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--sc-accent-2);
+}
+
+.statista-dashboard .sd-panel__title {
+	margin: 0;
+	font-size: 1.0625rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: #ffffff;
+}
+
+.statista-dashboard .sd-panel__text {
+	margin: 0;
+	font-size: 0.8125rem;
+	line-height: 1.6;
+	color: rgba(248, 250, 252, 0.78);
+}
+
+.statista-dashboard .sd-panel__button {
+	margin-top: auto;
+	padding: 11px 16px;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--sc-accent-2), var(--sc-accent));
+	color: #04211d;
+	font-size: 0.875rem;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: #04211d;
+		filter: brightness(1.06);
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.statista-dashboard.sc-theme-auto {
+		--sd-surface: #0b1220;
+		--sd-card: #131d31;
+		--sd-fg: #e5e7eb;
+		--sd-muted: #94a3b8;
+		--sd-border: rgba(226, 232, 240, 0.14);
+		--sd-panel-bg: #111c2f;
+	}
+}
+
+@container (max-width: 880px) {
+	.statista-dashboard .sd-body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.statista-dashboard .sd-panel__button {
+		margin-top: 6px;
+	}
+}
+
+@container (max-width: 560px) {
+	.statista-dashboard .sd-banner {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.statista-dashboard .sd-grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 782px) {
+	.statista-dashboard .sd-body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.statista-dashboard .sd-banner {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}

@@ -49,9 +49,128 @@
 	}
 }
 
-.sc-editor-data {
+.sc-editor-panel {
+	margin-top: 18px;
+	padding-top: 16px;
+	border-top: 1px dashed var(--sc-border);
 	display: grid;
-	gap: 16px;
+	gap: 12px;
+}
+
+.sc-quick-entry {
+	display: grid;
+	gap: 8px;
+}
+
+.sc-quick-entry__label {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--sc-fg);
+}
+
+.sc-quick-entry__field {
+	width: 100%;
+	padding: 10px 12px;
+	background: var(--sc-bg);
+	border: 1px solid var(--sc-border);
+	border-radius: 10px;
+	color: var(--sc-fg);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 14px;
+	line-height: 1.7;
+	resize: vertical;
+
+	&:focus {
+		border-color: var(--sc-accent);
+		outline: none;
+		box-shadow: 0 0 0 1px var(--sc-accent);
+	}
+
+	&::placeholder {
+		color: var(--sc-muted);
+		opacity: 0.7;
+	}
+}
+
+.sc-quick-entry__help {
+	margin: 0;
+	font-size: 12px;
+	color: var(--sc-muted);
+}
+
+.sc-quick-entry__example {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 8px 12px;
+	background: color-mix(in srgb, var(--sc-fg) 4%, transparent);
+	border-radius: 10px;
+}
+
+.sc-quick-entry__example-text {
+	margin: 0;
+	flex: 1;
+	min-width: 140px;
+	background: none;
+	color: var(--sc-muted);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	line-height: 1.6;
+	white-space: pre;
+}
+
+.sc-quick-entry__errors {
+	margin: 4px 0 0;
+	padding-inline-start: 18px;
+	font-size: 12px;
+}
+
+.sc-quick-entry__stat {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.sc-advanced {
+	display: grid;
+	gap: 10px;
+}
+
+.sc-advanced__toggle {
+	justify-self: start;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.sc-advanced__body {
+	display: grid;
+	gap: 18px;
+	padding: 14px;
+	background: color-mix(in srgb, var(--sc-fg) 3%, transparent);
+	border: 1px solid var(--sc-border);
+	border-radius: 12px;
+}
+
+.sc-advanced__heading {
+	margin: 0 0 8px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--sc-muted);
+}
+
+.sc-advanced__templates {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.sc-sidebar-hint {
+	margin: 0 0 12px;
+	font-size: 12px;
+	color: #757575;
 }
 
 .sc-data-editor {
