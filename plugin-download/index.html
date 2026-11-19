@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statista Charts — הורדת הפלאגין</title>
+<style>
+	:root {
+		--bg: #f5f6fa;
+		--card: #ffffff;
+		--fg: #10131c;
+		--muted: #5b6478;
+		--line: #e4e7ef;
+		--accent: #7c3aed;
+		--accent-2: #a855f7;
+	}
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		padding: 32px 20px 64px;
+		background: var(--bg);
+		color: var(--fg);
+		font-family: "Assistant", "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+		line-height: 1.65;
+	}
+
+	.wrap { max-width: 720px; margin: 0 auto; }
+
+	.banner {
+		background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+		border-radius: 20px;
+		padding: 32px 28px;
+		color: #fff;
+	}
+
+	.banner__brand {
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		opacity: 0.85;
+		margin: 0 0 10px;
+	}
+
+	.banner h1 {
+		margin: 0 0 8px;
+		font-size: 2rem;
+		line-height: 1.25;
+	}
+
+	.banner p {
+		margin: 0;
+		opacity: 0.9;
+	}
+
+	.card {
+		background: var(--card);
+		border: 1px solid var(--line);
+		border-radius: 18px;
+		padding: 24px;
+		margin-top: 20px;
+	}
+
+	.download {
+		display: block;
+		text-align: center;
+		background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+		color: #fff;
+		text-decoration: none;
+		font-size: 1.15rem;
+		font-weight: 700;
+		padding: 18px 24px;
+		border-radius: 14px;
+	}
+
+	.download:hover { filter: brightness(1.07); }
+
+	.meta {
+		margin: 14px 0 0;
+		color: var(--muted);
+		font-size: 0.9rem;
+		text-align: center;
+	}
+
+	.meta code {
+		direction: ltr;
+		unicode-bidi: isolate;
+		background: #f0f1f6;
+		border-radius: 6px;
+		padding: 1px 6px;
+		font-size: 0.85em;
+	}
+
+	h2 {
+		margin: 0 0 12px;
+		font-size: 1.15rem;
+	}
+
+	ol, ul { margin: 0; padding-inline-start: 22px; }
+
+	li { margin-bottom: 8px; }
+
+	li:last-child { margin-bottom: 0; }
+
+	.muted { color: var(--muted); }
+
+	a { color: var(--accent); }
+
+	.fallback {
+		word-break: break-all;
+		direction: ltr;
+		unicode-bidi: isolate;
+		text-align: start;
+		display: inline-block;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg: #0d1017;
+			--card: #151a24;
+			--fg: #f2f4f8;
+			--muted: #9aa3b5;
+			--line: #262c3a;
+		}
+
+		.meta code { background: #1f2533; }
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<div class="banner">
+		<p class="banner__brand">סטטיסטה</p>
+		<h1>Statista Charts — פלאגין וורדפרס</h1>
+		<p>גרפים, כרטיסי מדד ולוחות מחוונים בתוך פוסטים, בעברית ו‑RTL.</p>
+	</div>
+
+	<div class="card">
+		<a class="download" href="statista-charts-v1.1.0.zip" download>הורדת הפלאגין (ZIP, 281KB)</a>
+		<p class="meta">גרסה 1.1.0 · <code>statista-charts-v1.1.0.zip</code> · MD5 <code>707e06d28d201c8669e2169effb6221c</code></p>
+	</div>
+
+	<div class="card">
+		<h2>התקנה</h2>
+		<ol>
+			<li>בלוח הניהול של וורדפרס: <strong>תוספים ← הוספת תוסף ← העלאת תוסף</strong>.</li>
+			<li>בוחרים את קובץ ה‑ZIP שהורדתם ולוחצים <strong>התקנה</strong>, ואז <strong>הפעלה</strong>.</li>
+			<li>בעורך הפוסטים מוסיפים את הבלוק <strong>גרף סטטיסטה</strong> או <strong>לוח מחוונים סטטיסטה</strong>.</li>
+		</ol>
+	</div>
+
+	<div class="card">
+		<h2>מה יש בגרסה 1.1.0</h2>
+		<ul>
+			<li>הזנת נתונים פשוטה: שדה אחד, שורה לכל פריט בפורמט <code>ינואר: 120</code>, והגרף מתעדכן תוך כדי הקלדה.</li>
+			<li>בלוק לוח מחוונים: באנר, כרטיסי מדד, רשת גרפים ופאנל צדדי עם כפתור.</li>
+			<li>סוגי גרף: עמודות, קווים, שטח, עוגה, דונאט ומספר בודד.</li>
+			<li>טבלה מרובת סדרות, ייבוא CSV ותבניות מוכנות — מאחורי "אפשרויות מתקדמות".</li>
+			<li>ערכות צבע, מצב כהה, רספונסיביות, ו‑shortcode בשם <code>[statista_chart]</code>.</li>
+		</ul>
+	</div>
+
+	<div class="card">
+		<h2 class="muted">קישור גיבוי</h2>
+		<p class="muted">אם ההורדה כאן נחסמת, אפשר לנסות ישירות מ‑GitHub:<br>
+			<a class="fallback" href="https://raw.githubusercontent.com/opkl10/videosai/statista-charts-v1.1.0/dist/statista-charts-v1.1.0.zip">raw.githubusercontent.com/opkl10/videosai/statista-charts-v1.1.0/dist/statista-charts-v1.1.0.zip</a>
+		</p>
+	</div>
+</div>
+</body>
+</html>
