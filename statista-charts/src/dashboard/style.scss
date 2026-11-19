@@ -140,6 +140,12 @@
 	grid-template-columns: minmax(0, 1fr);
 }
 
+/* Markup other plugins injected between the charts, moved out of the
+   dashboard so it cannot sit on top of the chart area. */
+.statista-dashboard-after {
+	margin-top: 14px;
+}
+
 /* Plugins that inject markup after every block (share buttons, "join us"
    boxes, ads) land inside the dashboard. Give anything that is not ours a row
    of its own instead of a seat in the chart grid or the side panel column. */

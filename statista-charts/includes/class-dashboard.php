@@ -154,6 +154,8 @@ class Dashboard {
 			'sc-dir-' . $direction,
 		);
 
+		list( $content, $foreign ) = self::split_foreign_markup( (string) $content );
+
 		$panel_button = $data['showPanelButton'] ? $data['panelButtonText'] : '';
 
 		if ( ! $data['showPanel'] || '' === $data['panelTitle'] . $data['panelText'] . $panel_button ) {
@@ -190,9 +192,161 @@ class Dashboard {
 				<?php echo self::panel( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in panel(). ?>
 			</div>
 		</section>
+		<?php if ( '' !== $foreign ) : ?>
+			<div class="statista-dashboard-after"><?php echo $foreign; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Another plugin's own markup, moved as it is. ?></div>
+		<?php endif; ?>
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Separates our own charts from markup other plugins glued onto them.
+	 *
+	 * Share buttons, "join our channel" boxes and ad slots are commonly added
+	 * with a render_block filter, which lands them inside the dashboard, next
+	 * to a chart. They are moved below the dashboard rather than dropped.
+	 *
+	 * @param string $content Rendered inner blocks.
+	 * @return array {
+	 *     @type string $0 The charts.
+	 *     @type string $1 Everything else, in document order.
+	 * }
+	 */
+	private static function split_foreign_markup( $content ) {
+		$content = (string) $content;
+
+		if ( '' === trim( $content ) || ! class_exists( '\DOMDocument' ) ) {
+			return array( $content, '' );
+		}
+
+		$doc      = new \DOMDocument();
+		$previous = libxml_use_internal_errors( true );
+
+		$loaded = $doc->loadHTML(
+			'<?xml encoding="utf-8" ?><body><div id="statista-inner">' . $content . '</div></body>',
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+
+		$root = $loaded ? $doc->getElementById( 'statista-inner' ) : null;
+
+		if ( ! $root ) {
+			return array( $content, '' );
+		}
+
+		list( $ours, $foreign ) = self::sort_nodes( $root->childNodes, $doc );
+
+		if ( '' === trim( $foreign ) ) {
+			return array( $content, '' );
+		}
+
+		/**
+		 * Filters the markup other plugins added inside the dashboard, which
+		 * is about to be printed below it. Return an empty string to drop it.
+		 *
+		 * @param string $foreign The markup.
+		 */
+		$foreign = (string) apply_filters( 'statista_charts_foreign_markup', $foreign );
+
+		return array( $ours, $foreign );
+	}
+
+	/**
+	 * Walks a list of rendered nodes and tells our charts from the rest.
+	 *
+	 * A node that only wraps one of our blocks is opened up: the block stays
+	 * in the dashboard and the wrapper leaves with the markup it carried.
+	 *
+	 * @param \DOMNodeList  $nodes Nodes to sort.
+	 * @param \DOMDocument  $doc   Owner document.
+	 * @return array {
+	 *     @type string $0 Our markup.
+	 *     @type string $1 Everything else.
+	 * }
+	 */
+	private static function sort_nodes( $nodes, $doc ) {
+		$ours    = '';
+		$foreign = '';
+
+		foreach ( iterator_to_array( $nodes ) as $node ) {
+			if ( XML_TEXT_NODE === $node->nodeType && '' === trim( $node->textContent ) ) {
+				continue;
+			}
+
+			if ( self::is_ours( $node ) ) {
+				$ours .= $doc->saveHTML( $node );
+				continue;
+			}
+
+			if ( ! self::wraps_ours( $node ) ) {
+				$foreign .= $doc->saveHTML( $node );
+				continue;
+			}
+
+			list( $inner_ours, $inner_foreign ) = self::sort_nodes( $node->childNodes, $doc );
+
+			$ours .= $inner_ours;
+
+			if ( '' !== trim( $inner_foreign ) ) {
+				$shell = $node->cloneNode( false );
+				$shell->appendChild( $doc->createTextNode( '' ) );
+
+				$html     = $doc->saveHTML( $shell );
+				$close    = '</' . $node->nodeName . '>';
+				$foreign .= str_replace( $close, $inner_foreign . $close, $html );
+			}
+		}
+
+		return array( $ours, $foreign );
+	}
+
+	/**
+	 * Tells whether a node is one of our blocks.
+	 *
+	 * @param \DOMNode $node Node from the inner block markup.
+	 * @return bool
+	 */
+	private static function is_ours( $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType ) {
+			return false;
+		}
+
+		$classes = ' ' . (string) $node->getAttribute( 'class' ) . ' ';
+
+		foreach ( array( 'statista-chart', 'statista-stats' ) as $name ) {
+			if ( false !== strpos( $classes, ' ' . $name . ' ' ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Tells whether one of our blocks sits somewhere below a node.
+	 *
+	 * @param \DOMNode $node Node from the inner block markup.
+	 * @return bool
+	 */
+	private static function wraps_ours( $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType ) {
+			return false;
+		}
+
+		$xpath = new \DOMXPath( $node->ownerDocument );
+
+		foreach ( array( 'statista-chart', 'statista-stats' ) as $name ) {
+			$found = $xpath->query( ".//*[contains(concat(' ', normalize-space(@class), ' '), ' " . $name . " ')]", $node );
+
+			if ( $found && $found->length > 0 ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
