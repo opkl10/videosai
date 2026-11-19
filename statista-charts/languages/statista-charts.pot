@@ -1,0 +1,559 @@
+# Copyright (C) 2026 Statista Charts
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Statista Charts 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-19T11:59:14+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: statista-charts\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: statista-charts.php
+msgid "Statista Charts"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: statista-charts.php
+msgid "https://example.com/statista-charts"
+msgstr ""
+
+#. Description of the plugin
+#: statista-charts.php
+msgid "Beautiful, responsive statistics and charts inside posts — a Gutenberg block plus a matching [statista_chart] shortcode."
+msgstr ""
+
+#: includes/class-block.php:77
+msgid "Statista Charts: the build directory is missing. Run \"npm install && npm run build\" inside the plugin folder."
+msgstr ""
+
+#: includes/class-config.php:30
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:11
+msgid "Statista"
+msgstr ""
+
+#: includes/class-config.php:34
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:15
+msgid "Ocean"
+msgstr ""
+
+#: includes/class-config.php:38
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:19
+msgid "Sunset"
+msgstr ""
+
+#: includes/class-config.php:42
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:23
+msgid "Forest"
+msgstr ""
+
+#: includes/class-config.php:46
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:27
+msgid "Grape"
+msgstr ""
+
+#: includes/class-config.php:50
+#: build/index.js:1
+#: build/view.js:1
+#: src/lib/palettes.js:31
+msgid "Monochrome"
+msgstr ""
+
+#: includes/class-renderer.php:83
+msgid "No data to display yet."
+msgstr ""
+
+#: includes/class-renderer.php:93
+#: build/index.js:5
+#: src/edit.js:428
+msgid "Source:"
+msgstr ""
+
+#: includes/class-renderer.php:169
+msgid "Chart data"
+msgstr ""
+
+#: includes/class-renderer.php:175
+#: build/index.js:5
+#: src/components/data-table.js:82
+msgid "Category"
+msgstr ""
+
+#. translators: %d: series number.
+#: includes/class-renderer.php:182
+#: build/index.js:5
+#: src/components/data-table.js:63
+#, php-format,js-format
+msgid "Series %d"
+msgstr ""
+
+#: includes/class-renderer.php:250
+msgid "Bar chart"
+msgstr ""
+
+#: includes/class-renderer.php:251
+msgid "Line chart"
+msgstr ""
+
+#: includes/class-renderer.php:252
+msgid "Area chart"
+msgstr ""
+
+#: includes/class-renderer.php:253
+msgid "Pie chart"
+msgstr ""
+
+#: includes/class-renderer.php:254
+msgid "Doughnut chart"
+msgstr ""
+
+#: includes/class-renderer.php:255
+msgid "Statistic"
+msgstr ""
+
+#. translators: 1: chart type, 2: chart title.
+#: includes/class-renderer.php:265
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#: includes/class-rest.php:72
+msgid "Your session has expired. Reload the editor and try again."
+msgstr ""
+
+#: includes/class-rest.php:80
+msgid "You are not allowed to import chart data."
+msgstr ""
+
+#: build/index.js:1
+#: src/components/chart-preview.js:34
+msgid "Add rows in the Data tab to draw the chart."
+msgstr ""
+
+#. translators: %d: number of imported rows.
+#: build/index.js:3
+#: src/components/csv-import.js:30
+msgid "Data imported."
+msgstr ""
+
+#: build/index.js:3
+#: src/components/csv-import.js:21
+msgid "No rows were found. The first line must hold the column names."
+msgstr ""
+
+#: build/index.js:3
+#: src/components/csv-import.js:61
+msgid "Paste CSV"
+msgstr ""
+
+#: build/index.js:3
+#: src/components/csv-import.js:62
+msgid "First row: the category column followed by one column per series."
+msgstr ""
+
+#: build/index.js:3
+#: src/components/csv-import.js:71
+msgid "Import data"
+msgstr ""
+
+#: build/index.js:3
+#: src/components/csv-import.js:81
+msgid "Fill from current table"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:90
+#: src/components/data-table.js:91
+msgid "Series name"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:98
+msgid "Remove column"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:110
+#: src/components/data-table.js:164
+msgid "Add column"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:125
+#: src/edit.js:344
+msgid "Label"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:126
+msgid "Category label"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:138
+#: src/edit.js:337
+msgid "Value"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:147
+msgid "Remove row"
+msgstr ""
+
+#: build/index.js:5
+#: src/components/data-table.js:161
+msgid "Add row"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:31
+msgid "Bars"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:32
+msgid "Lines"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:33
+msgid "Area"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:34
+msgid "Pie"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:35
+msgid "Doughnut"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:36
+#: src/edit.js:334
+msgid "Single number"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:42
+msgid "Q1"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:43
+msgid "Q2"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:44
+msgid "Q3"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:45
+msgid "Q4"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:48
+msgid "This year"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:49
+msgid "Last year"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:130
+msgid "Preview"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:136
+#: src/edit.js:374
+msgid "Data"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:144
+msgid "Hide chart"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:144
+#: src/edit.js:168
+msgid "Show chart"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:151
+msgid "Chart"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:169
+msgid "Turn off to keep the data in the post without drawing it."
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:177
+msgid "Height (px)"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:187
+msgid "Content"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:190
+msgid "Title"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:196
+msgid "Show title"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:202
+#: src/edit.js:434
+msgid "Data source"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:208
+msgid "Show data source"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:214
+msgid "Display options"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:219
+msgid "Legend"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:225
+msgid "Value labels"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:232
+msgid "Grid lines"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:240
+msgid "Stacked bars"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:248
+msgid "Smooth lines"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:255
+msgid "Data table below the chart"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:256
+msgid "The table is always in the markup for screen readers; this shows it to everyone."
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:265
+msgid "Decimals"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:274
+msgid "Value prefix"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:280
+msgid "Value suffix"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:287
+msgid "Style"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:288
+msgid "Color palette"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:310
+msgid "Theme"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:313
+msgid "Light"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:314
+msgid "Dark"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:315
+msgid "Follow the reader’s device"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:322
+msgid "Text direction"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:325
+msgid "Follow the site"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:326
+msgid "Right to left"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:327
+msgid "Left to right"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:338
+msgid "Leave empty to use the first value of the table."
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:350
+msgid "Change"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:356
+msgid "Trend"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:359
+msgid "Up"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:360
+msgid "Down"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:361
+msgid "Flat"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:367
+msgid "Caption"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:381
+msgid "Open the data table"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:393
+msgid "Chart title…"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:394
+msgid "Chart title"
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:411
+msgid "A single number is edited in the “Single number” panel on the right."
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:419
+msgid "The chart is hidden on the front end."
+msgstr ""
+
+#: build/index.js:5
+#: src/edit.js:433
+msgid "Data source…"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block title"
+msgid "Statista Chart"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block description"
+msgid "Add a clean, responsive chart or a single statistic anywhere inside your post."
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block keyword"
+msgid "chart"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block keyword"
+msgid "graph"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block keyword"
+msgid "statistics"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block keyword"
+msgid "data"
+msgstr ""
+
+#: build/block.json
+#: src/block.json
+msgctxt "block keyword"
+msgid "csv"
+msgstr ""

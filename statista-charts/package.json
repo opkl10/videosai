@@ -1,0 +1,22 @@
+{
+	"name": "statista-charts",
+	"version": "1.0.0",
+	"description": "Beautiful statistics and charts inside WordPress posts.",
+	"license": "GPL-2.0-or-later",
+	"private": true,
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"lint:js": "wp-scripts lint-js src",
+		"make-pot": "wp i18n make-pot . languages/statista-charts.pot --slug=statista-charts --exclude=node_modules,build",
+		"make-json": "wp i18n make-json languages --no-purge --pretty"
+	},
+	"dependencies": {
+		"chart.js": "4.4.7"
+	},
+	"devDependencies": {
+		"@wordpress/i18n": "5.14.0",
+		"@wordpress/scripts": "30.7.0"
+	}
+}

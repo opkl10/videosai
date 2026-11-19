@@ -1,0 +1,468 @@
+# Hebrew translation for the Statista Charts plugin.
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Statista Charts 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
+"POT-Creation-Date: 2026-11-19T11:47:41+00:00\n"
+"Language-Team: Hebrew\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: statista-charts\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: statista-charts.php
+msgid "Statista Charts"
+msgstr "סטטיסטה גרפים"
+
+#. Plugin URI of the plugin
+#: statista-charts.php
+msgid "https://example.com/statista-charts"
+msgstr ""
+
+#. Description of the plugin
+#: statista-charts.php
+msgid ""
+"Beautiful, responsive statistics and charts inside posts — a Gutenberg block "
+"plus a matching [statista_chart] shortcode."
+msgstr ""
+"סטטיסטיקות וגרפים נקיים ורספונסיביים בתוך הפוסטים — בלוק לגוטנברג ולצידו "
+"שורטקוד [statista_chart]."
+
+#: includes/class-block.php:77
+msgid ""
+"Statista Charts: the build directory is missing. Run \"npm install && npm "
+"run build\" inside the plugin folder."
+msgstr ""
+"סטטיסטה גרפים: תיקיית ה-build חסרה. הריצו \"npm install && npm run build\" "
+"בתיקיית התוסף."
+
+#: includes/class-config.php:30 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:11
+msgid "Statista"
+msgstr "סטטיסטה"
+
+#: includes/class-config.php:34 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:15
+msgid "Ocean"
+msgstr "אוקיינוס"
+
+#: includes/class-config.php:38 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:19
+msgid "Sunset"
+msgstr "שקיעה"
+
+#: includes/class-config.php:42 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:23
+msgid "Forest"
+msgstr "יער"
+
+#: includes/class-config.php:46 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:27
+msgid "Grape"
+msgstr "ענבים"
+
+#: includes/class-config.php:50 build/index.js:1 build/view.js:1
+#: src/lib/palettes.js:31
+msgid "Monochrome"
+msgstr "מונוכרום"
+
+#: includes/class-renderer.php:83
+msgid "No data to display yet."
+msgstr "עדיין אין נתונים להצגה."
+
+#: includes/class-renderer.php:93 build/index.js:5 src/edit.js:428
+msgid "Source:"
+msgstr "מקור:"
+
+#: includes/class-renderer.php:169
+msgid "Chart data"
+msgstr "נתוני הגרף"
+
+#: includes/class-renderer.php:175 build/index.js:5
+#: src/components/data-table.js:82
+msgid "Category"
+msgstr "קטגוריה"
+
+#. translators: %d: series number.
+#: includes/class-renderer.php:182 build/index.js:5
+#: src/components/data-table.js:63
+#, php-format
+msgid "Series %d"
+msgstr "סדרה %d"
+
+#: includes/class-renderer.php:250
+msgid "Bar chart"
+msgstr "גרף עמודות"
+
+#: includes/class-renderer.php:251
+msgid "Line chart"
+msgstr "גרף קווים"
+
+#: includes/class-renderer.php:252
+msgid "Area chart"
+msgstr "גרף שטח"
+
+#: includes/class-renderer.php:253
+msgid "Pie chart"
+msgstr "גרף עוגה"
+
+#: includes/class-renderer.php:254
+msgid "Doughnut chart"
+msgstr "גרף דונאט"
+
+#: includes/class-renderer.php:255
+msgid "Statistic"
+msgstr "נתון"
+
+#. translators: 1: chart type, 2: chart title.
+#: includes/class-renderer.php:265
+#, php-format
+msgid "%1$s: %2$s"
+msgstr "%1$s: %2$s"
+
+#: includes/class-rest.php:72
+msgid "Your session has expired. Reload the editor and try again."
+msgstr "פג תוקף ההתחברות. רעננו את העורך ונסו שוב."
+
+#: includes/class-rest.php:80
+msgid "You are not allowed to import chart data."
+msgstr "אין לכם הרשאה לייבא נתוני גרף."
+
+#: build/index.js:1 src/components/chart-preview.js:34
+msgid "Add rows in the Data tab to draw the chart."
+msgstr "הוסיפו שורות בלשונית הנתונים כדי לצייר את הגרף."
+
+#. translators: %d: number of imported rows.
+#: build/index.js:3 src/components/csv-import.js:30
+msgid "Data imported."
+msgstr "הנתונים יובאו בהצלחה."
+
+#: build/index.js:3 src/components/csv-import.js:21
+msgid "No rows were found. The first line must hold the column names."
+msgstr "לא נמצאו שורות. השורה הראשונה חייבת להכיל את שמות העמודות."
+
+#: build/index.js:3 src/components/csv-import.js:61
+msgid "Paste CSV"
+msgstr "הדבקת CSV"
+
+#: build/index.js:3 src/components/csv-import.js:62
+msgid "First row: the category column followed by one column per series."
+msgstr "השורה הראשונה: עמודת הקטגוריות ואחריה עמודה לכל סדרה."
+
+#: build/index.js:3 src/components/csv-import.js:71
+msgid "Import data"
+msgstr "ייבוא נתונים"
+
+#: build/index.js:3 src/components/csv-import.js:81
+msgid "Fill from current table"
+msgstr "מילוי מהטבלה הנוכחית"
+
+#: build/index.js:5 src/components/data-table.js:90
+#: src/components/data-table.js:91
+msgid "Series name"
+msgstr "שם הסדרה"
+
+#: build/index.js:5 src/components/data-table.js:98
+msgid "Remove column"
+msgstr "מחיקת עמודה"
+
+#: build/index.js:5 src/components/data-table.js:110
+#: src/components/data-table.js:164
+msgid "Add column"
+msgstr "הוספת עמודה"
+
+#: build/index.js:5 src/components/data-table.js:125 src/edit.js:344
+msgid "Label"
+msgstr "תווית"
+
+#: build/index.js:5 src/components/data-table.js:126
+msgid "Category label"
+msgstr "תווית הקטגוריה"
+
+#: build/index.js:5 src/components/data-table.js:138 src/edit.js:337
+msgid "Value"
+msgstr "ערך"
+
+#: build/index.js:5 src/components/data-table.js:147
+msgid "Remove row"
+msgstr "מחיקת שורה"
+
+#: build/index.js:5 src/components/data-table.js:161
+msgid "Add row"
+msgstr "הוספת שורה"
+
+#: build/index.js:5 src/edit.js:31
+msgid "Bars"
+msgstr "עמודות"
+
+#: build/index.js:5 src/edit.js:32
+msgid "Lines"
+msgstr "קווים"
+
+#: build/index.js:5 src/edit.js:33
+msgid "Area"
+msgstr "שטח"
+
+#: build/index.js:5 src/edit.js:34
+msgid "Pie"
+msgstr "עוגה"
+
+#: build/index.js:5 src/edit.js:35
+msgid "Doughnut"
+msgstr "דונאט"
+
+#: build/index.js:5 src/edit.js:36 src/edit.js:334
+msgid "Single number"
+msgstr "מספר בודד"
+
+#: build/index.js:5 src/edit.js:42
+msgid "Q1"
+msgstr "רבעון 1"
+
+#: build/index.js:5 src/edit.js:43
+msgid "Q2"
+msgstr "רבעון 2"
+
+#: build/index.js:5 src/edit.js:44
+msgid "Q3"
+msgstr "רבעון 3"
+
+#: build/index.js:5 src/edit.js:45
+msgid "Q4"
+msgstr "רבעון 4"
+
+#: build/index.js:5 src/edit.js:48
+msgid "This year"
+msgstr "השנה"
+
+#: build/index.js:5 src/edit.js:49
+msgid "Last year"
+msgstr "אשתקד"
+
+#: build/index.js:5 src/edit.js:130
+msgid "Preview"
+msgstr "תצוגה מקדימה"
+
+#: build/index.js:5 src/edit.js:136 src/edit.js:374
+msgid "Data"
+msgstr "נתונים"
+
+#: build/index.js:5 src/edit.js:144
+msgid "Hide chart"
+msgstr "הסתרת הגרף"
+
+#: build/index.js:5 src/edit.js:144 src/edit.js:168
+msgid "Show chart"
+msgstr "הצגת הגרף"
+
+#: build/index.js:5 src/edit.js:151
+msgid "Chart"
+msgstr "גרף"
+
+#: build/index.js:5 src/edit.js:169
+msgid "Turn off to keep the data in the post without drawing it."
+msgstr "כבו כדי להשאיר את הנתונים בפוסט בלי לצייר אותם."
+
+#: build/index.js:5 src/edit.js:177
+msgid "Height (px)"
+msgstr "גובה (פיקסלים)"
+
+#: build/index.js:5 src/edit.js:187
+msgid "Content"
+msgstr "תוכן"
+
+#: build/index.js:5 src/edit.js:190
+msgid "Title"
+msgstr "כותרת"
+
+#: build/index.js:5 src/edit.js:196
+msgid "Show title"
+msgstr "הצגת הכותרת"
+
+#: build/index.js:5 src/edit.js:202 src/edit.js:434
+msgid "Data source"
+msgstr "מקור הנתונים"
+
+#: build/index.js:5 src/edit.js:208
+msgid "Show data source"
+msgstr "הצגת מקור הנתונים"
+
+#: build/index.js:5 src/edit.js:214
+msgid "Display options"
+msgstr "אפשרויות תצוגה"
+
+#: build/index.js:5 src/edit.js:219
+msgid "Legend"
+msgstr "מקרא"
+
+#: build/index.js:5 src/edit.js:225
+msgid "Value labels"
+msgstr "תוויות ערכים"
+
+#: build/index.js:5 src/edit.js:232
+msgid "Grid lines"
+msgstr "קווי רשת"
+
+#: build/index.js:5 src/edit.js:240
+msgid "Stacked bars"
+msgstr "עמודות מוערמות"
+
+#: build/index.js:5 src/edit.js:248
+msgid "Smooth lines"
+msgstr "קווים מעוגלים"
+
+#: build/index.js:5 src/edit.js:255
+msgid "Data table below the chart"
+msgstr "טבלת נתונים מתחת לגרף"
+
+#: build/index.js:5 src/edit.js:256
+msgid ""
+"The table is always in the markup for screen readers; this shows it to "
+"everyone."
+msgstr "הטבלה תמיד קיימת בקוד עבור קוראי מסך; כאן היא מוצגת לכל הקוראים."
+
+#: build/index.js:5 src/edit.js:265
+msgid "Decimals"
+msgstr "ספרות אחרי הנקודה"
+
+#: build/index.js:5 src/edit.js:274
+msgid "Value prefix"
+msgstr "תחילית לערך"
+
+#: build/index.js:5 src/edit.js:280
+msgid "Value suffix"
+msgstr "סיומת לערך"
+
+#: build/index.js:5 src/edit.js:287
+msgid "Style"
+msgstr "עיצוב"
+
+#: build/index.js:5 src/edit.js:288
+msgid "Color palette"
+msgstr "ערכת צבעים"
+
+#: build/index.js:5 src/edit.js:310
+msgid "Theme"
+msgstr "ערכת נושא"
+
+#: build/index.js:5 src/edit.js:313
+msgid "Light"
+msgstr "בהיר"
+
+#: build/index.js:5 src/edit.js:314
+msgid "Dark"
+msgstr "כהה"
+
+#: build/index.js:5 src/edit.js:315
+msgid "Follow the reader’s device"
+msgstr "לפי המכשיר של הקורא"
+
+#: build/index.js:5 src/edit.js:322
+msgid "Text direction"
+msgstr "כיוון הטקסט"
+
+#: build/index.js:5 src/edit.js:325
+msgid "Follow the site"
+msgstr "לפי האתר"
+
+#: build/index.js:5 src/edit.js:326
+msgid "Right to left"
+msgstr "מימין לשמאל"
+
+#: build/index.js:5 src/edit.js:327
+msgid "Left to right"
+msgstr "משמאל לימין"
+
+#: build/index.js:5 src/edit.js:338
+msgid "Leave empty to use the first value of the table."
+msgstr "השאירו ריק כדי להשתמש בערך הראשון שבטבלה."
+
+#: build/index.js:5 src/edit.js:350
+msgid "Change"
+msgstr "שינוי"
+
+#: build/index.js:5 src/edit.js:356
+msgid "Trend"
+msgstr "מגמה"
+
+#: build/index.js:5 src/edit.js:359
+msgid "Up"
+msgstr "עלייה"
+
+#: build/index.js:5 src/edit.js:360
+msgid "Down"
+msgstr "ירידה"
+
+#: build/index.js:5 src/edit.js:361
+msgid "Flat"
+msgstr "ללא שינוי"
+
+#: build/index.js:5 src/edit.js:367
+msgid "Caption"
+msgstr "כיתוב"
+
+#: build/index.js:5 src/edit.js:381
+msgid "Open the data table"
+msgstr "פתיחת טבלת הנתונים"
+
+#: build/index.js:5 src/edit.js:393
+msgid "Chart title…"
+msgstr "כותרת הגרף…"
+
+#: build/index.js:5 src/edit.js:394
+msgid "Chart title"
+msgstr "כותרת הגרף"
+
+#: build/index.js:5 src/edit.js:411
+msgid "A single number is edited in the “Single number” panel on the right."
+msgstr "מספר בודד נערך בלוח ״מספר בודד״ שבסרגל הצד."
+
+#: build/index.js:5 src/edit.js:419
+msgid "The chart is hidden on the front end."
+msgstr "הגרף מוסתר בצד הקורא."
+
+#: build/index.js:5 src/edit.js:433
+msgid "Data source…"
+msgstr "מקור הנתונים…"
+
+#: build/block.json src/block.json
+msgctxt "block title"
+msgid "Statista Chart"
+msgstr "גרף סטטיסטה"
+
+#: build/block.json src/block.json
+msgctxt "block description"
+msgid ""
+"Add a clean, responsive chart or a single statistic anywhere inside your "
+"post."
+msgstr "הוסיפו גרף נקי ורספונסיבי או נתון בודד בכל מקום בפוסט."
+
+#: build/block.json src/block.json
+msgctxt "block keyword"
+msgid "chart"
+msgstr "גרף"
+
+#: build/block.json src/block.json
+msgctxt "block keyword"
+msgid "graph"
+msgstr "תרשים"
+
+#: build/block.json src/block.json
+msgctxt "block keyword"
+msgid "statistics"
+msgstr "סטטיסטיקה"
+
+#: build/block.json src/block.json
+msgctxt "block keyword"
+msgid "data"
+msgstr "נתונים"
+
+#: build/block.json src/block.json
+msgctxt "block keyword"
+msgid "csv"
+msgstr "csv"

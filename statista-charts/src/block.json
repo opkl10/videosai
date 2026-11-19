@@ -1,0 +1,137 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "statista/chart",
+	"version": "1.0.0",
+	"title": "Statista Chart",
+	"category": "media",
+	"icon": "chart-bar",
+	"description": "Add a clean, responsive chart or a single statistic anywhere inside your post.",
+	"keywords": [ "chart", "graph", "statistics", "data", "csv" ],
+	"textdomain": "statista-charts",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": false
+		},
+		"anchor": true
+	},
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "bar"
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"source": {
+			"type": "string",
+			"default": ""
+		},
+		"showSource": {
+			"type": "boolean",
+			"default": true
+		},
+		"showChart": {
+			"type": "boolean",
+			"default": true
+		},
+		"showLegend": {
+			"type": "boolean",
+			"default": true
+		},
+		"showValues": {
+			"type": "boolean",
+			"default": false
+		},
+		"showGrid": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTable": {
+			"type": "boolean",
+			"default": false
+		},
+		"stacked": {
+			"type": "boolean",
+			"default": false
+		},
+		"smooth": {
+			"type": "boolean",
+			"default": true
+		},
+		"palette": {
+			"type": "string",
+			"default": "statista"
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		},
+		"direction": {
+			"type": "string",
+			"default": "auto"
+		},
+		"height": {
+			"type": "number",
+			"default": 360
+		},
+		"decimals": {
+			"type": "number",
+			"default": 0
+		},
+		"prefix": {
+			"type": "string",
+			"default": ""
+		},
+		"suffix": {
+			"type": "string",
+			"default": ""
+		},
+		"labels": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "string"
+			}
+		},
+		"series": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"statValue": {
+			"type": "string",
+			"default": ""
+		},
+		"statLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"statDelta": {
+			"type": "string",
+			"default": ""
+		},
+		"statTrend": {
+			"type": "string",
+			"default": "up"
+		},
+		"statCaption": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
