@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "statista/stats",
+  "version": "1.2.0",
+  "title": "Statista Stat Cards",
+  "category": "media",
+  "icon": "dashboard",
+  "description": "A row of cards for percentages and single figures, written straight into the card.",
+  "keywords": [
+    "statistics",
+    "kpi",
+    "percent",
+    "number",
+    "card"
+  ],
+  "textdomain": "statista-charts",
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": false
+    },
+    "anchor": true
+  },
+  "attributes": {
+    "cards": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object"
+      }
+    },
+    "columns": {
+      "type": "number",
+      "default": 0
+    },
+    "showBar": {
+      "type": "boolean",
+      "default": true
+    },
+    "palette": {
+      "type": "string",
+      "default": "statista"
+    },
+    "theme": {
+      "type": "string",
+      "default": "light"
+    },
+    "direction": {
+      "type": "string",
+      "default": "auto"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

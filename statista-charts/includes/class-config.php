@@ -280,6 +280,136 @@ class Config {
 	}
 
 	/**
+	 * Parses pasted data, in whichever of the two formats it is written.
+	 *
+	 * Most lines of `label: value` content carry a colon, which a CSV export
+	 * practically never does.
+	 *
+	 * @param string $text Raw text.
+	 * @return array{labels: string[], series: array<int, array<string, mixed>>} Parsed data.
+	 */
+	public static function parse_data( $text ) {
+		$lines = array_filter( array_map( 'trim', explode( "\n", str_replace( array( "\r\n", "\r" ), "\n", (string) $text ) ) ) );
+
+		if ( empty( $lines ) ) {
+			return array(
+				'labels' => array(),
+				'series' => array(),
+			);
+		}
+
+		$with_colon = 0;
+		foreach ( $lines as $line ) {
+			if ( false !== strpos( $line, ':' ) ) {
+				++$with_colon;
+			}
+		}
+
+		return $with_colon > count( $lines ) / 2 ? self::parse_simple_list( $text ) : self::parse_csv( $text );
+	}
+
+	/**
+	 * Parses the "one line per item" format, `label: value`.
+	 *
+	 * The counterpart of `src/lib/simple-list.js`, used wherever the editor is
+	 * not available: the shortcode and the Elementor widgets. A colon, an equals
+	 * sign, a tab, a spaced dash, plain spaces or a comma all separate the label
+	 * from the value; empty lines are dropped.
+	 *
+	 * @param string $text Raw text, one item per line.
+	 * @return array{labels: string[], series: array<int, array<string, mixed>>} Parsed data.
+	 */
+	public static function parse_simple_list( $text ) {
+		$text  = str_replace( array( "\r\n", "\r" ), "\n", (string) $text );
+		$lines = explode( "\n", $text );
+
+		$labels = array();
+		$values = array();
+
+		foreach ( $lines as $raw_line ) {
+			$line = trim( $raw_line );
+
+			if ( '' === $line ) {
+				continue;
+			}
+
+			// A bare number keeps its position as the label.
+			if ( preg_match( '/^[\d\s.,%+\-–₪$€£]+$/u', $line ) ) {
+				$only = self::to_number( $line );
+
+				if ( null !== $only ) {
+					$labels[] = (string) ( count( $labels ) + 1 );
+					$values[] = $only;
+					continue;
+				}
+			}
+
+			list( $label, $raw_value ) = self::split_simple_line( $line );
+			$value                     = self::to_number( $raw_value );
+
+			// "120 January" reads as well as "January 120".
+			if ( null === $value && '' !== $raw_value && null !== self::to_number( $label ) ) {
+				$value = self::to_number( $label );
+				$label = $raw_value;
+			}
+
+			$labels[] = $label;
+			$values[] = $value;
+		}
+
+		return array(
+			'labels' => $labels,
+			'series' => empty( $labels ) ? array() : array(
+				array(
+					'label' => '',
+					'data'  => $values,
+				),
+			),
+		);
+	}
+
+	/**
+	 * Splits one line of the simple format into a label and a raw value.
+	 *
+	 * Separators are tried in order, and whitespace comes before the comma so
+	 * that "January 1,200" keeps its thousands separator.
+	 *
+	 * @param string $line One trimmed line.
+	 * @return array{0: string, 1: string} Label and raw value.
+	 */
+	private static function split_simple_line( $line ) {
+		$separators = array( '/[:：]/u', '/=/u', '/\t/u', '/\s[-–—]\s/u', '/\s+/u', '/,/u' );
+
+		foreach ( $separators as $pattern ) {
+			if ( ! preg_match_all( $pattern, $line, $matches, PREG_OFFSET_CAPTURE ) ) {
+				continue;
+			}
+
+			$last   = end( $matches[0] );
+			$offset = (int) $last[1];
+
+			if ( $offset > 0 ) {
+				return array(
+					self::trim_edges( substr( $line, 0, $offset ) ),
+					self::trim_edges( substr( $line, $offset + strlen( $last[0] ) ) ),
+				);
+			}
+		}
+
+		return array( self::trim_edges( $line ), '' );
+	}
+
+	/**
+	 * Strips separator characters left at either end of a label or a value.
+	 *
+	 * @param string $text Raw text.
+	 * @return string Trimmed text.
+	 */
+	private static function trim_edges( $text ) {
+		return (string) preg_replace( '/^[\s,;:=–—-]+|[\s,;:=–—-]+$/u', '', (string) $text );
+	}
+
+	/**
 	 * Parses a CSV/TSV string into labels and series.
 	 *
 	 * The first row is treated as the header: its first cell names the category

@@ -1,22 +1,25 @@
 === Statista Charts ===
 Contributors: statistacharts
-Tags: chart, graph, statistics, gutenberg, csv
+Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Beautiful, responsive statistics and charts inside posts: a Gutenberg block plus a matching [statista_chart] shortcode.
+Beautiful, responsive statistics and charts inside posts: Gutenberg blocks, Elementor widgets and a matching [statista_chart] shortcode.
 
 == Description ==
 
-Statista Charts adds a "Statista Chart" block you can drop anywhere inside a post, and a shortcode for classic editors, widgets and page builders.
+Statista Charts adds three blocks you can drop anywhere inside a post — a chart, a row of stat cards and a whole dashboard — plus two Elementor widgets and a shortcode for classic editors.
 
 Features:
 
 * Chart types: bars, lines, area, pie, doughnut and a single number ("stat card").
+* A "Statista Stat Cards" block for percentages and single figures: an icon, a label, the number, an up or down change and a bar drawn for percentages.
+* A "Statista Dashboard" block: banner, metric cards, a grid of charts and an optional side panel.
+* Elementor widgets for the chart and the stat cards, with the same data format and the same palettes.
 * Data entry in the block itself: write one line per item, `label: value`, and the chart follows every keystroke. A table with several series and CSV import wait under "Advanced options".
 * Toggles for the chart itself, the title, the data source, the legend, the value labels, the grid and a visible data table.
 * Six color palettes, light/dark/automatic themes, and full RTL and Hebrew support.
@@ -32,6 +35,8 @@ February: 138
 March: 151`
 
 A colon, a comma, a tab or a dash all separate the name from the number, empty lines are ignored, and values such as `1,200`, `58%` or `₪1,250` are understood. One click fills the example in. The multi-series table, CSV import and the ready-made templates sit behind "Advanced options"; everything else lives in the sidebar.
+
+Elementor: open the widget panel, search for "Statista", and drag in "Statista Chart" or "Statista Stat Cards". The chart widget takes the same one-line-per-item data; the cards widget is a repeater where each row is one card.
 
 Shortcode:
 
@@ -51,7 +56,7 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 
 1. Upload the plugin zip in Plugins → Add New → Upload Plugin.
 2. Activate it.
-3. Add the "Statista Chart" block to a post, or use the [statista_chart] shortcode.
+3. Add the "Statista Chart", "Statista Stat Cards" or "Statista Dashboard" block to a post, drag a Statista widget into an Elementor page, or use the [statista_chart] shortcode.
 
 == Development ==
 
@@ -60,6 +65,11 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.2.0 =
+* New "Statista Stat Cards" block: a row of cards for percentages and single figures, with an optional bar and an up or down change.
+* Elementor widgets for the chart and the stat cards.
+* The shortcode now also accepts data written one line per item, not only CSV.
 
 = 1.1.0 =
 * Data is now entered as plain lines of "label: value" right under the chart, updating it live; the table, CSV import and templates moved behind "Advanced options".

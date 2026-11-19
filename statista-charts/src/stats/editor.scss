@@ -1,0 +1,106 @@
+/**
+ * Editor-only styles: every part of a card is a field that looks like the text
+ * it will become.
+ */
+
+.statista-stats.ss-editor {
+	.sc-input {
+		margin: 0;
+		padding: 2px 6px;
+		background: transparent;
+		border: 1px solid transparent;
+		border-radius: 6px;
+		color: inherit;
+		font: inherit;
+		max-width: 100%;
+		box-shadow: none;
+
+		&:hover {
+			border-color: currentColor;
+		}
+
+		&:focus {
+			border-color: currentColor;
+			outline: none;
+			box-shadow: 0 0 0 1px currentColor;
+		}
+
+		&::placeholder {
+			color: currentColor;
+			opacity: 0.5;
+		}
+	}
+
+	.ss-card--editing {
+		position: relative;
+	}
+
+	.ss-card__toolbar {
+		position: absolute;
+		inset-block-start: 8px;
+		inset-inline-end: 8px;
+		display: flex;
+		gap: 2px;
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+
+	.ss-card--editing:hover .ss-card__toolbar,
+	.ss-card--editing:focus-within .ss-card__toolbar {
+		opacity: 1;
+	}
+
+	/* The fields keep the look of the text they produce, so the card reads the
+	   same here as it will on the page. */
+	.ss-card__icon.sc-input {
+		width: 38px;
+		text-align: center;
+		background: color-mix(in srgb, var(--ss-color, var(--sc-accent)) 14%, transparent);
+	}
+
+	.ss-card__label.sc-input,
+	.ss-card__note.sc-input {
+		width: 100%;
+		color: var(--ss-muted);
+	}
+
+	.ss-card__label.sc-input {
+		font-size: 0.9375rem;
+		font-weight: 500;
+	}
+
+	.ss-card__note.sc-input {
+		font-size: 0.8125rem;
+	}
+
+	.ss-card__value.sc-input {
+		width: 100%;
+		font-size: clamp(1.9rem, 4.6vw, 2.5rem);
+		font-weight: 700;
+		line-height: 1.15;
+		color: var(--ss-color, var(--sc-accent));
+	}
+
+	.ss-card__delta .sc-input {
+		width: 72px;
+	}
+
+	.ss-card--add.components-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		min-height: 150px;
+		height: auto;
+		background: transparent;
+		border: 1px dashed var(--ss-border);
+		border-radius: var(--ss-radius);
+		color: var(--ss-muted);
+		font-size: 13px;
+
+		&:hover {
+			border-color: var(--sc-accent);
+			color: var(--sc-accent);
+		}
+	}
+}

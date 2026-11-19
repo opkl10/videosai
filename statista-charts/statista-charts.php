@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Statista Charts
  * Plugin URI:        https://example.com/statista-charts
- * Description:       Beautiful, responsive statistics and charts inside posts — a Gutenberg block plus a matching [statista_chart] shortcode.
- * Version:           1.1.0
+ * Description:       Beautiful, responsive statistics and charts inside posts — Gutenberg blocks, Elementor widgets and a matching [statista_chart] shortcode.
+ * Version:           1.2.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Statista Charts
@@ -19,7 +19,7 @@ namespace StatistaCharts;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'STATISTA_CHARTS_VERSION', '1.1.0' );
+define( 'STATISTA_CHARTS_VERSION', '1.2.0' );
 define( 'STATISTA_CHARTS_FILE', __FILE__ );
 define( 'STATISTA_CHARTS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'STATISTA_CHARTS_URL', plugin_dir_url( __FILE__ ) );
@@ -27,9 +27,11 @@ define( 'STATISTA_CHARTS_URL', plugin_dir_url( __FILE__ ) );
 require_once STATISTA_CHARTS_PATH . 'includes/class-config.php';
 require_once STATISTA_CHARTS_PATH . 'includes/class-renderer.php';
 require_once STATISTA_CHARTS_PATH . 'includes/class-block.php';
+require_once STATISTA_CHARTS_PATH . 'includes/class-stats.php';
 require_once STATISTA_CHARTS_PATH . 'includes/class-dashboard.php';
 require_once STATISTA_CHARTS_PATH . 'includes/class-shortcode.php';
 require_once STATISTA_CHARTS_PATH . 'includes/class-rest.php';
+require_once STATISTA_CHARTS_PATH . 'includes/class-elementor.php';
 
 /**
  * Boot the plugin once WordPress is ready.
@@ -38,9 +40,11 @@ require_once STATISTA_CHARTS_PATH . 'includes/class-rest.php';
  */
 function bootstrap() {
 	Block::init();
+	Stats::init();
 	Dashboard::init();
 	Shortcode::init();
 	Rest::init();
+	Elementor_Support::init();
 }
 add_action( 'init', __NAMESPACE__ . '\\bootstrap' );
 

@@ -111,7 +111,7 @@ class Shortcode {
 		$csv = trim( wp_strip_all_tags( (string) $content ) );
 
 		if ( '' !== $csv ) {
-			$parsed        = Config::parse_csv( $csv );
+			$parsed        = Config::parse_data( $csv );
 			$raw['labels'] = $parsed['labels'];
 			$raw['series'] = $parsed['series'];
 		} else {
