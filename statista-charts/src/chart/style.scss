@@ -272,3 +272,19 @@
 		padding: 16px;
 	}
 }
+
+/* Stat cards shown above a chart inside the same block. */
+.statista-chart .statista-stats {
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 12px;
+	margin: 0 0 18px;
+}
+
+.statista-chart .statista-stats .ss-card {
+	padding: 16px;
+	box-shadow: none;
+}
+
+.statista-chart .statista-stats .ss-card__value {
+	font-size: clamp(1.5rem, 3.4vw, 1.9rem);
+}

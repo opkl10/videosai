@@ -83,23 +83,39 @@ class Stats {
 			$clean['showBar'] = Config::to_bool( $raw['showBar'] );
 		}
 
-		if ( isset( $raw['cards'] ) && is_array( $raw['cards'] ) ) {
-			foreach ( $raw['cards'] as $card ) {
-				if ( ! is_array( $card ) ) {
-					continue;
-				}
+		$clean['cards'] = self::sanitize_cards( isset( $raw['cards'] ) ? $raw['cards'] : array() );
 
-				$trend = isset( $card['trend'] ) ? sanitize_key( (string) $card['trend'] ) : 'none';
+		return $clean;
+	}
 
-				$clean['cards'][] = array(
-					'icon'  => isset( $card['icon'] ) ? sanitize_text_field( (string) $card['icon'] ) : '',
-					'label' => isset( $card['label'] ) ? sanitize_text_field( (string) $card['label'] ) : '',
-					'value' => isset( $card['value'] ) ? sanitize_text_field( (string) $card['value'] ) : '',
-					'delta' => isset( $card['delta'] ) ? sanitize_text_field( (string) $card['delta'] ) : '',
-					'note'  => isset( $card['note'] ) ? sanitize_text_field( (string) $card['note'] ) : '',
-					'trend' => in_array( $trend, array( 'up', 'down', 'none' ), true ) ? $trend : 'none',
-				);
+	/**
+	 * Sanitizes a list of cards, wherever it comes from.
+	 *
+	 * @param mixed $raw Raw cards.
+	 * @return array<int, array<string, string>> Clean cards.
+	 */
+	public static function sanitize_cards( $raw ) {
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+
+		$clean = array();
+
+		foreach ( $raw as $card ) {
+			if ( ! is_array( $card ) ) {
+				continue;
 			}
+
+			$trend = isset( $card['trend'] ) ? sanitize_key( (string) $card['trend'] ) : 'none';
+
+			$clean[] = array(
+				'icon'  => isset( $card['icon'] ) ? sanitize_text_field( (string) $card['icon'] ) : '',
+				'label' => isset( $card['label'] ) ? sanitize_text_field( (string) $card['label'] ) : '',
+				'value' => isset( $card['value'] ) ? sanitize_text_field( (string) $card['value'] ) : '',
+				'delta' => isset( $card['delta'] ) ? sanitize_text_field( (string) $card['delta'] ) : '',
+				'note'  => isset( $card['note'] ) ? sanitize_text_field( (string) $card['note'] ) : '',
+				'trend' => in_array( $trend, array( 'up', 'down', 'none' ), true ) ? $trend : 'none',
+			);
 		}
 
 		return $clean;

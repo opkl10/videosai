@@ -21,6 +21,7 @@ import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import AdvancedData from '../components/advanced-data';
+import CardsRow, { exampleCards } from '../components/cards-row';
 import ChartPreview from '../components/chart-preview';
 import QuickEntry from '../components/quick-entry';
 import StatCard from '../components/stat-card';
@@ -48,6 +49,9 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 		source,
 		showSource,
 		showChart,
+		showCards,
+		cardsBar,
+		cards,
 		showLegend,
 		showValues,
 		showGrid,
@@ -117,6 +121,17 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 						label={ showChart ? __( 'Hide chart', 'statista-charts' ) : __( 'Show chart', 'statista-charts' ) }
 						onClick={ () => setAttributes( { showChart: ! showChart } ) }
 					/>
+					<ToolbarButton
+						icon="dashboard"
+						isPressed={ showCards }
+						label={ showCards ? __( 'Hide the stat cards', 'statista-charts' ) : __( 'Show stat cards', 'statista-charts' ) }
+						onClick={ () =>
+							setAttributes( {
+								showCards: ! showCards,
+								cards: ! showCards && cards.length === 0 ? exampleCards() : cards,
+							} )
+						}
+					/>
 				</ToolbarGroup>
 			</BlockControls>
 
@@ -154,6 +169,34 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							step={ 10 }
 							onChange={ ( value ) => setAttributes( { height: value || 360 } ) }
 						/>
+					) }
+				</PanelBody>
+
+				<PanelBody title={ __( 'Stat cards', 'statista-charts' ) } initialOpen={ false }>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Show stat cards', 'statista-charts' ) }
+						help={ __( 'A row of percentages or figures above the chart. Both can be shown on their own.', 'statista-charts' ) }
+						checked={ showCards }
+						onChange={ ( value ) =>
+							setAttributes( {
+								showCards: value,
+								cards: value && cards.length === 0 ? exampleCards() : cards,
+							} )
+						}
+					/>
+					{ showCards && (
+						<>
+							<ToggleControl
+								__nextHasNoMarginBottom
+								label={ __( 'Show a bar for percentages', 'statista-charts' ) }
+								checked={ cardsBar }
+								onChange={ ( value ) => setAttributes( { cardsBar: value } ) }
+							/>
+							<Button variant="secondary" size="compact" onClick={ () => setAttributes( { cards: exampleCards() } ) }>
+								{ __( 'Fill in example cards', 'statista-charts' ) }
+							</Button>
+						</>
 					) }
 				</PanelBody>
 
@@ -383,6 +426,17 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 							onChange={ ( event ) => setAttributes( { title: event.target.value } ) }
 						/>
 					</figcaption>
+				) }
+
+				{ showCards && (
+					<CardsRow
+						cards={ cards }
+						colors={ config.colors }
+						theme={ resolveTheme( theme ) }
+						showBar={ cardsBar }
+						isSelected={ isSelected }
+						onChange={ ( next ) => setAttributes( { cards: next } ) }
+					/>
 				) }
 
 				{ ! showChart && (

@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.3.0 =
+* The chart block can now show a row of stat cards above the chart, with separate switches for the cards and for the chart itself — so one block can be cards only, a chart only, or both.
+* The same two switches reached the shortcode, as show_cards, cards_bar and cards.
 
 = 1.2.0 =
 * New "Statista Stat Cards" block: a row of cards for percentages and single figures, with an optional bar and an up or down change.

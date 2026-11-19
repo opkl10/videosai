@@ -312,3 +312,12 @@
 		font-size: 12px;
 	}
 }
+
+/* The cards shown above a chart are a little smaller than standalone ones. */
+.statista-chart.sc-editor .statista-stats .ss-card__value.sc-input {
+	font-size: clamp(1.5rem, 3.4vw, 1.9rem);
+}
+
+.statista-chart.sc-editor .statista-stats .ss-card--add.components-button {
+	min-height: 110px;
+}

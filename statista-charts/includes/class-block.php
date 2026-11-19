@@ -59,6 +59,11 @@ class Block {
 	public static function render( $attributes ) {
 		$config = Config::sanitize( $attributes );
 
+		// The cards borrow the stat card block's stylesheet.
+		if ( $config['showCards'] && ! empty( $config['cards'] ) ) {
+			wp_enqueue_style( generate_block_asset_handle( Stats::NAME, 'style' ) );
+		}
+
 		return Renderer::render( $config, get_block_wrapper_attributes() );
 	}
 

@@ -55,6 +55,9 @@ class Shortcode {
 				'source'       => '',
 				'show_source'  => 'true',
 				'show_chart'   => 'true',
+				'show_cards'   => 'false',
+				'cards_bar'    => 'true',
+				'cards'        => '',
 				'show_legend'  => 'true',
 				'show_values'  => 'false',
 				'show_grid'    => 'true',
@@ -88,6 +91,9 @@ class Shortcode {
 			'source'      => $atts['source'],
 			'showSource'  => $atts['show_source'],
 			'showChart'   => $atts['show_chart'],
+			'showCards'   => $atts['show_cards'],
+			'cardsBar'    => $atts['cards_bar'],
+			'cards'       => self::parse_cards( $atts['cards'] ),
 			'showLegend'  => $atts['show_legend'],
 			'showValues'  => $atts['show_values'],
 			'showGrid'    => $atts['show_grid'],
@@ -135,9 +141,51 @@ class Shortcode {
 	private static function enqueue_assets( $config ) {
 		wp_enqueue_style( generate_block_asset_handle( Block::NAME, 'style' ) );
 
+		if ( $config['showCards'] && ! empty( $config['cards'] ) ) {
+			wp_enqueue_style( generate_block_asset_handle( Stats::NAME, 'style' ) );
+		}
+
 		if ( 'stat' !== $config['type'] ) {
 			wp_enqueue_script( generate_block_asset_handle( Block::NAME, 'viewScript' ) );
 		}
+	}
+
+	/**
+	 * Parses the `cards` attribute.
+	 *
+	 * One card per semicolon, its parts separated by pipes:
+	 * `📈|Conversion rate|27.4%|+3.2%|up ; 🛒|Abandonment|68%|-1.5%|down`.
+	 *
+	 * @param string $value Attribute value.
+	 * @return array<int, array<string, string>> Cards.
+	 */
+	private static function parse_cards( $value ) {
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return array();
+		}
+
+		$cards = array();
+
+		foreach ( explode( ';', $value ) as $chunk ) {
+			if ( '' === trim( $chunk ) ) {
+				continue;
+			}
+
+			$parts = array_map( 'trim', explode( '|', $chunk ) );
+
+			$cards[] = array(
+				'icon'  => isset( $parts[0] ) ? $parts[0] : '',
+				'label' => isset( $parts[1] ) ? $parts[1] : '',
+				'value' => isset( $parts[2] ) ? $parts[2] : '',
+				'delta' => isset( $parts[3] ) ? $parts[3] : '',
+				'trend' => isset( $parts[4] ) ? $parts[4] : 'none',
+				'note'  => isset( $parts[5] ) ? $parts[5] : '',
+			);
+		}
+
+		return $cards;
 	}
 
 	/**

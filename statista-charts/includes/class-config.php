@@ -86,6 +86,9 @@ class Config {
 			'decimals'    => 0,
 			'prefix'      => '',
 			'suffix'      => '',
+			'showCards'   => false,
+			'cardsBar'    => true,
+			'cards'       => array(),
 			'labels'      => array(),
 			'series'      => array(),
 			'statValue'   => '',
@@ -116,7 +119,7 @@ class Config {
 			}
 		}
 
-		foreach ( array( 'showTitle', 'showSource', 'showChart', 'showLegend', 'showValues', 'showGrid', 'showTable', 'stacked', 'smooth' ) as $key ) {
+		foreach ( array( 'showTitle', 'showSource', 'showChart', 'showCards', 'cardsBar', 'showLegend', 'showValues', 'showGrid', 'showTable', 'stacked', 'smooth' ) as $key ) {
 			if ( isset( $raw[ $key ] ) ) {
 				$config[ $key ] = self::to_bool( $raw[ $key ] );
 			}
@@ -144,6 +147,7 @@ class Config {
 			$config['decimals'] = min( 4, max( 0, absint( $raw['decimals'] ) ) );
 		}
 
+		$config['cards']  = Stats::sanitize_cards( self::pick( $raw, 'cards' ) );
 		$config['labels'] = self::sanitize_labels( self::pick( $raw, 'labels' ) );
 		$config['series'] = self::sanitize_series( self::pick( $raw, 'series' ), count( $config['labels'] ) );
 

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-19T16:45:29+00:00\n"
+"POT-Creation-Date: 2026-11-19T16:58:34+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgstr ""
 "סטטיסטיקות וגרפים יפים ורספונסיביים בתוך פוסטים — בלוקים לגוטנברג, ווידג'טים"
 " לאלמנטור ושורטקוד [statista_chart]."
 
-#: includes/class-block.php:77
+#: includes/class-block.php:82
 msgid ""
 "Statista Charts: the build directory is missing. Run \"npm install && npm "
 "run build\" inside the plugin folder."
@@ -103,54 +103,54 @@ msgstr "מימין לשמאל"
 msgid "Left to right"
 msgstr "משמאל לימין"
 
-#: includes/class-renderer.php:83
+#: includes/class-renderer.php:87
 msgid "No data to display yet."
 msgstr "עדיין אין נתונים להצגה."
 
-#: includes/class-renderer.php:93 build/chart/index.js:6
+#: includes/class-renderer.php:97 build/chart/index.js:6
 msgid "Source:"
 msgstr "מקור:"
 
-#: includes/class-renderer.php:169
+#: includes/class-renderer.php:193
 msgid "Chart data"
 msgstr "נתוני הגרף"
 
-#: includes/class-renderer.php:175 build/chart/index.js:5
+#: includes/class-renderer.php:199 build/chart/index.js:5
 msgid "Category"
 msgstr "קטגוריה"
 
 #. translators: %d: series number.
-#: includes/class-renderer.php:182 build/chart/index.js:5
+#: includes/class-renderer.php:206 build/chart/index.js:5
 #, php-format
 msgid "Series %d"
 msgstr "סדרה %d"
 
-#: includes/class-renderer.php:250
+#: includes/class-renderer.php:274
 msgid "Bar chart"
 msgstr "גרף עמודות"
 
-#: includes/class-renderer.php:251
+#: includes/class-renderer.php:275
 msgid "Line chart"
 msgstr "גרף קווים"
 
-#: includes/class-renderer.php:252
+#: includes/class-renderer.php:276
 msgid "Area chart"
 msgstr "גרף שטח"
 
-#: includes/class-renderer.php:253
+#: includes/class-renderer.php:277
 msgid "Pie chart"
 msgstr "גרף עוגה"
 
-#: includes/class-renderer.php:254
+#: includes/class-renderer.php:278
 msgid "Doughnut chart"
 msgstr "גרף דונאט"
 
-#: includes/class-renderer.php:255
+#: includes/class-renderer.php:279
 msgid "Statistic"
 msgstr "נתון"
 
 #. translators: 1: chart type, 2: chart title.
-#: includes/class-renderer.php:265
+#: includes/class-renderer.php:289
 #, php-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
@@ -219,13 +219,14 @@ msgid "The number"
 msgstr "המספר"
 
 #: includes/elementor/class-chart-widget.php:152
-#: includes/elementor/class-stats-widget.php:103 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:103 build/chart/index.js:5
+#: build/stats/index.js:1
 msgid "What it measures"
 msgstr "מה נמדד"
 
 #: includes/elementor/class-chart-widget.php:162
-#: includes/elementor/class-stats-widget.php:123 build/chart/index.js:6
-#: build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:123 build/chart/index.js:5
+#: build/chart/index.js:6 build/stats/index.js:1
 msgid "Change"
 msgstr "שינוי"
 
@@ -332,8 +333,8 @@ msgstr "כרטיסי נתונים סטטיסטה"
 msgid "Cards"
 msgstr "כרטיסים"
 
-#: includes/elementor/class-stats-widget.php:93 build/dashboard/index.js:1
-#: build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:93 build/chart/index.js:5
+#: build/dashboard/index.js:1 build/stats/index.js:1
 msgid "Icon"
 msgstr "אייקון"
 
@@ -342,11 +343,13 @@ msgid "Any emoji, or leave it empty."
 msgstr "כל אמוג'י, או שאפשר להשאיר ריק."
 
 #: includes/elementor/class-stats-widget.php:106
-#: includes/elementor/class-stats-widget.php:161 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:161 build/chart/index.js:5
+#: build/stats/index.js:1
 msgid "Conversion rate"
 msgstr "שיעור המרה"
 
-#: includes/elementor/class-stats-widget.php:113 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:113 build/chart/index.js:5
+#: build/stats/index.js:1
 msgid "Figure"
 msgstr "הנתון"
 
@@ -359,11 +362,13 @@ msgstr "אחוז, סכום או כל מספר קצר. אחוז גם מצייר �
 msgid "No arrow"
 msgstr "בלי חץ"
 
-#: includes/elementor/class-stats-widget.php:146 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:146 build/chart/index.js:5
+#: build/stats/index.js:1
 msgid "Note"
 msgstr "הערה"
 
-#: includes/elementor/class-stats-widget.php:169 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:169 build/chart/index.js:5
+#: build/stats/index.js:1
 msgid "Cart abandonment"
 msgstr "נטישת עגלה"
 
@@ -375,7 +380,8 @@ msgstr "כרטיסים בשורה"
 msgid "Fit automatically"
 msgstr "התאמה אוטומטית"
 
-#: includes/elementor/class-stats-widget.php:207 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:207 build/chart/index.js:6
+#: build/stats/index.js:1
 msgid "Show a bar for percentages"
 msgstr "הצגת פס לאחוזים"
 
@@ -556,6 +562,30 @@ msgstr "טבלה עם כמה סדרות"
 msgid "Import from CSV"
 msgstr "ייבוא מקובץ CSV"
 
+#: build/chart/index.js:5 build/stats/index.js:1
+msgid "Change direction: up, down or none"
+msgstr "שינוי כיוון: עלייה, ירידה או בלי חץ"
+
+#: build/chart/index.js:5 build/dashboard/index.js:1 build/stats/index.js:1
+msgid "Remove card"
+msgstr "מחיקת הכרטיס"
+
+#: build/chart/index.js:5 build/stats/index.js:1
+msgid "+3.2%"
+msgstr "+3.2%"
+
+#: build/chart/index.js:5 build/stats/index.js:1
+msgid "A short note (optional)"
+msgstr "הערה קצרה (לא חובה)"
+
+#: build/chart/index.js:5
+msgid "Visitors"
+msgstr "מבקרים"
+
+#: build/chart/index.js:5 build/stats/index.js:1
+msgid "Add a card"
+msgstr "הוספת כרטיס"
+
 #: build/chart/index.js:5
 msgid "Write your data in the field below and the chart appears here."
 msgstr "כתבו את הנתונים בשדה שמתחת, והגרף יופיע כאן."
@@ -612,6 +642,14 @@ msgid "Show chart"
 msgstr "הצגת הגרף"
 
 #: build/chart/index.js:6
+msgid "Hide the stat cards"
+msgstr "הסתרת כרטיסי הנתונים"
+
+#: build/chart/index.js:6
+msgid "Show stat cards"
+msgstr "הצגת כרטיסי נתונים"
+
+#: build/chart/index.js:6
 msgid "Chart"
 msgstr "גרף"
 
@@ -622,6 +660,20 @@ msgstr "כבו כדי להשאיר את הנתונים בפוסט בלי לצי�
 #: build/chart/index.js:6
 msgid "Height (px)"
 msgstr "גובה (פיקסלים)"
+
+#: build/chart/index.js:6
+msgid "Stat cards"
+msgstr "כרטיסי נתונים"
+
+#: build/chart/index.js:6
+msgid ""
+"A row of percentages or figures above the chart. Both can be shown on their "
+"own."
+msgstr "שורת אחוזים או מספרים מעל הגרף. אפשר להציג כל אחד מהם בנפרד."
+
+#: build/chart/index.js:6 build/stats/index.js:1
+msgid "Fill in example cards"
+msgstr "מילוי כרטיסי דוגמה"
 
 #: build/chart/index.js:6
 msgid "Content"
@@ -720,10 +772,6 @@ msgstr "חזרה לערך אחד"
 #: build/dashboard/index.js:1
 msgid "Split into two values"
 msgstr "פיצול לשני ערכים"
-
-#: build/dashboard/index.js:1 build/stats/index.js:1
-msgid "Remove card"
-msgstr "מחיקת הכרטיס"
 
 #: build/dashboard/index.js:1
 msgid "Metric name"
@@ -893,18 +941,6 @@ msgid "Button text"
 msgstr "טקסט הכפתור"
 
 #: build/stats/index.js:1
-msgid "Change direction: up, down or none"
-msgstr "שינוי כיוון: עלייה, ירידה או בלי חץ"
-
-#: build/stats/index.js:1
-msgid "+3.2%"
-msgstr "+3.2%"
-
-#: build/stats/index.js:1
-msgid "A short note (optional)"
-msgstr "הערה קצרה (לא חובה)"
-
-#: build/stats/index.js:1
 msgid ""
 "Write the figure straight into the card — a percentage, a sum or any short "
 "number."
@@ -923,20 +959,12 @@ msgid "Across all channels"
 msgstr "בכל הערוצים"
 
 #: build/stats/index.js:1
-msgid "Fill in example cards"
-msgstr "מילוי כרטיסי דוגמה"
-
-#: build/stats/index.js:1
 msgid "Layout"
 msgstr "פריסה"
 
 #: build/stats/index.js:1
 msgid "Drawn only for values written with a percent sign."
 msgstr "מצויר רק לערכים שנכתבו עם סימן אחוז."
-
-#: build/stats/index.js:1
-msgid "Add a card"
-msgstr "הוספת כרטיס"
 
 #: build/chart/block.json
 msgctxt "block title"

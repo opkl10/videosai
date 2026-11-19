@@ -67,6 +67,10 @@ class Renderer {
 				</figcaption>
 			<?php endif; ?>
 
+			<?php if ( $config['showCards'] && ! empty( $config['cards'] ) ) : ?>
+				<?php echo self::cards( $config ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in Stats::markup(). ?>
+			<?php endif; ?>
+
 			<?php if ( $config['showChart'] ) : ?>
 				<?php if ( 'stat' === $config['type'] ) : ?>
 					<?php echo self::stat_card( $config ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in stat_card(). ?>
@@ -79,7 +83,7 @@ class Renderer {
 						></canvas>
 						<div class="sc-loading" aria-hidden="true"><span class="sc-spinner"></span></div>
 					</div>
-				<?php else : ?>
+				<?php elseif ( ! $config['showCards'] || empty( $config['cards'] ) ) : ?>
 					<p class="sc-empty"><?php esc_html_e( 'No data to display yet.', 'statista-charts' ); ?></p>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -98,6 +102,26 @@ class Renderer {
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Renders the stat cards that sit above the chart, in the chart's own colours.
+	 *
+	 * @param array $config Sanitized configuration.
+	 * @return string Cards HTML.
+	 */
+	private static function cards( $config ) {
+		return Stats::markup(
+			array(
+				'cards'     => $config['cards'],
+				'columns'   => 0,
+				'showBar'   => $config['cardsBar'],
+				'palette'   => $config['palette'],
+				'colors'    => $config['colors'],
+				'theme'     => $config['theme'],
+				'direction' => $config['direction'],
+			)
+		);
 	}
 
 	/**
