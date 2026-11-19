@@ -74,10 +74,12 @@
 }
 
 .statista-dashboard .sd-brand__logo {
-	width: 22px;
-	height: 22px;
+	width: auto;
+	max-width: 100%;
+	/* Height drives the size so a wide logo keeps its proportions. */
+	height: var(--sd-logo-size, 22px);
 	border-radius: 6px;
-	object-fit: cover;
+	object-fit: contain;
 }
 
 .statista-dashboard .sd-title {
@@ -136,6 +138,15 @@
 
 .statista-dashboard.sd-no-panel .sd-body {
 	grid-template-columns: minmax(0, 1fr);
+}
+
+/* Plugins that inject markup after every block (share buttons, "join us"
+   boxes, ads) land inside the dashboard. Give anything that is not ours a row
+   of its own instead of a seat in the chart grid or the side panel column. */
+.statista-dashboard .sd-body > *:not(.sd-main):not(.sd-panel),
+.statista-dashboard .sd-grid > *:not(.statista-chart) {
+	grid-column: 1 / -1;
+	min-width: 0;
 }
 
 .statista-dashboard .sd-main {

@@ -9,7 +9,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { Button, PanelBody, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
+import { Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import KpiCard from './kpi-card';
@@ -95,6 +95,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const {
 		brandName,
 		logoUrl,
+		logoSize,
 		title,
 		titleAccent,
 		meta,
@@ -106,6 +107,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		direction,
 		kpis,
 		showPanel,
+		showPanelButton,
 		panelImage,
 		panelKicker,
 		panelTitle,
@@ -137,6 +139,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			'--sc-accent': colors[ 0 ],
 			'--sc-accent-2': colors[ 1 ],
 			'--sd-banner': banner,
+			'--sd-logo-size': `${ logoSize }px`,
 		},
 	} );
 
@@ -171,6 +174,18 @@ export default function Edit( { attributes, setAttributes } ) {
 						onSelect={ ( url ) => setAttributes( { logoUrl: url } ) }
 						onClear={ () => setAttributes( { logoUrl: '' } ) }
 					/>
+					{ logoUrl !== '' && (
+						<RangeControl
+							__nextHasNoMarginBottom
+							label={ __( 'Logo size (px)', 'statista-charts' ) }
+							value={ logoSize }
+							min={ 14 }
+							max={ 160 }
+							step={ 2 }
+							onChange={ ( value ) => setAttributes( { logoSize: value || 22 } ) }
+						/>
+					) }
+
 					<ImageField
 						label={ __( 'Banner background', 'statista-charts' ) }
 						url={ bannerImage }
@@ -198,13 +213,22 @@ export default function Edit( { attributes, setAttributes } ) {
 						checked={ showPanel }
 						onChange={ ( value ) => setAttributes( { showPanel: value } ) }
 					/>
-					<TextControl
+					<ToggleControl
 						__nextHasNoMarginBottom
-						label={ __( 'Button link', 'statista-charts' ) }
-						value={ panelButtonUrl }
-						placeholder="https://…"
-						onChange={ ( value ) => setAttributes( { panelButtonUrl: value } ) }
+						label={ __( 'Show the button', 'statista-charts' ) }
+						help={ __( 'Turn off to keep the panel without a call to action.', 'statista-charts' ) }
+						checked={ showPanelButton }
+						onChange={ ( value ) => setAttributes( { showPanelButton: value } ) }
 					/>
+					{ showPanelButton && (
+						<TextControl
+							__nextHasNoMarginBottom
+							label={ __( 'Button link', 'statista-charts' ) }
+							value={ panelButtonUrl }
+							placeholder="https://…"
+							onChange={ ( value ) => setAttributes( { panelButtonUrl: value } ) }
+						/>
+					) }
 				</PanelBody>
 
 				<PanelBody title={ __( 'Style', 'statista-charts' ) } initialOpen={ false }>
@@ -369,14 +393,16 @@ export default function Edit( { attributes, setAttributes } ) {
 								aria-label={ __( 'Panel text', 'statista-charts' ) }
 								onChange={ ( event ) => setAttributes( { panelText: event.target.value } ) }
 							/>
-							<input
-								type="text"
-								className="sd-panel__button sd-input"
-								value={ panelButtonText }
-								placeholder={ __( 'Button text', 'statista-charts' ) }
-								aria-label={ __( 'Button text', 'statista-charts' ) }
-								onChange={ ( event ) => setAttributes( { panelButtonText: event.target.value } ) }
-							/>
+							{ showPanelButton && (
+								<input
+									type="text"
+									className="sd-panel__button sd-input"
+									value={ panelButtonText }
+									placeholder={ __( 'Button text', 'statista-charts' ) }
+									aria-label={ __( 'Button text', 'statista-charts' ) }
+									onChange={ ( event ) => setAttributes( { panelButtonText: event.target.value } ) }
+								/>
+							) }
 						</aside>
 					) }
 				</div>

@@ -57,6 +57,7 @@ class Dashboard {
 		$clean = array(
 			'brandName'       => '',
 			'logoUrl'         => '',
+			'logoSize'        => 22,
 			'title'           => '',
 			'titleAccent'     => '',
 			'meta'            => '',
@@ -68,6 +69,7 @@ class Dashboard {
 			'direction'       => 'auto',
 			'kpis'            => array(),
 			'showPanel'       => true,
+			'showPanelButton' => true,
 			'panelImage'      => '',
 			'panelKicker'     => '',
 			'panelTitle'      => '',
@@ -107,6 +109,14 @@ class Dashboard {
 			$clean['showPanel'] = Config::to_bool( $raw['showPanel'] );
 		}
 
+		if ( isset( $raw['showPanelButton'] ) ) {
+			$clean['showPanelButton'] = Config::to_bool( $raw['showPanelButton'] );
+		}
+
+		if ( isset( $raw['logoSize'] ) ) {
+			$clean['logoSize'] = min( 160, max( 14, absint( $raw['logoSize'] ) ) );
+		}
+
 		if ( isset( $raw['kpis'] ) && is_array( $raw['kpis'] ) ) {
 			foreach ( $raw['kpis'] as $kpi ) {
 				if ( ! is_array( $kpi ) ) {
@@ -144,15 +154,18 @@ class Dashboard {
 			'sc-dir-' . $direction,
 		);
 
-		if ( ! $data['showPanel'] || '' === $data['panelTitle'] . $data['panelText'] . $data['panelButtonText'] ) {
+		$panel_button = $data['showPanelButton'] ? $data['panelButtonText'] : '';
+
+		if ( ! $data['showPanel'] || '' === $data['panelTitle'] . $data['panelText'] . $panel_button ) {
 			$classes[] = 'sd-no-panel';
 		}
 
 		$style = sprintf(
-			'--sc-accent: %1$s; --sc-accent-2: %2$s; --sd-banner: %3$s;',
+			'--sc-accent: %1$s; --sc-accent-2: %2$s; --sd-banner: %3$s; --sd-logo-size: %4$dpx;',
 			$data['colors'][0],
 			$data['colors'][1],
-			self::banner_background( $data )
+			self::banner_background( $data ),
+			$data['logoSize']
 		);
 
 		ob_start();
@@ -356,7 +369,8 @@ class Dashboard {
 	 * @return string Panel HTML.
 	 */
 	private static function panel( $data ) {
-		$has_content = '' !== $data['panelTitle'] || '' !== $data['panelText'] || '' !== $data['panelButtonText'];
+		$button      = $data['showPanelButton'] ? $data['panelButtonText'] : '';
+		$has_content = '' !== $data['panelTitle'] || '' !== $data['panelText'] || '' !== $button;
 
 		if ( ! $data['showPanel'] || ! $has_content ) {
 			return '';
@@ -381,7 +395,7 @@ class Dashboard {
 				<p class="sd-panel__text"><?php echo esc_html( $data['panelText'] ); ?></p>
 			<?php endif; ?>
 
-			<?php if ( '' !== $data['panelButtonText'] ) : ?>
+			<?php if ( $data['showPanelButton'] && '' !== $data['panelButtonText'] ) : ?>
 				<a
 					class="sd-panel__button"
 					href="<?php echo esc_url( '' !== $data['panelButtonUrl'] ? $data['panelButtonUrl'] : '#' ); ?>"

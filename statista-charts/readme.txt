@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,11 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.0 =
+* The dashboard logo has a size slider, and a wide logo keeps its proportions.
+* The side panel button can be switched off without clearing its text.
+* Markup that other plugins inject after every block now gets a full-width row inside the dashboard instead of a seat in the chart grid or next to the side panel.
 
 = 1.3.0 =
 * The chart block can now show a row of stat cards above the chart, with separate switches for the cards and for the chart itself — so one block can be cards only, a chart only, or both.
