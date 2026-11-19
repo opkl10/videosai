@@ -43,6 +43,11 @@ class Dashboard {
 			'statista-charts',
 			STATISTA_CHARTS_PATH . 'languages'
 		);
+
+		// Run after share / WhatsApp / Telegram plugins have already glued
+		// their boxes onto the first paragraph or heading in the post.
+		add_filter( 'render_block', array( __CLASS__, 'scrub_rendered_block' ), 999, 2 );
+		add_filter( 'the_content', array( __CLASS__, 'scrub_content' ), 9999 );
 	}
 
 	/**
@@ -350,6 +355,272 @@ class Dashboard {
 	}
 
 	/**
+	 * Cleans a rendered dashboard block after other plugins have had a turn.
+	 *
+	 * @param string $html  Rendered block HTML.
+	 * @param array  $block Block being rendered.
+	 * @return string
+	 */
+	public static function scrub_rendered_block( $html, $block ) {
+		if ( ! isset( $block['blockName'] ) || self::NAME !== $block['blockName'] ) {
+			return $html;
+		}
+
+		return self::scrub_html( (string) $html );
+	}
+
+	/**
+	 * Cleans dashboards inside post content after `the_content` filters.
+	 *
+	 * WhatsApp / Telegram plugins commonly splice their box after the first
+	 * `<p>` or `<h2>` in the post. That paragraph used to be the brand line
+	 * inside the banner, which is why the buttons appeared there.
+	 *
+	 * @param string $content Post content.
+	 * @return string
+	 */
+	public static function scrub_content( $content ) {
+		if ( ! is_string( $content ) || false === strpos( $content, 'statista-dashboard' ) ) {
+			return $content;
+		}
+
+		return self::scrub_html( $content );
+	}
+
+	/**
+	 * Pulls foreign nodes out of every dashboard in an HTML fragment.
+	 *
+	 * @param string $html HTML that may contain a dashboard.
+	 * @return string
+	 */
+	private static function scrub_html( $html ) {
+		if ( '' === trim( $html ) || ! class_exists( '\DOMDocument' ) ) {
+			return $html;
+		}
+
+		$doc      = new \DOMDocument();
+		$previous = libxml_use_internal_errors( true );
+		$loaded   = $doc->loadHTML(
+			'<?xml encoding="utf-8" ?><div id="statista-root">' . $html . '</div>',
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+
+		$root = $loaded ? $doc->getElementById( 'statista-root' ) : null;
+
+		if ( ! $root ) {
+			return $html;
+		}
+
+		$xpath      = new \DOMXPath( $doc );
+		$dashboards = $xpath->query( './/*[contains(concat(" ", normalize-space(@class), " "), " statista-dashboard ")]', $root );
+
+		if ( ! $dashboards || 0 === $dashboards->length ) {
+			return $html;
+		}
+
+		$changed = false;
+
+		foreach ( iterator_to_array( $dashboards ) as $dashboard ) {
+			$foreign = array();
+			self::pull_foreign_from( $dashboard, $doc, $foreign );
+
+			if ( empty( $foreign ) ) {
+				continue;
+			}
+
+			$changed = true;
+			$markup  = (string) apply_filters( 'statista_charts_foreign_markup', implode( '', $foreign ) );
+
+			if ( '' === trim( $markup ) ) {
+				continue;
+			}
+
+			$after = $dashboard->nextSibling;
+			$place = null;
+
+			while ( $after ) {
+				if ( XML_ELEMENT_NODE === $after->nodeType ) {
+					$classes = ' ' . (string) $after->getAttribute( 'class' ) . ' ';
+
+					if ( false !== strpos( $classes, ' statista-dashboard-after ' ) ) {
+						$place = $after;
+						break;
+					}
+
+					break;
+				}
+
+				$after = $after->nextSibling;
+			}
+
+			if ( ! $place ) {
+				$place = $doc->createElement( 'div' );
+				$place->setAttribute( 'class', 'statista-dashboard-after' );
+
+				if ( $dashboard->parentNode ) {
+					$dashboard->parentNode->insertBefore( $place, $dashboard->nextSibling );
+				}
+			}
+
+			// The foreign HTML was serialized from this same document, so a
+			// second parse is the reliable way to append it back.
+			$tmp      = new \DOMDocument();
+			$tmp_prev = libxml_use_internal_errors( true );
+			$tmp->loadHTML(
+				'<?xml encoding="utf-8" ?><div id="statista-moved">' . $markup . '</div>',
+				LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+			);
+			libxml_clear_errors();
+			libxml_use_internal_errors( $tmp_prev );
+
+			$moved = $tmp->getElementById( 'statista-moved' );
+
+			if ( $moved ) {
+				foreach ( iterator_to_array( $moved->childNodes ) as $child ) {
+					$place->appendChild( $doc->importNode( $child, true ) );
+				}
+			}
+		}
+
+		if ( ! $changed ) {
+			return $html;
+		}
+
+		$out = '';
+
+		foreach ( $root->childNodes as $child ) {
+			$out .= $doc->saveHTML( $child );
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Moves unknown element children of a node (and of its descendants) out.
+	 *
+	 * @param \DOMNode $parent  Node to walk.
+	 * @param \DOMDocument $doc Owner document.
+	 * @param array        $foreign Collected HTML, by reference.
+	 * @return void
+	 */
+	private static function pull_foreign_from( $parent, $doc, &$foreign ) {
+		if ( ! $parent || ! $parent->childNodes ) {
+			return;
+		}
+
+		foreach ( iterator_to_array( $parent->childNodes ) as $node ) {
+			if ( XML_ELEMENT_NODE !== $node->nodeType ) {
+				continue;
+			}
+
+			if ( self::node_belongs( $node ) ) {
+				self::pull_foreign_from( $node, $doc, $foreign );
+				continue;
+			}
+
+			$foreign[] = $doc->saveHTML( $node );
+			$parent->removeChild( $node );
+		}
+	}
+
+	/**
+	 * Tells whether a node is part of the dashboard, a chart, or a native
+	 * element that those components legitimately contain (image, canvas…).
+	 *
+	 * @param \DOMNode $node Node to test.
+	 * @return bool
+	 */
+	private static function node_belongs( $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType ) {
+			return false;
+		}
+
+		$tag = strtolower( $node->nodeName );
+
+		static $keep_tags = array(
+			'img'      => true,
+			'canvas'   => true,
+			'svg'      => true,
+			'path'     => true,
+			'g'        => true,
+			'table'    => true,
+			'thead'    => true,
+			'tbody'    => true,
+			'tfoot'    => true,
+			'tr'       => true,
+			'th'       => true,
+			'td'       => true,
+			'col'      => true,
+			'colgroup' => true,
+			'caption'  => true,
+			'br'       => true,
+			'script'   => true,
+			'style'    => true,
+			'noscript' => true,
+		);
+
+		if ( isset( $keep_tags[ $tag ] ) ) {
+			return true;
+		}
+
+		if ( self::class_is_ours( (string) $node->getAttribute( 'class' ) ) ) {
+			return true;
+		}
+
+		return self::wraps_ours( $node ) || self::wraps_frame( $node );
+	}
+
+	/**
+	 * Tells whether a class list belongs to this plugin or a WP block wrapper.
+	 *
+	 * @param string $class Class attribute.
+	 * @return bool
+	 */
+	private static function class_is_ours( $class ) {
+		foreach ( preg_split( '/\s+/', (string) $class ) as $token ) {
+			if ( '' === $token ) {
+				continue;
+			}
+
+			if ( 0 === strpos( $token, 'sd-' )
+				|| 0 === strpos( $token, 'sc-' )
+				|| 0 === strpos( $token, 'ss-' )
+				|| 0 === strpos( $token, 'statista-' )
+				|| 0 === strpos( $token, 'wp-block-' ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Tells whether a dashboard frame (banner, body, panel) sits below a node.
+	 *
+	 * @param \DOMNode $node Node to search.
+	 * @return bool
+	 */
+	private static function wraps_frame( $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType ) {
+			return false;
+		}
+
+		$xpath = new \DOMXPath( $node->ownerDocument );
+
+		foreach ( array( 'sd-banner', 'sd-body', 'sd-main', 'sd-grid', 'sd-panel', 'sd-kpis' ) as $name ) {
+			$found = $xpath->query( ".//*[contains(concat(' ', normalize-space(@class), ' '), ' " . $name . " ')]", $node );
+
+			if ( $found && $found->length > 0 ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Builds the banner background: the artwork when there is one, over a
 	 * gradient taken from the palette.
 	 *
@@ -416,27 +687,27 @@ class Dashboard {
 		<header class="sd-banner">
 			<div class="sd-banner__text">
 				<?php if ( '' !== $data['logoUrl'] || '' !== $data['brandName'] ) : ?>
-					<p class="sd-brand">
+					<div class="sd-brand">
 						<?php if ( '' !== $data['logoUrl'] ) : ?>
 							<img class="sd-brand__logo" src="<?php echo esc_url( $data['logoUrl'] ); ?>" alt="" />
 						<?php endif; ?>
 						<?php if ( '' !== $data['brandName'] ) : ?>
 							<span class="sd-brand__name"><?php echo esc_html( $data['brandName'] ); ?></span>
 						<?php endif; ?>
-					</p>
+					</div>
 				<?php endif; ?>
 
 				<?php if ( '' !== $data['title'] || '' !== $data['titleAccent'] ) : ?>
-					<h2 class="sd-title">
+					<div class="sd-title" role="heading" aria-level="2">
 						<span class="sd-title__main"><?php echo esc_html( $data['title'] ); ?></span>
 						<?php if ( '' !== $data['titleAccent'] ) : ?>
 							<span class="sd-title__accent"><?php echo esc_html( $data['titleAccent'] ); ?></span>
 						<?php endif; ?>
-					</h2>
+					</div>
 				<?php endif; ?>
 
 				<?php if ( '' !== $data['meta'] || '' !== $data['updated'] ) : ?>
-					<p class="sd-meta">
+					<div class="sd-meta">
 						<?php if ( '' !== $data['meta'] ) : ?>
 							<span class="sd-meta__item"><?php echo esc_html( $data['meta'] ); ?></span>
 						<?php endif; ?>
@@ -451,7 +722,7 @@ class Dashboard {
 								?>
 							</span>
 						<?php endif; ?>
-					</p>
+					</div>
 				<?php endif; ?>
 			</div>
 
@@ -538,15 +809,15 @@ class Dashboard {
 			<?php endif; ?>
 
 			<?php if ( '' !== $data['panelKicker'] ) : ?>
-				<p class="sd-panel__kicker"><?php echo esc_html( $data['panelKicker'] ); ?></p>
+				<div class="sd-panel__kicker"><?php echo esc_html( $data['panelKicker'] ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $data['panelTitle'] ) : ?>
-				<h3 class="sd-panel__title"><?php echo esc_html( $data['panelTitle'] ); ?></h3>
+				<div class="sd-panel__title" role="heading" aria-level="3"><?php echo esc_html( $data['panelTitle'] ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( '' !== $data['panelText'] ) : ?>
-				<p class="sd-panel__text"><?php echo esc_html( $data['panelText'] ); ?></p>
+				<div class="sd-panel__text"><?php echo esc_html( $data['panelText'] ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( $data['showPanelButton'] && '' !== $data['panelButtonText'] ) : ?>

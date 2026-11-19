@@ -52,6 +52,9 @@
 	gap: 20px;
 	padding: clamp(18px, 2.6vw, 30px) clamp(18px, 3vw, 34px);
 	min-height: 140px;
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
 	background-image: var(--sd-banner);
 	background-size: cover;
 	background-position: center;
@@ -140,19 +143,22 @@
 	grid-template-columns: minmax(0, 1fr);
 }
 
-/* Markup other plugins injected between the charts, moved out of the
-   dashboard so it cannot sit on top of the chart area. */
+/* Markup other plugins injected into the dashboard, moved below it. */
 .statista-dashboard-after {
 	margin-top: 14px;
 }
 
-/* Plugins that inject markup after every block (share buttons, "join us"
-   boxes, ads) land inside the dashboard. Give anything that is not ours a row
-   of its own instead of a seat in the chart grid or the side panel column. */
-.statista-dashboard .sd-body > *:not(.sd-main):not(.sd-panel),
-.statista-dashboard .sd-grid > *:not(.statista-chart) {
-	grid-column: 1 / -1;
-	min-width: 0;
+/* Hide leftovers in the banner / cards / panel until PHP or the view script
+   has moved them. The editor is excluded because it has extra controls. */
+.statista-dashboard:not(.sd-editor) {
+	.sd-banner > :not(.sd-banner__text):not(.sd-artwork),
+	.sd-banner__text > :not(.sd-brand):not(.sd-title):not(.sd-meta),
+	.sd-body > :not(.sd-main):not(.sd-panel),
+	.sd-kpis > :not(.sd-kpi),
+	.sd-panel > :not(.sd-panel__image):not(.sd-panel__kicker):not(.sd-panel__title):not(.sd-panel__text):not(.sd-panel__button),
+	.sd-grid > :not(.statista-chart):not(.statista-stats):not([class*="wp-block-statista"]) {
+		display: none !important;
+	}
 }
 
 .statista-dashboard .sd-main {

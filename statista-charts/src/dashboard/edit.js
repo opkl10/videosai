@@ -281,7 +281,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<section { ...blockProps }>
 				<header className="sd-banner">
 					<div className="sd-banner__text">
-						<p className="sd-brand">
+						<div className="sd-brand">
 							{ logoUrl && <img className="sd-brand__logo" src={ logoUrl } alt="" /> }
 							<input
 								type="text"
@@ -291,9 +291,9 @@ export default function Edit( { attributes, setAttributes } ) {
 								aria-label={ __( 'Brand', 'statista-charts' ) }
 								onChange={ ( event ) => setAttributes( { brandName: event.target.value } ) }
 							/>
-						</p>
+						</div>
 
-						<h2 className="sd-title">
+						<div className="sd-title">
 							<input
 								type="text"
 								className="sd-title__main sd-input"
@@ -310,9 +310,9 @@ export default function Edit( { attributes, setAttributes } ) {
 								aria-label={ __( 'Subtitle', 'statista-charts' ) }
 								onChange={ ( event ) => setAttributes( { titleAccent: event.target.value } ) }
 							/>
-						</h2>
+						</div>
 
-						<p className="sd-meta">
+						<div className="sd-meta">
 							<input
 								type="text"
 								className="sd-meta__item sd-input"
@@ -332,7 +332,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									onChange={ ( event ) => setAttributes( { updated: event.target.value } ) }
 								/>
 							</span>
-						</p>
+						</div>
 					</div>
 
 					{ artworkUrl && (

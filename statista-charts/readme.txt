@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.2 =
+* WhatsApp and Telegram join boxes no longer land in the dashboard banner. The banner no longer uses headings or paragraphs, so plugins that splice themselves after the first &lt;p&gt; or &lt;h2&gt; miss it. Anything that still gets in is moved below the dashboard, including boxes inserted by JavaScript.
 
 = 1.4.1 =
 * Share buttons and "join our channel" boxes that other plugins attach to every block are moved below the dashboard instead of taking a place in the chart area. The `statista_charts_foreign_markup` filter can drop them instead.
