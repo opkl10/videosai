@@ -20,8 +20,7 @@ export default function KpiCard( {
 	onChange,
 	onRemove,
 	dragging = false,
-	dropBefore = false,
-	dropAfter = false,
+	dropTarget = false,
 	layout = 'row',
 	rtl = false,
 	canMoveEarlier = false,
@@ -43,8 +42,7 @@ export default function KpiCard( {
 		isSplit ? 'sd-kpi--split' : '',
 		'sd-kpi--editing',
 		dragging ? 'sd-kpi--dragging' : '',
-		dropBefore ? 'sd-kpi--drop-before' : '',
-		dropAfter ? 'sd-kpi--drop-after' : '',
+		dropTarget ? 'sd-kpi--drop-target' : '',
 	]
 		.filter( Boolean )
 		.join( ' ' );
@@ -54,7 +52,7 @@ export default function KpiCard( {
 			<button
 				type="button"
 				className="sd-kpi__drag"
-				aria-label={ __( 'Drag to reorder', 'statista-charts' ) }
+				aria-label={ __( 'Drag onto another card to swap', 'statista-charts' ) }
 				onPointerDown={ onDragHandlePointerDown }
 				onPointerMove={ onDragHandlePointerMove }
 				onPointerUp={ onDragHandlePointerUp }

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T10:48:10+00:00\n"
+"POT-Creation-Date: 2026-11-20T11:08:05+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -770,8 +770,8 @@ msgid "Data source…"
 msgstr "מקור הנתונים…"
 
 #: build/dashboard/index.js:1
-msgid "Drag to reorder"
-msgstr "גרירה לשינוי סדר"
+msgid "Drag onto another card to swap"
+msgstr "גרירה על כרטיס אחר להחלפה"
 
 #: build/dashboard/index.js:1
 msgid "Move earlier"
@@ -978,8 +978,8 @@ msgstr "סידור הכרטיסים"
 #: build/dashboard/index.js:1
 msgid ""
 "A column stacks the cards. A row places them next to each other. Drag a card "
-"by the handle to change its place."
-msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס מהידית כדי להחליף מקום."
+"onto another card to swap those two; the others stay where they are."
+msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר כדי להחליף ביניהם; השאר נשארים במקומם."
 
 #: build/dashboard/index.js:1
 msgid "In a row"
@@ -1158,6 +1158,16 @@ msgstr "מספר"
 msgctxt "block keyword"
 msgid "card"
 msgstr "כרטיס"
+
+#~ msgid "Drag to reorder"
+#~ msgstr "גרירה לשינוי סדר"
+
+#~ msgid ""
+#~ "A column stacks the cards. A row places them next to each other. Drag a "
+#~ "card by the handle to change its place."
+#~ msgstr ""
+#~ "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס מהידית כדי "
+#~ "להחליף מקום."
 
 #~ msgid "First row: the category column followed by one column per series."
 #~ msgstr "השורה הראשונה: עמודת הקטגוריות ואחריה עמודה לכל סדרה."
