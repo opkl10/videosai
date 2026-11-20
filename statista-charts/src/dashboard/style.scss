@@ -197,10 +197,11 @@
 }
 
 .statista-dashboard .sd-kpi__label {
-	font-size: 0.6875rem;
+	font-size: 1rem;
 	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
+	letter-spacing: 0;
+	text-transform: none;
+	line-height: 1.35;
 	color: var(--sd-muted);
 }
 
@@ -234,13 +235,13 @@
 	width: auto;
 	height: auto;
 	min-width: 0;
-	max-width: 9em;
+	max-width: 12em;
 	padding: 0;
 	border-radius: 0;
 	background: none;
-	font-size: 0.9375rem;
-	font-weight: 600;
-	line-height: 1.25;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.2;
 	color: var(--sd-fg);
 	text-align: start;
 }
