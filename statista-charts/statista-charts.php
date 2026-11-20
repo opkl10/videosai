@@ -3,7 +3,7 @@
  * Plugin Name:       Statista Charts
  * Plugin URI:        https://example.com/statista-charts
  * Description:       Beautiful, responsive statistics and charts inside posts — Gutenberg blocks, Elementor widgets and a matching [statista_chart] shortcode.
- * Version:           1.4.13
+ * Version:           1.4.14,
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Statista Charts
@@ -19,7 +19,7 @@ namespace StatistaCharts;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'STATISTA_CHARTS_VERSION', '1.4.13' );
+define( 'STATISTA_CHARTS_VERSION', '1.4.14' );
 define( 'STATISTA_CHARTS_FILE', __FILE__ );
 define( 'STATISTA_CHARTS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'STATISTA_CHARTS_URL', plugin_dir_url( __FILE__ ) );

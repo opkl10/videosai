@@ -35,7 +35,7 @@
 	}
 
 	.sd-banner .sd-input {
-		color: #ffffff;
+		color: inherit;
 	}
 
 	.sd-brand__name,
@@ -260,6 +260,36 @@
 
 .sd-image-field {
 	margin-bottom: 16px;
+}
+
+.sd-color-field {
+	margin-bottom: 16px;
+}
+
+.sd-color-field__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.sd-color-field__row input[type="color"] {
+	width: 36px;
+	height: 32px;
+	padding: 0;
+	border: 1px solid #d0d5dd;
+	border-radius: 6px;
+	background: none;
+	cursor: pointer;
+}
+
+.sd-color-field__hex {
+	flex: 1;
+	min-width: 7rem;
+	max-width: 10rem;
+	padding: 6px 8px;
+	border: 1px solid #d0d5dd;
+	border-radius: 6px;
 }
 
 .sd-image-field__actions {

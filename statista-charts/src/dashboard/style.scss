@@ -58,7 +58,7 @@
 	background-image: var(--sd-banner);
 	background-size: cover;
 	background-position: center;
-	color: #ffffff;
+	color: var(--sd-banner-fg, #ffffff);
 }
 
 .statista-dashboard .sd-banner__text {
@@ -111,7 +111,7 @@
 	font-weight: 700;
 	line-height: 1.2;
 	letter-spacing: -0.02em;
-	color: #ffffff;
+	color: inherit;
 }
 
 .statista-dashboard .sd-title__accent {
@@ -126,7 +126,7 @@
 	gap: 6px 14px;
 	margin: 12px 0 0;
 	padding-top: 10px;
-	border-top: 1px solid rgba(255, 255, 255, 0.28);
+	border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
 	font-size: 0.8125rem;
 	font-weight: 500;
 	opacity: 0.9;
@@ -193,8 +193,8 @@
 /* Hide leftovers in the banner / cards / panel until PHP or the view script
    has moved them. The editor is excluded because it has extra controls. */
 .statista-dashboard:not(.sd-editor) {
-	.sd-banner > :not(.sd-banner__text):not(.sd-artwork),
-	.sd-banner__text > :not(.sd-brand):not(.sd-title):not(.sd-meta),
+	.sd-banner > :not(.sd-banner__text):not(.sd-artwork):not(.sd-brand__logo),
+	.sd-banner__text > :not(.sd-brand):not(.sd-title):not(.sd-meta):not(.sd-brand__logo),
 	.sd-body > :not(.sd-main):not(.sd-panel),
 	.sd-kpis > :not(.sd-kpi),
 	.sd-panel > :not(.sd-panel__image):not(.sd-panel__kicker):not(.sd-panel__title):not(.sd-panel__text):not(.sd-panel__button),
@@ -249,6 +249,14 @@
 
 .statista-dashboard.sd-kpis-cols .sd-kpi--slot {
 	min-width: 0;
+}
+
+.statista-dashboard .sd-kpi--wide {
+	grid-column: 1 / -1;
+}
+
+.statista-dashboard.sd-kpis-layout-column .sd-kpi--wide {
+	grid-column: auto;
 }
 
 .statista-dashboard.sd-kpis-layout-column .sd-kpis {

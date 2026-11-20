@@ -70,6 +70,9 @@ class Dashboard {
 			'meta'            => '',
 			'updated'         => '',
 			'bannerImage'     => '',
+			'bannerColor'     => '',
+			'bannerColor2'    => '',
+			'bannerTextColor' => '',
 			'artworkUrl'      => '',
 			'palette'         => 'statista',
 			'theme'           => 'light',
@@ -81,6 +84,7 @@ class Dashboard {
 			'kpiPosition'     => 'top',
 			'kpiLayout'       => 'row',
 			'kpiPerRow'       => 0,
+			'kpiOddWide'      => false,
 			'panelImage'      => '',
 			'panelKicker'     => '',
 			'panelTitle'      => '',
@@ -128,6 +132,16 @@ class Dashboard {
 			$clean['showBrandName'] = Config::to_bool( $raw['showBrandName'] );
 		}
 
+		if ( isset( $raw['kpiOddWide'] ) ) {
+			$clean['kpiOddWide'] = Config::to_bool( $raw['kpiOddWide'] );
+		}
+
+		foreach ( array( 'bannerColor', 'bannerColor2', 'bannerTextColor' ) as $key ) {
+			if ( isset( $raw[ $key ] ) ) {
+				$clean[ $key ] = self::sanitize_hex( $raw[ $key ] );
+			}
+		}
+
 		$panel_position = isset( $raw['panelPosition'] ) ? sanitize_key( (string) $raw['panelPosition'] ) : '';
 		$clean['panelPosition'] = in_array( $panel_position, array( 'end', 'start', 'left', 'right', 'bottom' ), true )
 			? $panel_position
@@ -173,6 +187,7 @@ class Dashboard {
 					'value'  => isset( $kpi['value'] ) ? sanitize_text_field( (string) $kpi['value'] ) : '',
 					'icon2'  => isset( $kpi['icon2'] ) ? sanitize_text_field( (string) $kpi['icon2'] ) : '',
 					'value2' => isset( $kpi['value2'] ) ? sanitize_text_field( (string) $kpi['value2'] ) : '',
+					'wide'   => ! empty( $kpi['wide'] ),
 				);
 			}
 		}
@@ -226,6 +241,10 @@ class Dashboard {
 			self::banner_background( $data ),
 			$data['logoSize']
 		);
+
+		if ( '' !== $data['bannerTextColor'] ) {
+			$style .= sprintf( ' --sd-banner-fg: %s;', $data['bannerTextColor'] );
+		}
 
 		if ( 'column' !== $data['kpiLayout'] && $data['kpiPerRow'] >= 1 ) {
 			$style .= sprintf( ' --sd-kpi-cols: %d;', (int) $data['kpiPerRow'] );
@@ -688,11 +707,15 @@ class Dashboard {
 	 * @return string CSS background-image value.
 	 */
 	private static function banner_background( $data ) {
+		$start = '' !== $data['bannerColor'] ? $data['bannerColor'] : $data['colors'][0];
+		$mid   = '' !== $data['bannerColor2'] ? $data['bannerColor2'] : ( '' !== $data['bannerColor'] ? $start : $data['colors'][4] );
+		$end   = '' !== $data['bannerColor2'] ? $data['bannerColor2'] : ( '' !== $data['bannerColor'] ? $start : $data['colors'][1] );
+
 		$gradient = sprintf(
 			'linear-gradient(115deg, %1$s 0%%, %2$s 55%%, %3$s 100%%)',
-			$data['colors'][0],
-			$data['colors'][4],
-			$data['colors'][1]
+			$start,
+			$mid,
+			$end
 		);
 
 		if ( '' === $data['bannerImage'] ) {
@@ -701,11 +724,28 @@ class Dashboard {
 
 		return sprintf(
 			'linear-gradient(90deg, %1$s 0%%, %2$s 45%%, %3$s 85%%), url(%4$s)',
-			self::rgba( $data['colors'][0], 0.97 ),
-			self::rgba( $data['colors'][0], 0.72 ),
-			self::rgba( $data['colors'][0], 0 ),
+			self::rgba( $start, 0.97 ),
+			self::rgba( $start, 0.72 ),
+			self::rgba( $start, 0 ),
 			esc_url( $data['bannerImage'] )
 		);
+	}
+
+	/**
+	 * Accepts a 3- or 6-digit hex colour, or an empty string.
+	 *
+	 * @param mixed $raw Raw value.
+	 * @return string
+	 */
+	private static function sanitize_hex( $raw ) {
+		$raw = sanitize_text_field( (string) $raw );
+
+		if ( function_exists( 'sanitize_hex_color' ) ) {
+			$clean = sanitize_hex_color( $raw );
+			return is_string( $clean ) ? $clean : '';
+		}
+
+		return preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $raw ) ? $raw : '';
 	}
 
 	/**
@@ -842,6 +882,33 @@ class Dashboard {
 	}
 
 	/**
+	 * Whether this KPI slot should span the full row.
+	 *
+	 * @param array $kpi   One card or empty slot.
+	 * @param int   $index Slot index.
+	 * @param int   $count Number of slots.
+	 * @param array $data  Clean attributes.
+	 * @return bool
+	 */
+	private static function kpi_is_wide( $kpi, $index, $count, $data ) {
+		if ( 'column' === $data['kpiLayout'] ) {
+			return false;
+		}
+
+		if ( ! empty( $kpi['wide'] ) ) {
+			return true;
+		}
+
+		if ( empty( $data['kpiOddWide'] ) ) {
+			return false;
+		}
+
+		$cols = $data['kpiPerRow'] >= 1 ? (int) $data['kpiPerRow'] : 2;
+
+		return $index === ( $count - 1 ) && 1 === ( ( $index + 1 ) % $cols );
+	}
+
+	/**
 	 * Renders the KPI cards.
 	 *
 	 * @param array $data Clean attributes.
@@ -852,16 +919,19 @@ class Dashboard {
 			return '';
 		}
 
+		$count = count( $data['kpis'] );
+
 		ob_start();
 		?>
 		<div class="sd-kpis">
-			<?php foreach ( $data['kpis'] as $kpi ) : ?>
+			<?php foreach ( $data['kpis'] as $index => $kpi ) : ?>
+				<?php $wide_class = self::kpi_is_wide( $kpi, $index, $count, $data ) ? ' sd-kpi--wide' : ''; ?>
 				<?php if ( ! empty( $kpi['empty'] ) ) : ?>
-					<div class="sd-kpi sd-kpi--slot" aria-hidden="true"></div>
+					<div class="sd-kpi sd-kpi--slot<?php echo esc_attr( $wide_class ); ?>" aria-hidden="true"></div>
 					<?php continue; ?>
 				<?php endif; ?>
 				<?php $split = '' !== $kpi['value2']; ?>
-				<div class="sd-kpi<?php echo $split ? ' sd-kpi--split' : ''; ?>">
+				<div class="sd-kpi<?php echo $split ? ' sd-kpi--split' : ''; ?><?php echo esc_attr( $wide_class ); ?>">
 					<?php if ( '' !== $kpi['icon'] && ! $split ) : ?>
 						<span class="sd-kpi__icon" aria-hidden="true"><?php echo esc_html( $kpi['icon'] ); ?></span>
 					<?php endif; ?>

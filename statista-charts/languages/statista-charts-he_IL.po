@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T12:00:00+00:00\n"
+"POT-Creation-Date: 2026-11-20T12:09:37+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:798
+#: includes/class-dashboard.php:838
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -791,6 +791,14 @@ msgid "Split into two values"
 msgstr "פיצול לשני ערכים"
 
 #: build/dashboard/index.js:1
+msgid "Back to normal width"
+msgstr "חזרה לרוחב רגיל"
+
+#: build/dashboard/index.js:1
+msgid "Span the full row"
+msgstr "לרוחב השורה"
+
+#: build/dashboard/index.js:1
 msgid "Metric name"
 msgstr "שם המדד"
 
@@ -849,6 +857,10 @@ msgstr "בחירת תמונה"
 #: build/dashboard/index.js:1
 msgid "Remove"
 msgstr "הסרה"
+
+#: build/dashboard/index.js:1
+msgid "Reset"
+msgstr "איפוס"
 
 #: build/dashboard/index.js:1
 msgid "Dashboard"
@@ -953,8 +965,36 @@ msgid "Turn off to hide the brand sentence without deleting it."
 msgstr "כבו כדי להסתיר את המשפט ליד הלוגו בלי למחוק אותו."
 
 #: build/dashboard/index.js:1
-msgid "Banner background"
-msgstr "רקע הבאנר"
+msgid "Banner wallpaper"
+msgstr "טפט הבאנר"
+
+#: build/dashboard/index.js:1
+msgid "Banner colour"
+msgstr "צבע הבאנר"
+
+#: build/dashboard/index.js:1
+msgid ""
+"Leave empty to use the palette. With a wallpaper this tints the left side so "
+"the title stays readable."
+msgstr ""
+"השאירו ריק כדי להשתמש בלוח הצבעים. עם טפט הצבע מכהה את הצד השמאלי כדי "
+"שהכותרת תישאר קריאה."
+
+#: build/dashboard/index.js:1
+msgid "Second banner colour"
+msgstr "צבע באנר שני"
+
+#: build/dashboard/index.js:1
+msgid "Optional. Makes a gradient with the first colour."
+msgstr "אופציונלי. יוצר מעבר צבע עם הצבע הראשון."
+
+#: build/dashboard/index.js:1
+msgid "Banner text colour"
+msgstr "צבע טקסט הבאנר"
+
+#: build/dashboard/index.js:1
+msgid "Title, brand and meta in the banner. Leave empty for white."
+msgstr "כותרת, מותג ומטא בבאנר. השאירו ריק ללבן."
 
 #: build/dashboard/index.js:1
 msgid "Banner artwork"
@@ -1044,6 +1084,19 @@ msgstr "כמה כרטיסים יושבים זה לצד זה. אוטומטי ממ
 #: build/dashboard/index.js:1
 msgid "Auto"
 msgstr "אוטומטי"
+
+#: build/dashboard/index.js:1
+msgid "Leftover card fills the row"
+msgstr "כרטיס בודד ממלא את השורה"
+
+#: build/dashboard/index.js:1
+msgid ""
+"When a card sits alone on the last row, stretch it across the row. You can "
+"also tap the width button on any card. With Auto, leftover is counted as if "
+"two cards sat per row."
+msgstr ""
+"כשכרטיס נשאר לבד בשורה האחרונה, הוא יימתח על פני כל השורה. אפשר גם ללחוץ על "
+"כפתור הרוחב בכל כרטיס. בבחירת אוטומטי סופרים כאילו יושבים שניים בשורה."
 
 #: build/dashboard/index.js:1
 msgid "Brand"
@@ -1214,6 +1267,9 @@ msgstr "מספר"
 msgctxt "block keyword"
 msgid "card"
 msgstr "כרטיס"
+
+#~ msgid "Banner background"
+#~ msgstr "רקע הבאנר"
 
 #~ msgid "Drag onto another card to swap"
 #~ msgstr "גרירה על כרטיס אחר להחלפה"

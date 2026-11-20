@@ -32,6 +32,7 @@ export default function KpiCard( {
 	onDragHandlePointerUp,
 	onDragHandlePointerCancel,
 	slotIndex,
+	wide = false,
 } ) {
 	const isSplit = kpi.value2 !== '';
 	const update = ( changes ) => onChange( { ...kpi, ...changes } );
@@ -42,6 +43,7 @@ export default function KpiCard( {
 		'sd-kpi',
 		isSplit ? 'sd-kpi--split' : '',
 		'sd-kpi--editing',
+		wide ? 'sd-kpi--wide' : '',
 		dragging ? 'sd-kpi--dragging' : '',
 		dropTarget ? 'sd-kpi--drop-target' : '',
 	]
@@ -86,6 +88,15 @@ export default function KpiCard( {
 					showTooltip
 					onClick={ () => update( isSplit ? { value2: '', icon2: '' } : { value2: '25%', icon2: '🟩' } ) }
 				/>
+				{ layout !== 'column' && (
+					<Button
+						size="small"
+						icon="leftright"
+						label={ kpi.wide ? __( 'Back to normal width', 'statista-charts' ) : __( 'Span the full row', 'statista-charts' ) }
+						showTooltip
+						onClick={ () => update( { wide: ! kpi.wide } ) }
+					/>
+				) }
 				<Button
 					size="small"
 					icon="no-alt"

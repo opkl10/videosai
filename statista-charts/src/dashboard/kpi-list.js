@@ -16,6 +16,27 @@ export function isEmptySlot( item ) {
 	return Boolean( item && item.empty );
 }
 
+/**
+ * Last slot on an incomplete row: remainder 1 when counting columns.
+ * Auto (perRow 0) is treated as two cards per row.
+ *
+ * @param {number}  index
+ * @param {number}  count
+ * @param {number}  perRow
+ * @param {boolean} oddWide
+ * @param {string}  layout
+ * @return {boolean}
+ */
+export function isLeftoverWide( index, count, perRow, oddWide, layout ) {
+	if ( layout === 'column' || ! oddWide || count < 1 ) {
+		return false;
+	}
+
+	const cols = perRow >= 1 ? perRow : 2;
+
+	return index === count - 1 && ( index + 1 ) % cols === 1;
+}
+
 export function swapItems( items, from, to ) {
 	if (
 		from === to ||
@@ -78,10 +99,10 @@ function indexAtPoint( list, clientX, clientY ) {
 	return null;
 }
 
-function EmptySlot( { slotIndex, dropTarget, onFill, onRemove } ) {
+function EmptySlot( { slotIndex, dropTarget, onFill, onRemove, wide = false } ) {
 	return (
 		<div
-			className={ `sd-kpi sd-kpi--slot${ dropTarget ? ' sd-kpi--drop-target' : '' }` }
+			className={ `sd-kpi sd-kpi--slot${ wide ? ' sd-kpi--wide' : '' }${ dropTarget ? ' sd-kpi--drop-target' : '' }` }
 			data-kpi-index={ slotIndex }
 		>
 			<span className="sd-kpi__slot-label">
@@ -107,7 +128,7 @@ function EmptySlot( { slotIndex, dropTarget, onFill, onRemove } ) {
 	);
 }
 
-export default function KpiList( { kpis = [], layout = 'row', rtl = false, onChange } ) {
+export default function KpiList( { kpis = [], layout = 'row', rtl = false, perRow = 0, oddWide = false, onChange } ) {
 	const listRef = useRef( null );
 	const dragRef = useRef( null );
 	const [ drag, setDrag ] = useState( null );
@@ -183,11 +204,15 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 			ref={ listRef }
 			className={ `sd-kpis${ drag ? ' sd-kpis--sorting' : '' }` }
 		>
-			{ kpis.map( ( kpi, index ) => (
-				isEmptySlot( kpi ) ? (
+			{ kpis.map( ( kpi, index ) => {
+				const leftover = isLeftoverWide( index, kpis.length, perRow, oddWide, layout );
+				const wide = Boolean( kpi.wide ) || leftover;
+
+				return isEmptySlot( kpi ) ? (
 					<EmptySlot
 						key={ index }
 						slotIndex={ index }
+						wide={ leftover }
 						dropTarget={ drag && drag.to === index }
 						onFill={ () => onChange( kpis.map( ( item, i ) => ( i === index ? { ...EMPTY_KPI } : item ) ) ) }
 						onRemove={ () => onChange( kpis.filter( ( item, i ) => i !== index ) ) }
@@ -197,6 +222,7 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 						key={ index }
 						slotIndex={ index }
 						kpi={ kpi }
+						wide={ wide }
 						dragging={ drag && drag.from === index }
 						dropTarget={ drag && drag.to === index }
 						layout={ layout }
@@ -212,8 +238,8 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 						onDragHandlePointerUp={ endDrag }
 						onDragHandlePointerCancel={ endDrag }
 					/>
-				)
-			) ) }
+				);
+			} ) }
 
 			<div
 				className={ `sd-kpi sd-kpi--slot sd-kpi--slot-end${ drag && drag.to === kpis.length ? ' sd-kpi--drop-target' : '' }` }

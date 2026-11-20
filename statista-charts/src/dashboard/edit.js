@@ -9,7 +9,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
+import { BaseControl, Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 import KpiList from './kpi-list';
@@ -97,6 +97,73 @@ function LogoImage( { url } ) {
 	return <img className="sd-brand__logo" src={ url } alt="" />;
 }
 
+/**
+ * Turns a 3- or 6-digit hex into #rrggbb, or falls back.
+ *
+ * @param {string} value
+ * @param {string} fallback
+ * @return {string}
+ */
+function normalizeHex( value, fallback ) {
+	let hex = String( value || '' ).trim();
+
+	if ( /^#[0-9A-Fa-f]{3}$/.test( hex ) ) {
+		hex = '#' + hex[ 1 ] + hex[ 1 ] + hex[ 2 ] + hex[ 2 ] + hex[ 3 ] + hex[ 3 ];
+	}
+
+	return /^#[0-9A-Fa-f]{6}$/.test( hex ) ? hex : fallback;
+}
+
+/**
+ * Banner background: custom colours, or the palette, plus an optional wallpaper.
+ *
+ * @param {string[]} colors
+ * @param {string}   bannerImage
+ * @param {string}   bannerColor
+ * @param {string}   bannerColor2
+ * @return {string}
+ */
+function bannerBackground( colors, bannerImage, bannerColor, bannerColor2 ) {
+	const start = normalizeHex( bannerColor, colors[ 0 ] );
+	const mid = normalizeHex( bannerColor2, bannerColor ? start : colors[ 4 ] );
+	const end = normalizeHex( bannerColor2, bannerColor ? start : colors[ 1 ] );
+
+	if ( bannerImage ) {
+		return `linear-gradient(90deg, ${ start }f5 0%, ${ start }b8 45%, ${ start }00 85%), url(${ bannerImage })`;
+	}
+
+	return `linear-gradient(115deg, ${ start } 0%, ${ mid } 55%, ${ end } 100%)`;
+}
+
+function ColorField( { label, help, value, onChange } ) {
+	const hex = normalizeHex( value, '#ffffff' );
+
+	return (
+		<BaseControl label={ label } help={ help } __nextHasNoMarginBottom className="sd-color-field">
+			<div className="sd-color-field__row">
+				<input
+					type="color"
+					value={ hex }
+					aria-label={ label }
+					onChange={ ( event ) => onChange( event.target.value ) }
+				/>
+				<input
+					type="text"
+					className="sd-color-field__hex"
+					value={ value }
+					placeholder="#1f6feb"
+					onChange={ ( event ) => onChange( event.target.value ) }
+				/>
+				{ value !== '' && (
+					<Button variant="tertiary" size="compact" onClick={ () => onChange( '' ) }>
+						{ __( 'Reset', 'statista-charts' ) }
+					</Button>
+				) }
+			</div>
+		</BaseControl>
+	);
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		brandName,
@@ -109,6 +176,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		meta,
 		updated,
 		bannerImage,
+		bannerColor,
+		bannerColor2,
+		bannerTextColor,
 		artworkUrl,
 		palette,
 		theme,
@@ -120,6 +190,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		kpiPosition,
 		kpiLayout,
 		kpiPerRow,
+		kpiOddWide,
 		panelImage,
 		panelKicker,
 		panelTitle,
@@ -132,9 +203,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const colors = ( palettes[ palette ] || palettes.statista ).colors;
 	const resolvedDirection = direction === 'auto' ? ( document.dir === 'rtl' ? 'rtl' : 'ltr' ) : direction;
 
-	const banner = bannerImage
-		? `linear-gradient(90deg, ${ colors[ 0 ] }f5 0%, ${ colors[ 0 ] }b8 45%, ${ colors[ 0 ] }00 85%), url(${ bannerImage })`
-		: `linear-gradient(115deg, ${ colors[ 0 ] } 0%, ${ colors[ 4 ] } 55%, ${ colors[ 1 ] } 100%)`;
+	const banner = bannerBackground( colors, bannerImage, bannerColor, bannerColor2 );
 
 	const blockProps = useBlockProps( {
 		className: [
@@ -155,6 +224,9 @@ export default function Edit( { attributes, setAttributes } ) {
 			'--sc-accent-2': colors[ 1 ],
 			'--sd-banner': banner,
 			'--sd-logo-size': `${ logoSize }px`,
+			...( normalizeHex( bannerTextColor, '' )
+				? { '--sd-banner-fg': normalizeHex( bannerTextColor, '' ) }
+				: {} ),
 			...( kpiLayout !== 'column' && ( kpiPerRow || 0 ) >= 1
 				? { '--sd-kpi-cols': String( kpiPerRow ) }
 				: {} ),
@@ -225,10 +297,28 @@ export default function Edit( { attributes, setAttributes } ) {
 					/>
 
 					<ImageField
-						label={ __( 'Banner background', 'statista-charts' ) }
+						label={ __( 'Banner wallpaper', 'statista-charts' ) }
 						url={ bannerImage }
 						onSelect={ ( url ) => setAttributes( { bannerImage: url } ) }
 						onClear={ () => setAttributes( { bannerImage: '' } ) }
+					/>
+					<ColorField
+						label={ __( 'Banner colour', 'statista-charts' ) }
+						help={ __( 'Leave empty to use the palette. With a wallpaper this tints the left side so the title stays readable.', 'statista-charts' ) }
+						value={ bannerColor || '' }
+						onChange={ ( value ) => setAttributes( { bannerColor: value } ) }
+					/>
+					<ColorField
+						label={ __( 'Second banner colour', 'statista-charts' ) }
+						help={ __( 'Optional. Makes a gradient with the first colour.', 'statista-charts' ) }
+						value={ bannerColor2 || '' }
+						onChange={ ( value ) => setAttributes( { bannerColor2: value } ) }
+					/>
+					<ColorField
+						label={ __( 'Banner text colour', 'statista-charts' ) }
+						help={ __( 'Title, brand and meta in the banner. Leave empty for white.', 'statista-charts' ) }
+						value={ bannerTextColor || '' }
+						onChange={ ( value ) => setAttributes( { bannerTextColor: value } ) }
 					/>
 					<ImageField
 						label={ __( 'Banner artwork', 'statista-charts' ) }
@@ -325,6 +415,15 @@ export default function Edit( { attributes, setAttributes } ) {
 								{ value: '6', label: '6' },
 							] }
 							onChange={ ( value ) => setAttributes( { kpiPerRow: parseInt( value, 10 ) || 0 } ) }
+						/>
+					) }
+					{ kpiLayout !== 'column' && (
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Leftover card fills the row', 'statista-charts' ) }
+							help={ __( 'When a card sits alone on the last row, stretch it across the row. You can also tap the width button on any card. With Auto, leftover is counted as if two cards sat per row.', 'statista-charts' ) }
+							checked={ Boolean( kpiOddWide ) }
+							onChange={ ( value ) => setAttributes( { kpiOddWide: value } ) }
 						/>
 					) }
 				</PanelBody>
@@ -471,6 +570,8 @@ export default function Edit( { attributes, setAttributes } ) {
 							kpis={ kpis }
 							layout={ kpiLayout || 'row' }
 							rtl={ resolvedDirection === 'rtl' }
+							perRow={ kpiPerRow || 0 }
+							oddWide={ Boolean( kpiOddWide ) }
 							onChange={ ( next ) => setAttributes( { kpis: next } ) }
 						/>
 
