@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T11:22:43+00:00\n"
+"POT-Creation-Date: 2026-11-20T12:00:00+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:768
+#: includes/class-dashboard.php:798
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -917,6 +917,42 @@ msgid "Logo size (px)"
 msgstr "גודל הלוגו (פיקסלים)"
 
 #: build/dashboard/index.js:1
+msgid "Logo position"
+msgstr "מיקום הלוגו"
+
+#: build/dashboard/index.js:1
+msgid "Next to the name, before it"
+msgstr "ליד השם, לפניו"
+
+#: build/dashboard/index.js:1
+msgid "Next to the name, after it"
+msgstr "ליד השם, אחריו"
+
+#: build/dashboard/index.js:1
+msgid "Above the titles"
+msgstr "מעל הכותרות"
+
+#: build/dashboard/index.js:1
+msgid "Below the titles"
+msgstr "מתחת לכותרות"
+
+#: build/dashboard/index.js:1
+msgid "Left"
+msgstr "שמאל"
+
+#: build/dashboard/index.js:1
+msgid "Right"
+msgstr "ימין"
+
+#: build/dashboard/index.js:1
+msgid "Show the name next to the logo"
+msgstr "הצגת השם ליד הלוגו"
+
+#: build/dashboard/index.js:1
+msgid "Turn off to hide the brand sentence without deleting it."
+msgstr "כבו כדי להסתיר את המשפט ליד הלוגו בלי למחוק אותו."
+
+#: build/dashboard/index.js:1
 msgid "Banner background"
 msgstr "רקע הבאנר"
 
@@ -951,14 +987,6 @@ msgstr "בצד, אחרי הגרפים"
 #: build/dashboard/index.js:1
 msgid "Beside the charts, before them"
 msgstr "בצד, לפני הגרפים"
-
-#: build/dashboard/index.js:1
-msgid "Right"
-msgstr "ימין"
-
-#: build/dashboard/index.js:1
-msgid "Left"
-msgstr "שמאל"
 
 #: build/dashboard/index.js:1
 msgid "Below the charts"

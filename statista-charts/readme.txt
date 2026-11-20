@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.12
+Stable tag: 1.4.13
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.13 =
+* The banner logo can be larger (up to 320px), placed left, right, above, below or beside the name, and the brand sentence next to it can be hidden or shown.
 
 = 1.4.12 =
 * Choose how many metric cards sit in each row (auto, or 1–6).

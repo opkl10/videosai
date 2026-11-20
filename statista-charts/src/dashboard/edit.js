@@ -89,11 +89,21 @@ function ImageField( { label, url, onSelect, onClear } ) {
 	);
 }
 
+function LogoImage( { url } ) {
+	if ( ! url ) {
+		return null;
+	}
+
+	return <img className="sd-brand__logo" src={ url } alt="" />;
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		brandName,
 		logoUrl,
 		logoSize,
+		showBrandName,
+		logoPosition,
 		title,
 		titleAccent,
 		meta,
@@ -180,16 +190,39 @@ export default function Edit( { attributes, setAttributes } ) {
 						onClear={ () => setAttributes( { logoUrl: '' } ) }
 					/>
 					{ logoUrl !== '' && (
-						<RangeControl
-							__nextHasNoMarginBottom
-							label={ __( 'Logo size (px)', 'statista-charts' ) }
-							value={ logoSize }
-							min={ 14 }
-							max={ 160 }
-							step={ 2 }
-							onChange={ ( value ) => setAttributes( { logoSize: value || 22 } ) }
-						/>
+						<>
+							<RangeControl
+								__nextHasNoMarginBottom
+								label={ __( 'Logo size (px)', 'statista-charts' ) }
+								value={ logoSize }
+								min={ 14 }
+								max={ 320 }
+								step={ 2 }
+								onChange={ ( value ) => setAttributes( { logoSize: value || 22 } ) }
+							/>
+							<SelectControl
+								__nextHasNoMarginBottom
+								label={ __( 'Logo position', 'statista-charts' ) }
+								value={ logoPosition || 'start' }
+								options={ [
+									{ value: 'start', label: __( 'Next to the name, before it', 'statista-charts' ) },
+									{ value: 'end', label: __( 'Next to the name, after it', 'statista-charts' ) },
+									{ value: 'top', label: __( 'Above the titles', 'statista-charts' ) },
+									{ value: 'bottom', label: __( 'Below the titles', 'statista-charts' ) },
+									{ value: 'left', label: __( 'Left', 'statista-charts' ) },
+									{ value: 'right', label: __( 'Right', 'statista-charts' ) },
+								] }
+								onChange={ ( value ) => setAttributes( { logoPosition: value } ) }
+							/>
+						</>
 					) }
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Show the name next to the logo', 'statista-charts' ) }
+						help={ __( 'Turn off to hide the brand sentence without deleting it.', 'statista-charts' ) }
+						checked={ showBrandName !== false }
+						onChange={ ( value ) => setAttributes( { showBrandName: value } ) }
+					/>
 
 					<ImageField
 						label={ __( 'Banner background', 'statista-charts' ) }
@@ -344,19 +377,34 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 
 			<section { ...blockProps }>
-				<header className="sd-banner">
-					<div className="sd-banner__text">
-						<div className="sd-brand">
-							{ logoUrl && <img className="sd-brand__logo" src={ logoUrl } alt="" /> }
-							<input
-								type="text"
-								className="sd-brand__name sd-input"
-								value={ brandName }
-								placeholder={ __( 'Brand', 'statista-charts' ) }
-								aria-label={ __( 'Brand', 'statista-charts' ) }
-								onChange={ ( event ) => setAttributes( { brandName: event.target.value } ) }
-							/>
-						</div>
+				<header
+					className={ `sd-banner${ logoUrl ? ` sd-logo-pos-${ logoPosition || 'start' }` : '' }` }
+					dir={ logoUrl && [ 'left', 'right' ].includes( logoPosition ) ? 'ltr' : undefined }
+				>
+					{ logoUrl && logoPosition === 'left' && <LogoImage url={ logoUrl } /> }
+
+					<div
+						className="sd-banner__text"
+						dir={ logoUrl && [ 'left', 'right' ].includes( logoPosition ) ? resolvedDirection : undefined }
+					>
+						{ logoUrl && logoPosition === 'top' && <LogoImage url={ logoUrl } /> }
+
+						{ ( showBrandName !== false || ( logoUrl && [ 'start', 'end' ].includes( logoPosition || 'start' ) ) ) && (
+							<div className="sd-brand">
+								{ logoUrl && ( logoPosition || 'start' ) === 'start' && <LogoImage url={ logoUrl } /> }
+								{ showBrandName !== false && (
+									<input
+										type="text"
+										className="sd-brand__name sd-input"
+										value={ brandName }
+										placeholder={ __( 'Brand', 'statista-charts' ) }
+										aria-label={ __( 'Brand', 'statista-charts' ) }
+										onChange={ ( event ) => setAttributes( { brandName: event.target.value } ) }
+									/>
+								) }
+								{ logoUrl && logoPosition === 'end' && <LogoImage url={ logoUrl } /> }
+							</div>
+						) }
 
 						<div className="sd-title">
 							<input
@@ -398,6 +446,8 @@ export default function Edit( { attributes, setAttributes } ) {
 								/>
 							</span>
 						</div>
+
+						{ logoUrl && logoPosition === 'bottom' && <LogoImage url={ logoUrl } /> }
 					</div>
 
 					{ artworkUrl && (
@@ -405,6 +455,8 @@ export default function Edit( { attributes, setAttributes } ) {
 							<img src={ artworkUrl } alt="" />
 						</div>
 					) }
+
+					{ logoUrl && logoPosition === 'right' && <LogoImage url={ logoUrl } /> }
 				</header>
 
 				<div

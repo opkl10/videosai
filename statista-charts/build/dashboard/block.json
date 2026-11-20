@@ -2,7 +2,7 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "statista/dashboard",
-  "version": "1.4.12",
+  "version": "1.4.13",
   "title": "Statista Dashboard",
   "category": "media",
   "icon": "dashboard",
@@ -38,6 +38,14 @@
     "logoSize": {
       "type": "number",
       "default": 22
+    },
+    "showBrandName": {
+      "type": "boolean",
+      "default": true
+    },
+    "logoPosition": {
+      "type": "string",
+      "default": "start"
     },
     "title": {
       "type": "string",

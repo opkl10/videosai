@@ -63,6 +63,8 @@ class Dashboard {
 			'brandName'       => '',
 			'logoUrl'         => '',
 			'logoSize'        => 22,
+			'showBrandName'   => true,
+			'logoPosition'    => 'start',
 			'title'           => '',
 			'titleAccent'     => '',
 			'meta'            => '',
@@ -122,6 +124,10 @@ class Dashboard {
 			$clean['showPanelButton'] = Config::to_bool( $raw['showPanelButton'] );
 		}
 
+		if ( isset( $raw['showBrandName'] ) ) {
+			$clean['showBrandName'] = Config::to_bool( $raw['showBrandName'] );
+		}
+
 		$panel_position = isset( $raw['panelPosition'] ) ? sanitize_key( (string) $raw['panelPosition'] ) : '';
 		$clean['panelPosition'] = in_array( $panel_position, array( 'end', 'start', 'left', 'right', 'bottom' ), true )
 			? $panel_position
@@ -140,8 +146,13 @@ class Dashboard {
 		}
 
 		if ( isset( $raw['logoSize'] ) ) {
-			$clean['logoSize'] = min( 160, max( 14, absint( $raw['logoSize'] ) ) );
+			$clean['logoSize'] = min( 320, max( 14, absint( $raw['logoSize'] ) ) );
 		}
+
+		$logo_position = isset( $raw['logoPosition'] ) ? sanitize_key( (string) $raw['logoPosition'] ) : '';
+		$clean['logoPosition'] = in_array( $logo_position, array( 'start', 'end', 'top', 'bottom', 'left', 'right' ), true )
+			? $logo_position
+			: 'start';
 
 		if ( isset( $raw['kpis'] ) && is_array( $raw['kpis'] ) ) {
 			foreach ( $raw['kpis'] as $kpi ) {
@@ -731,17 +742,36 @@ class Dashboard {
 	 * @return string Banner HTML.
 	 */
 	private static function banner( $data ) {
+		$has_logo     = '' !== $data['logoUrl'];
+		$show_name    = ! empty( $data['showBrandName'] ) && '' !== $data['brandName'];
+		$logo_pos     = $has_logo ? $data['logoPosition'] : 'start';
+		$logo_aside   = $has_logo && in_array( $logo_pos, array( 'left', 'right' ), true );
+		$logo_in_row  = $has_logo && in_array( $logo_pos, array( 'start', 'end' ), true );
+		$banner_class = 'sd-banner' . ( $has_logo ? ' sd-logo-pos-' . $logo_pos : '' );
+		$direction    = isset( $data['resolvedDirection'] ) ? $data['resolvedDirection'] : 'ltr';
+
 		ob_start();
 		?>
-		<header class="sd-banner">
-			<div class="sd-banner__text">
-				<?php if ( '' !== $data['logoUrl'] || '' !== $data['brandName'] ) : ?>
+		<header class="<?php echo esc_attr( $banner_class ); ?>"<?php echo $logo_aside ? ' dir="ltr"' : ''; ?>>
+			<?php if ( $has_logo && 'left' === $logo_pos ) : ?>
+				<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+			<?php endif; ?>
+
+			<div class="sd-banner__text"<?php echo $logo_aside ? ' dir="' . esc_attr( $direction ) . '"' : ''; ?>>
+				<?php if ( $has_logo && 'top' === $logo_pos ) : ?>
+					<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+				<?php endif; ?>
+
+				<?php if ( $logo_in_row || $show_name ) : ?>
 					<div class="sd-brand">
-						<?php if ( '' !== $data['logoUrl'] ) : ?>
-							<img class="sd-brand__logo" src="<?php echo esc_url( $data['logoUrl'] ); ?>" alt="" />
+						<?php if ( $has_logo && 'start' === $logo_pos ) : ?>
+							<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
 						<?php endif; ?>
-						<?php if ( '' !== $data['brandName'] ) : ?>
+						<?php if ( $show_name ) : ?>
 							<span class="sd-brand__name"><?php echo esc_html( $data['brandName'] ); ?></span>
+						<?php endif; ?>
+						<?php if ( $has_logo && 'end' === $logo_pos ) : ?>
+							<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
@@ -773,6 +803,10 @@ class Dashboard {
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
+
+				<?php if ( $has_logo && 'bottom' === $logo_pos ) : ?>
+					<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+				<?php endif; ?>
 			</div>
 
 			<?php if ( '' !== $data['artworkUrl'] ) : ?>
@@ -780,10 +814,31 @@ class Dashboard {
 					<img src="<?php echo esc_url( $data['artworkUrl'] ); ?>" alt="" />
 				</div>
 			<?php endif; ?>
+
+			<?php if ( $has_logo && 'right' === $logo_pos ) : ?>
+				<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+			<?php endif; ?>
 		</header>
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Renders the banner logo image.
+	 *
+	 * @param array $data Clean attributes.
+	 * @return string
+	 */
+	private static function logo_img( $data ) {
+		if ( '' === $data['logoUrl'] ) {
+			return '';
+		}
+
+		return sprintf(
+			'<img class="sd-brand__logo" src="%s" alt="" />',
+			esc_url( $data['logoUrl'] )
+		);
 	}
 
 	/**

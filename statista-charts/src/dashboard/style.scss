@@ -51,7 +51,7 @@
 	justify-content: space-between;
 	gap: 20px;
 	padding: clamp(18px, 2.6vw, 30px) clamp(18px, 3vw, 34px);
-	min-height: 140px;
+	min-height: max(140px, calc(var(--sd-logo-size, 22px) + 36px));
 	position: relative;
 	overflow: hidden;
 	isolation: isolate;
@@ -77,12 +77,28 @@
 }
 
 .statista-dashboard .sd-brand__logo {
+	display: block;
 	width: auto;
-	max-width: 100%;
+	max-width: min(100%, 28rem);
 	/* Height drives the size so a wide logo keeps its proportions. */
 	height: var(--sd-logo-size, 22px);
 	border-radius: 6px;
 	object-fit: contain;
+	flex-shrink: 0;
+}
+
+.statista-dashboard .sd-banner > .sd-brand__logo {
+	max-width: min(42%, 20rem);
+}
+
+.statista-dashboard .sd-logo-pos-top > .sd-banner__text > .sd-brand__logo,
+.statista-dashboard .sd-logo-pos-bottom > .sd-banner__text > .sd-brand__logo {
+	margin-bottom: 10px;
+}
+
+.statista-dashboard .sd-logo-pos-bottom > .sd-banner__text > .sd-brand__logo {
+	margin-top: 12px;
+	margin-bottom: 0;
 }
 
 .statista-dashboard .sd-title {
