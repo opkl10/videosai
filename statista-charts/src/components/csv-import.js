@@ -59,11 +59,11 @@ export default function CsvImport( { labels, series, onImport } ) {
 			<TextareaControl
 				__nextHasNoMarginBottom
 				label={ __( 'Paste CSV', 'statista-charts' ) }
-				help={ __( 'First row: the category column followed by one column per series.', 'statista-charts' ) }
+				help={ __( 'A name column (Title, Name, …) labels the chart. Only numeric columns become series — Category, Year, Source and similar are skipped.', 'statista-charts' ) }
 				value={ text }
 				rows={ 6 }
 				onChange={ setText }
-				placeholder={ 'Year,Revenue,Cost\n2023,120,80\n2024,180,95' }
+				placeholder={ 'Title,Revenue,Category\nItem A,120,Game\nItem B,180,Movie' }
 			/>
 
 			<div className="sc-csv-import__actions">

@@ -21,6 +21,7 @@ import {
 	Tooltip,
 } from 'chart.js';
 
+import { usableSeries } from './csv';
 import { getColors } from './palettes';
 
 Chart.register(
@@ -244,6 +245,8 @@ export function createChart( canvas, config ) {
 	if ( ! canvas || config.type === 'stat' ) {
 		return null;
 	}
+
+	config = { ...config, series: usableSeries( config.series ) };
 
 	const labels = config.labels || [];
 	const series = config.series || [];
