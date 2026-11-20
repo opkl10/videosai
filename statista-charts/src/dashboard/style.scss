@@ -163,6 +163,8 @@
 
 .statista-dashboard .sd-main {
 	display: grid;
+	align-content: start;
+	align-items: start;
 	gap: 16px;
 	min-width: 0;
 }
@@ -171,13 +173,16 @@
 .statista-dashboard .sd-kpis {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+	align-content: start;
 	gap: 14px;
+	width: 100%;
 }
 
 .statista-dashboard .sd-kpi {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	height: auto;
 	padding: 16px;
 	background: var(--sd-card);
 	border: 1px solid var(--sd-border);
@@ -269,7 +274,9 @@
 .statista-dashboard .sd-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+	align-content: start;
 	gap: 16px;
+	width: 100%;
 }
 
 .statista-dashboard .sd-grid .statista-chart {

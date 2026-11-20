@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.5 =
+* With the side panel on, KPI cards keep their natural height instead of stretching to match the panel.
 
 = 1.4.4 =
 * KPI card labels and platform names sit at a readable size next to the figures, without the tiny uppercase caption style.
