@@ -108,6 +108,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		kpis,
 		showPanel,
 		showPanelButton,
+		panelPosition,
+		kpiPosition,
+		kpiLayout,
 		panelImage,
 		panelKicker,
 		panelTitle,
@@ -130,7 +133,9 @@ export default function Edit( { attributes, setAttributes } ) {
 			'sd-editor',
 			`sc-theme-${ resolveTheme( theme ) }`,
 			`sc-dir-${ resolvedDirection }`,
-			showPanel ? '' : 'sd-no-panel',
+			showPanel ? `sd-panel-pos-${ panelPosition || 'end' }` : 'sd-no-panel',
+			`sd-kpis-pos-${ kpiPosition || 'top' }`,
+			`sd-kpis-layout-${ kpiLayout || 'row' }`,
 		]
 			.filter( Boolean )
 			.join( ' ' ),
@@ -213,6 +218,22 @@ export default function Edit( { attributes, setAttributes } ) {
 						checked={ showPanel }
 						onChange={ ( value ) => setAttributes( { showPanel: value } ) }
 					/>
+					{ showPanel && (
+						<SelectControl
+							__nextHasNoMarginBottom
+							label={ __( 'Panel position', 'statista-charts' ) }
+							help={ __( 'Left and right stay put even when the page is in Hebrew.', 'statista-charts' ) }
+							value={ panelPosition || 'end' }
+							options={ [
+								{ value: 'end', label: __( 'Beside the charts, after them', 'statista-charts' ) },
+								{ value: 'start', label: __( 'Beside the charts, before them', 'statista-charts' ) },
+								{ value: 'right', label: __( 'Right', 'statista-charts' ) },
+								{ value: 'left', label: __( 'Left', 'statista-charts' ) },
+								{ value: 'bottom', label: __( 'Below the charts', 'statista-charts' ) },
+							] }
+							onChange={ ( value ) => setAttributes( { panelPosition: value } ) }
+						/>
+					) }
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __( 'Show the button', 'statista-charts' ) }
@@ -229,6 +250,32 @@ export default function Edit( { attributes, setAttributes } ) {
 							onChange={ ( value ) => setAttributes( { panelButtonUrl: value } ) }
 						/>
 					) }
+				</PanelBody>
+
+				<PanelBody title={ __( 'Metric cards', 'statista-charts' ) } initialOpen={ false }>
+					<SelectControl
+						__nextHasNoMarginBottom
+						label={ __( 'Cards position', 'statista-charts' ) }
+						value={ kpiPosition || 'top' }
+						options={ [
+							{ value: 'top', label: __( 'Above the charts', 'statista-charts' ) },
+							{ value: 'bottom', label: __( 'Below the charts', 'statista-charts' ) },
+							{ value: 'start', label: __( 'Beside the charts, before them', 'statista-charts' ) },
+							{ value: 'end', label: __( 'Beside the charts, after them', 'statista-charts' ) },
+						] }
+						onChange={ ( value ) => setAttributes( { kpiPosition: value } ) }
+					/>
+					<SelectControl
+						__nextHasNoMarginBottom
+						label={ __( 'Cards layout', 'statista-charts' ) }
+						help={ __( 'A column stacks the cards. A row places them next to each other.', 'statista-charts' ) }
+						value={ kpiLayout || 'row' }
+						options={ [
+							{ value: 'row', label: __( 'In a row', 'statista-charts' ) },
+							{ value: 'column', label: __( 'In a column', 'statista-charts' ) },
+						] }
+						onChange={ ( value ) => setAttributes( { kpiLayout: value } ) }
+					/>
 				</PanelBody>
 
 				<PanelBody title={ __( 'Style', 'statista-charts' ) } initialOpen={ false }>
@@ -342,8 +389,14 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 				</header>
 
-				<div className="sd-body">
-					<div className="sd-main">
+				<div
+					className="sd-body"
+					dir={ showPanel && [ 'left', 'right' ].includes( panelPosition ) ? 'ltr' : undefined }
+				>
+					<div
+						className="sd-main"
+						dir={ showPanel && [ 'left', 'right' ].includes( panelPosition ) ? resolvedDirection : undefined }
+					>
 						<div className="sd-kpis">
 							{ kpis.map( ( kpi, index ) => (
 								<KpiCard
@@ -367,7 +420,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					</div>
 
 					{ showPanel && (
-						<aside className="sd-panel">
+						<aside
+							className="sd-panel"
+							dir={ [ 'left', 'right' ].includes( panelPosition ) ? resolvedDirection : undefined }
+						>
 							{ panelImage && <img className="sd-panel__image" src={ panelImage } alt="" /> }
 							<input
 								type="text"

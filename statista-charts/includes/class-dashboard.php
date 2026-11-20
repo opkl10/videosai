@@ -75,6 +75,9 @@ class Dashboard {
 			'kpis'            => array(),
 			'showPanel'       => true,
 			'showPanelButton' => true,
+			'panelPosition'   => 'end',
+			'kpiPosition'     => 'top',
+			'kpiLayout'       => 'row',
 			'panelImage'      => '',
 			'panelKicker'     => '',
 			'panelTitle'      => '',
@@ -117,6 +120,19 @@ class Dashboard {
 		if ( isset( $raw['showPanelButton'] ) ) {
 			$clean['showPanelButton'] = Config::to_bool( $raw['showPanelButton'] );
 		}
+
+		$panel_position = isset( $raw['panelPosition'] ) ? sanitize_key( (string) $raw['panelPosition'] ) : '';
+		$clean['panelPosition'] = in_array( $panel_position, array( 'end', 'start', 'left', 'right', 'bottom' ), true )
+			? $panel_position
+			: 'end';
+
+		$kpi_position = isset( $raw['kpiPosition'] ) ? sanitize_key( (string) $raw['kpiPosition'] ) : '';
+		$clean['kpiPosition'] = in_array( $kpi_position, array( 'top', 'bottom', 'start', 'end' ), true )
+			? $kpi_position
+			: 'top';
+
+		$kpi_layout = isset( $raw['kpiLayout'] ) ? sanitize_key( (string) $raw['kpiLayout'] ) : '';
+		$clean['kpiLayout'] = in_array( $kpi_layout, array( 'row', 'column' ), true ) ? $kpi_layout : 'row';
 
 		if ( isset( $raw['logoSize'] ) ) {
 			$clean['logoSize'] = min( 160, max( 14, absint( $raw['logoSize'] ) ) );
@@ -165,6 +181,15 @@ class Dashboard {
 
 		if ( ! $data['showPanel'] || '' === $data['panelTitle'] . $data['panelText'] . $panel_button ) {
 			$classes[] = 'sd-no-panel';
+		} else {
+			$classes[] = 'sd-panel-pos-' . $data['panelPosition'];
+		}
+
+		if ( empty( $data['kpis'] ) ) {
+			$classes[] = 'sd-no-kpis';
+		} else {
+			$classes[] = 'sd-kpis-pos-' . $data['kpiPosition'];
+			$classes[] = 'sd-kpis-layout-' . $data['kpiLayout'];
 		}
 
 		$style = sprintf(
@@ -174,6 +199,10 @@ class Dashboard {
 			self::banner_background( $data ),
 			$data['logoSize']
 		);
+
+		$data['resolvedDirection'] = $direction;
+		$pin_panel                 = in_array( $data['panelPosition'], array( 'left', 'right' ), true )
+			&& ! in_array( 'sd-no-panel', $classes, true );
 
 		ob_start();
 		?>
@@ -185,8 +214,8 @@ class Dashboard {
 		>
 			<?php echo self::banner( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in banner(). ?>
 
-			<div class="sd-body">
-				<div class="sd-main">
+			<div class="sd-body"<?php echo $pin_panel ? ' dir="ltr"' : ''; ?>>
+				<div class="sd-main"<?php echo $pin_panel ? ' dir="' . esc_attr( $direction ) . '"' : ''; ?>>
 					<?php echo self::kpis( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpis(). ?>
 
 					<?php if ( '' !== trim( (string) $content ) ) : ?>
@@ -832,9 +861,12 @@ class Dashboard {
 			return '';
 		}
 
+		$pin = in_array( $data['panelPosition'], array( 'left', 'right' ), true );
+		$dir = isset( $data['resolvedDirection'] ) ? $data['resolvedDirection'] : '';
+
 		ob_start();
 		?>
-		<aside class="sd-panel">
+		<aside class="sd-panel"<?php echo $pin && '' !== $dir ? ' dir="' . esc_attr( $dir ) . '"' : ''; ?>>
 			<?php if ( '' !== $data['panelImage'] ) : ?>
 				<img class="sd-panel__image" src="<?php echo esc_url( $data['panelImage'] ); ?>" alt="" />
 			<?php endif; ?>

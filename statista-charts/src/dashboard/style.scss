@@ -135,12 +135,38 @@
 .statista-dashboard .sd-body {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) clamp(220px, 22%, 280px);
+	grid-template-areas: "main panel";
 	gap: 18px;
 	padding: clamp(14px, 2vw, 20px);
 }
 
-.statista-dashboard.sd-no-panel .sd-body {
+.statista-dashboard.sd-no-panel .sd-body,
+.statista-dashboard.sd-panel-pos-bottom .sd-body {
 	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas: "main";
+}
+
+.statista-dashboard.sd-panel-pos-bottom .sd-body {
+	grid-template-areas:
+		"main"
+		"panel";
+}
+
+.statista-dashboard.sd-panel-pos-start .sd-body {
+	grid-template-columns: clamp(220px, 22%, 280px) minmax(0, 1fr);
+	grid-template-areas: "panel main";
+}
+
+/* Physical left/right. The HTML sets dir="ltr" on .sd-body so rtlcss cannot
+   flip this placement; .sd-main / .sd-panel restore the reading direction. */
+.statista-dashboard.sd-panel-pos-left .sd-body {
+	grid-template-columns: clamp(220px, 22%, 280px) minmax(0, 1fr);
+	grid-template-areas: "panel main";
+}
+
+.statista-dashboard.sd-panel-pos-right .sd-body {
+	grid-template-columns: minmax(0, 1fr) clamp(220px, 22%, 280px);
+	grid-template-areas: "main panel";
 }
 
 /* Markup other plugins injected into the dashboard, moved below it. */
@@ -163,10 +189,31 @@
 
 .statista-dashboard .sd-main {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas:
+		"kpis"
+		"charts";
 	align-content: start;
 	align-items: start;
 	gap: 16px;
 	min-width: 0;
+	grid-area: main;
+}
+
+.statista-dashboard.sd-kpis-pos-bottom .sd-main {
+	grid-template-areas:
+		"charts"
+		"kpis";
+}
+
+.statista-dashboard.sd-kpis-pos-start .sd-main {
+	grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+	grid-template-areas: "kpis charts";
+}
+
+.statista-dashboard.sd-kpis-pos-end .sd-main {
+	grid-template-columns: minmax(0, 1fr) minmax(180px, 260px);
+	grid-template-areas: "charts kpis";
 }
 
 /* KPI cards. */
@@ -176,6 +223,13 @@
 	align-content: start;
 	gap: 14px;
 	width: 100%;
+	grid-area: kpis;
+	min-width: 0;
+}
+
+.statista-dashboard.sd-kpis-layout-column .sd-kpis {
+	grid-template-columns: minmax(190px, 22rem);
+	justify-content: start;
 }
 
 .statista-dashboard .sd-kpi {
@@ -277,6 +331,8 @@
 	align-content: start;
 	gap: 16px;
 	width: 100%;
+	min-width: 0;
+	grid-area: charts;
 }
 
 .statista-dashboard .sd-grid .statista-chart {
@@ -312,6 +368,8 @@
 	background: var(--sd-panel-bg);
 	border-radius: 16px;
 	color: #f8fafc;
+	grid-area: panel;
+	min-width: 0;
 }
 
 .statista-dashboard .sd-panel__image {
@@ -373,12 +431,34 @@
 }
 
 @container (max-width: 880px) {
-	.statista-dashboard .sd-body {
+	.statista-dashboard .sd-body,
+	.statista-dashboard.sd-panel-pos-start .sd-body,
+	.statista-dashboard.sd-panel-pos-left .sd-body,
+	.statista-dashboard.sd-panel-pos-right .sd-body {
 		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"main"
+			"panel";
+	}
+
+	.statista-dashboard.sd-kpis-pos-start .sd-main,
+	.statista-dashboard.sd-kpis-pos-end .sd-main {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"kpis"
+			"charts";
 	}
 
 	.statista-dashboard .sd-panel__button {
 		margin-top: 6px;
+	}
+}
+
+@container (min-width: 881px) {
+	.statista-dashboard.sd-kpis-pos-start .sd-kpis,
+	.statista-dashboard.sd-kpis-pos-end .sd-kpis {
+		grid-template-columns: minmax(0, 1fr);
+		justify-content: stretch;
 	}
 }
 
@@ -394,8 +474,22 @@
 }
 
 @media (max-width: 782px) {
-	.statista-dashboard .sd-body {
+	.statista-dashboard .sd-body,
+	.statista-dashboard.sd-panel-pos-start .sd-body,
+	.statista-dashboard.sd-panel-pos-left .sd-body,
+	.statista-dashboard.sd-panel-pos-right .sd-body {
 		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"main"
+			"panel";
+	}
+
+	.statista-dashboard.sd-kpis-pos-start .sd-main,
+	.statista-dashboard.sd-kpis-pos-end .sd-main {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"kpis"
+			"charts";
 	}
 
 	.statista-dashboard .sd-banner {
