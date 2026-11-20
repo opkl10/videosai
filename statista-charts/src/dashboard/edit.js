@@ -109,6 +109,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		panelPosition,
 		kpiPosition,
 		kpiLayout,
+		kpiPerRow,
 		panelImage,
 		panelKicker,
 		panelTitle,
@@ -134,6 +135,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			showPanel ? `sd-panel-pos-${ panelPosition || 'end' }` : 'sd-no-panel',
 			`sd-kpis-pos-${ kpiPosition || 'top' }`,
 			`sd-kpis-layout-${ kpiLayout || 'row' }`,
+			kpiLayout !== 'column' && ( kpiPerRow || 0 ) >= 1 ? 'sd-kpis-cols' : '',
 		]
 			.filter( Boolean )
 			.join( ' ' ),
@@ -143,6 +145,9 @@ export default function Edit( { attributes, setAttributes } ) {
 			'--sc-accent-2': colors[ 1 ],
 			'--sd-banner': banner,
 			'--sd-logo-size': `${ logoSize }px`,
+			...( kpiLayout !== 'column' && ( kpiPerRow || 0 ) >= 1
+				? { '--sd-kpi-cols': String( kpiPerRow ) }
+				: {} ),
 		},
 	} );
 
@@ -271,6 +276,24 @@ export default function Edit( { attributes, setAttributes } ) {
 						] }
 						onChange={ ( value ) => setAttributes( { kpiLayout: value } ) }
 					/>
+					{ kpiLayout !== 'column' && (
+						<SelectControl
+							__nextHasNoMarginBottom
+							label={ __( 'Cards per row', 'statista-charts' ) }
+							help={ __( 'How many cards sit side by side. Auto fits as many as the width allows.', 'statista-charts' ) }
+							value={ String( kpiPerRow || 0 ) }
+							options={ [
+								{ value: '0', label: __( 'Auto', 'statista-charts' ) },
+								{ value: '1', label: '1' },
+								{ value: '2', label: '2' },
+								{ value: '3', label: '3' },
+								{ value: '4', label: '4' },
+								{ value: '5', label: '5' },
+								{ value: '6', label: '6' },
+							] }
+							onChange={ ( value ) => setAttributes( { kpiPerRow: parseInt( value, 10 ) || 0 } ) }
+						/>
+					) }
 				</PanelBody>
 
 				<PanelBody title={ __( 'Style', 'statista-charts' ) } initialOpen={ false }>

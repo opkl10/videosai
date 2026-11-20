@@ -78,6 +78,7 @@ class Dashboard {
 			'panelPosition'   => 'end',
 			'kpiPosition'     => 'top',
 			'kpiLayout'       => 'row',
+			'kpiPerRow'       => 0,
 			'panelImage'      => '',
 			'panelKicker'     => '',
 			'panelTitle'      => '',
@@ -133,6 +134,10 @@ class Dashboard {
 
 		$kpi_layout = isset( $raw['kpiLayout'] ) ? sanitize_key( (string) $raw['kpiLayout'] ) : '';
 		$clean['kpiLayout'] = in_array( $kpi_layout, array( 'row', 'column' ), true ) ? $kpi_layout : 'row';
+
+		if ( isset( $raw['kpiPerRow'] ) ) {
+			$clean['kpiPerRow'] = min( 6, max( 0, absint( $raw['kpiPerRow'] ) ) );
+		}
 
 		if ( isset( $raw['logoSize'] ) ) {
 			$clean['logoSize'] = min( 160, max( 14, absint( $raw['logoSize'] ) ) );
@@ -197,6 +202,10 @@ class Dashboard {
 		} else {
 			$classes[] = 'sd-kpis-pos-' . $data['kpiPosition'];
 			$classes[] = 'sd-kpis-layout-' . $data['kpiLayout'];
+
+			if ( 'column' !== $data['kpiLayout'] && $data['kpiPerRow'] >= 1 ) {
+				$classes[] = 'sd-kpis-cols';
+			}
 		}
 
 		$style = sprintf(
@@ -206,6 +215,10 @@ class Dashboard {
 			self::banner_background( $data ),
 			$data['logoSize']
 		);
+
+		if ( 'column' !== $data['kpiLayout'] && $data['kpiPerRow'] >= 1 ) {
+			$style .= sprintf( ' --sd-kpi-cols: %d;', (int) $data['kpiPerRow'] );
+		}
 
 		$data['resolvedDirection'] = $direction;
 		$pin_panel                 = in_array( $data['panelPosition'], array( 'left', 'right' ), true )

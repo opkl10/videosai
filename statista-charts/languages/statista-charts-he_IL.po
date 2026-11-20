@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T11:15:21+00:00\n"
+"POT-Creation-Date: 2026-11-20T11:22:43+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:755
+#: includes/class-dashboard.php:768
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -372,7 +372,8 @@ msgstr "הערה"
 msgid "Cart abandonment"
 msgstr "נטישת עגלה"
 
-#: includes/elementor/class-stats-widget.php:192 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:192 build/dashboard/index.js:1
+#: build/stats/index.js:1
 msgid "Cards per row"
 msgstr "כרטיסים בשורה"
 
@@ -996,7 +997,9 @@ msgid ""
 "A column stacks the cards. A row places them next to each other. Drag a card "
 "onto another card to swap them, or onto empty space to move it and leave a "
 "gap behind."
-msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר כדי להחליף ביניהם, או על רווח ריק כדי להזיז אותו ולהשאיר פער במקום הישן."
+msgstr ""
+"עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר "
+"כדי להחליף ביניהם, או על רווח ריק כדי להזיז אותו ולהשאיר פער במקום הישן."
 
 #: build/dashboard/index.js:1
 msgid "In a row"
@@ -1005,6 +1008,14 @@ msgstr "בשורה"
 #: build/dashboard/index.js:1
 msgid "In a column"
 msgstr "בעמודה"
+
+#: build/dashboard/index.js:1
+msgid "How many cards sit side by side. Auto fits as many as the width allows."
+msgstr "כמה כרטיסים יושבים זה לצד זה. אוטומטי ממלא לפי הרוחב."
+
+#: build/dashboard/index.js:1
+msgid "Auto"
+msgstr "אוטומטי"
 
 #: build/dashboard/index.js:1
 msgid "Brand"

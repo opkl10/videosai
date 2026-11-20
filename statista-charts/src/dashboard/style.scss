@@ -227,6 +227,14 @@
 	min-width: 0;
 }
 
+.statista-dashboard.sd-kpis-cols .sd-kpis {
+	grid-template-columns: repeat(var(--sd-kpi-cols, 3), minmax(0, 1fr));
+}
+
+.statista-dashboard.sd-kpis-cols .sd-kpi--slot {
+	min-width: 0;
+}
+
 .statista-dashboard.sd-kpis-layout-column .sd-kpis {
 	grid-template-columns: minmax(190px, 22rem);
 	justify-content: start;
@@ -463,8 +471,8 @@
 }
 
 @container (min-width: 881px) {
-	.statista-dashboard.sd-kpis-pos-start .sd-kpis,
-	.statista-dashboard.sd-kpis-pos-end .sd-kpis {
+	.statista-dashboard.sd-kpis-pos-start:not(.sd-kpis-cols) .sd-kpis,
+	.statista-dashboard.sd-kpis-pos-end:not(.sd-kpis-cols) .sd-kpis {
 		grid-template-columns: minmax(0, 1fr);
 		justify-content: stretch;
 	}
