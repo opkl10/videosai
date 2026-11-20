@@ -31,6 +31,7 @@ export default function KpiCard( {
 	onDragHandlePointerMove,
 	onDragHandlePointerUp,
 	onDragHandlePointerCancel,
+	slotIndex,
 } ) {
 	const isSplit = kpi.value2 !== '';
 	const update = ( changes ) => onChange( { ...kpi, ...changes } );
@@ -48,11 +49,11 @@ export default function KpiCard( {
 		.join( ' ' );
 
 	return (
-		<div className={ className }>
+		<div className={ className } data-kpi-index={ slotIndex }>
 			<button
 				type="button"
 				className="sd-kpi__drag"
-				aria-label={ __( 'Drag onto another card to swap', 'statista-charts' ) }
+				aria-label={ __( 'Drag to move this card', 'statista-charts' ) }
 				onPointerDown={ onDragHandlePointerDown }
 				onPointerMove={ onDragHandlePointerMove }
 				onPointerUp={ onDragHandlePointerUp }

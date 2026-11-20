@@ -138,6 +138,32 @@
 		box-shadow: 0 0 0 2px var(--sc-accent);
 	}
 
+	.sd-kpi--slot {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		min-height: 104px;
+		padding: 16px;
+		background: transparent;
+		border: 1px dashed var(--sd-border);
+	}
+
+	.sd-kpi--slot .sd-kpi__toolbar {
+		opacity: 0.85;
+	}
+
+	.sd-kpi__slot-label {
+		color: var(--sd-muted);
+		font-size: 13px;
+	}
+
+	.sd-kpi__slot-add.components-button {
+		color: var(--sd-muted);
+	}
+
 	.sd-kpis--sorting {
 		user-select: none;
 	}

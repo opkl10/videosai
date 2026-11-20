@@ -144,6 +144,13 @@ class Dashboard {
 					continue;
 				}
 
+				if ( ! empty( $kpi['empty'] ) ) {
+					$clean['kpis'][] = array(
+						'empty' => true,
+					);
+					continue;
+				}
+
 				$clean['kpis'][] = array(
 					'icon'   => isset( $kpi['icon'] ) ? sanitize_text_field( (string) $kpi['icon'] ) : '',
 					'label'  => isset( $kpi['label'] ) ? sanitize_text_field( (string) $kpi['label'] ) : '',
@@ -781,6 +788,10 @@ class Dashboard {
 		?>
 		<div class="sd-kpis">
 			<?php foreach ( $data['kpis'] as $kpi ) : ?>
+				<?php if ( ! empty( $kpi['empty'] ) ) : ?>
+					<div class="sd-kpi sd-kpi--slot" aria-hidden="true"></div>
+					<?php continue; ?>
+				<?php endif; ?>
 				<?php $split = '' !== $kpi['value2']; ?>
 				<div class="sd-kpi<?php echo $split ? ' sd-kpi--split' : ''; ?>">
 					<?php if ( '' !== $kpi['icon'] && ! $split ) : ?>

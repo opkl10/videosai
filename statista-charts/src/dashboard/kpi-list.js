@@ -1,7 +1,7 @@
 /**
- * Drag-to-swap wrapper around the dashboard KPI cards.
- *
- * Dropping a card onto another card exchanges those two. The rest stay put.
+ * KPI cards sit in a grid of slots. Dragging a card onto another card swaps
+ * those two. Dragging it onto an empty slot (or the empty-space pad) moves it
+ * and leaves a hole behind, so the other cards stay put.
  */
 import { useRef, useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
@@ -10,6 +10,11 @@ import { __ } from '@wordpress/i18n';
 import KpiCard from './kpi-card';
 
 const EMPTY_KPI = { icon: '', label: '', value: '', icon2: '', value2: '' };
+const EMPTY_SLOT = { empty: true };
+
+export function isEmptySlot( item ) {
+	return Boolean( item && item.empty );
+}
 
 export function swapItems( items, from, to ) {
 	if (
@@ -30,11 +35,35 @@ export function swapItems( items, from, to ) {
 	return next;
 }
 
-function indexAtPoint( list, clientX, clientY ) {
-	const cards = list ? [ ...list.querySelectorAll( '.sd-kpi--editing' ) ] : [];
+/**
+ * Move a filled card to `to`. If `to` equals `items.length`, park it in a new
+ * slot at the end. The origin becomes an empty slot.
+ *
+ * @param {Array}  items
+ * @param {number} from
+ * @param {number} to
+ * @return {Array}
+ */
+export function moveToSlot( items, from, to ) {
+	if ( from < 0 || from >= items.length || isEmptySlot( items[ from ] ) ) {
+		return items;
+	}
 
-	for ( let index = 0; index < cards.length; index++ ) {
-		const rect = cards[ index ].getBoundingClientRect();
+	if ( to === items.length ) {
+		const next = items.slice();
+		next[ from ] = { ...EMPTY_SLOT };
+		next.push( items[ from ] );
+		return next;
+	}
+
+	return swapItems( items, from, to );
+}
+
+function indexAtPoint( list, clientX, clientY ) {
+	const cells = list ? [ ...list.querySelectorAll( '[data-kpi-index]' ) ] : [];
+
+	for ( let i = 0; i < cells.length; i++ ) {
+		const rect = cells[ i ].getBoundingClientRect();
 		const inside =
 			clientX >= rect.left &&
 			clientX <= rect.right &&
@@ -42,11 +71,40 @@ function indexAtPoint( list, clientX, clientY ) {
 			clientY <= rect.bottom;
 
 		if ( inside ) {
-			return index;
+			return Number( cells[ i ].dataset.kpiIndex );
 		}
 	}
 
 	return null;
+}
+
+function EmptySlot( { slotIndex, dropTarget, onFill, onRemove } ) {
+	return (
+		<div
+			className={ `sd-kpi sd-kpi--slot${ dropTarget ? ' sd-kpi--drop-target' : '' }` }
+			data-kpi-index={ slotIndex }
+		>
+			<span className="sd-kpi__slot-label">
+				{ __( 'Empty space', 'statista-charts' ) }
+			</span>
+			<div className="sd-kpi__toolbar">
+				<Button
+					size="small"
+					icon="plus-alt2"
+					label={ __( 'Add a card here', 'statista-charts' ) }
+					showTooltip
+					onClick={ onFill }
+				/>
+				<Button
+					size="small"
+					icon="no-alt"
+					label={ __( 'Remove empty space', 'statista-charts' ) }
+					showTooltip
+					onClick={ onRemove }
+				/>
+			</div>
+		</div>
+	);
 }
 
 export default function KpiList( { kpis = [], layout = 'row', rtl = false, onChange } ) {
@@ -54,8 +112,8 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 	const dragRef = useRef( null );
 	const [ drag, setDrag ] = useState( null );
 
-	const swap = ( from, to ) => {
-		const next = swapItems( kpis, from, to );
+	const place = ( from, to ) => {
+		const next = moveToSlot( kpis, from, to );
 
 		if ( next !== kpis ) {
 			onChange( next );
@@ -78,7 +136,7 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 		}
 
 		if ( current.to !== null && current.to !== current.from ) {
-			swap( current.from, current.to );
+			place( current.from, current.to );
 		}
 
 		dragRef.current = null;
@@ -87,6 +145,10 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 
 	const onHandlePointerDown = ( index, event ) => {
 		if ( event.pointerType === 'mouse' && event.button !== 0 ) {
+			return;
+		}
+
+		if ( isEmptySlot( kpis[ index ] ) ) {
 			return;
 		}
 
@@ -122,25 +184,53 @@ export default function KpiList( { kpis = [], layout = 'row', rtl = false, onCha
 			className={ `sd-kpis${ drag ? ' sd-kpis--sorting' : '' }` }
 		>
 			{ kpis.map( ( kpi, index ) => (
-				<KpiCard
-					key={ index }
-					kpi={ kpi }
-					dragging={ drag && drag.from === index }
-					dropTarget={ drag && drag.to === index }
-					layout={ layout }
-					rtl={ rtl }
-					canMoveEarlier={ index > 0 }
-					canMoveLater={ index < kpis.length - 1 }
-					onChange={ ( next ) => onChange( kpis.map( ( item, i ) => ( i === index ? next : item ) ) ) }
-					onRemove={ () => onChange( kpis.filter( ( item, i ) => i !== index ) ) }
-					onMoveEarlier={ () => swap( index, index - 1 ) }
-					onMoveLater={ () => swap( index, index + 1 ) }
-					onDragHandlePointerDown={ ( event ) => onHandlePointerDown( index, event ) }
-					onDragHandlePointerMove={ onHandlePointerMove }
-					onDragHandlePointerUp={ endDrag }
-					onDragHandlePointerCancel={ endDrag }
-				/>
+				isEmptySlot( kpi ) ? (
+					<EmptySlot
+						key={ index }
+						slotIndex={ index }
+						dropTarget={ drag && drag.to === index }
+						onFill={ () => onChange( kpis.map( ( item, i ) => ( i === index ? { ...EMPTY_KPI } : item ) ) ) }
+						onRemove={ () => onChange( kpis.filter( ( item, i ) => i !== index ) ) }
+					/>
+				) : (
+					<KpiCard
+						key={ index }
+						slotIndex={ index }
+						kpi={ kpi }
+						dragging={ drag && drag.from === index }
+						dropTarget={ drag && drag.to === index }
+						layout={ layout }
+						rtl={ rtl }
+						canMoveEarlier={ index > 0 }
+						canMoveLater={ index < kpis.length - 1 }
+						onChange={ ( next ) => onChange( kpis.map( ( item, i ) => ( i === index ? next : item ) ) ) }
+						onRemove={ () => onChange( kpis.filter( ( item, i ) => i !== index ) ) }
+						onMoveEarlier={ () => place( index, index - 1 ) }
+						onMoveLater={ () => place( index, index + 1 ) }
+						onDragHandlePointerDown={ ( event ) => onHandlePointerDown( index, event ) }
+						onDragHandlePointerMove={ onHandlePointerMove }
+						onDragHandlePointerUp={ endDrag }
+						onDragHandlePointerCancel={ endDrag }
+					/>
+				)
 			) ) }
+
+			<div
+				className={ `sd-kpi sd-kpi--slot sd-kpi--slot-end${ drag && drag.to === kpis.length ? ' sd-kpi--drop-target' : '' }` }
+				data-kpi-index={ kpis.length }
+			>
+				<span className="sd-kpi__slot-label">
+					{ __( 'Empty space', 'statista-charts' ) }
+				</span>
+				<Button
+					className="sd-kpi__slot-add"
+					size="small"
+					variant="tertiary"
+					onClick={ () => onChange( [ ...kpis, { ...EMPTY_SLOT } ] ) }
+				>
+					{ __( 'Add empty space', 'statista-charts' ) }
+				</Button>
+			</div>
 
 			<Button
 				className="sd-kpi sd-kpi--add"

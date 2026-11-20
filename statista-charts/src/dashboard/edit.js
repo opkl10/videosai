@@ -263,7 +263,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					<SelectControl
 						__nextHasNoMarginBottom
 						label={ __( 'Cards layout', 'statista-charts' ) }
-						help={ __( 'A column stacks the cards. A row places them next to each other. Drag a card onto another card to swap those two; the others stay where they are.', 'statista-charts' ) }
+						help={ __( 'A column stacks the cards. A row places them next to each other. Drag a card onto another card to swap them, or onto empty space to move it and leave a gap behind.', 'statista-charts' ) }
 						value={ kpiLayout || 'row' }
 						options={ [
 							{ value: 'row', label: __( 'In a row', 'statista-charts' ) },

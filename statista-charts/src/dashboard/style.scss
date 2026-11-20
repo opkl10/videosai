@@ -243,6 +243,14 @@
 	border-radius: 14px;
 }
 
+.statista-dashboard .sd-kpi--slot {
+	min-width: 190px;
+	min-height: 104px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+}
+
 .statista-dashboard .sd-kpi__icon {
 	display: inline-flex;
 	align-items: center;

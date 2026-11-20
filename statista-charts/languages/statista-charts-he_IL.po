@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T11:08:05+00:00\n"
+"POT-Creation-Date: 2026-11-20T11:15:21+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:748
+#: includes/class-dashboard.php:755
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -770,8 +770,8 @@ msgid "Data source…"
 msgstr "מקור הנתונים…"
 
 #: build/dashboard/index.js:1
-msgid "Drag onto another card to swap"
-msgstr "גרירה על כרטיס אחר להחלפה"
+msgid "Drag to move this card"
+msgstr "גרירה להזזת הכרטיס"
 
 #: build/dashboard/index.js:1
 msgid "Move earlier"
@@ -812,6 +812,22 @@ msgstr "שם פלטפורמה שנייה או סמל"
 #: build/dashboard/index.js:1
 msgid "Second value"
 msgstr "ערך שני"
+
+#: build/dashboard/index.js:1
+msgid "Empty space"
+msgstr "רווח ריק"
+
+#: build/dashboard/index.js:1
+msgid "Add a card here"
+msgstr "הוספת כרטיס כאן"
+
+#: build/dashboard/index.js:1
+msgid "Remove empty space"
+msgstr "הסרת רווח ריק"
+
+#: build/dashboard/index.js:1
+msgid "Add empty space"
+msgstr "הוספת רווח ריק"
 
 #: build/dashboard/index.js:1
 msgid "Add a metric card"
@@ -978,8 +994,9 @@ msgstr "סידור הכרטיסים"
 #: build/dashboard/index.js:1
 msgid ""
 "A column stacks the cards. A row places them next to each other. Drag a card "
-"onto another card to swap those two; the others stay where they are."
-msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר כדי להחליף ביניהם; השאר נשארים במקומם."
+"onto another card to swap them, or onto empty space to move it and leave a "
+"gap behind."
+msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר כדי להחליף ביניהם, או על רווח ריק כדי להזיז אותו ולהשאיר פער במקום הישן."
 
 #: build/dashboard/index.js:1
 msgid "In a row"
@@ -1158,6 +1175,16 @@ msgstr "מספר"
 msgctxt "block keyword"
 msgid "card"
 msgstr "כרטיס"
+
+#~ msgid "Drag onto another card to swap"
+#~ msgstr "גרירה על כרטיס אחר להחלפה"
+
+#~ msgid ""
+#~ "A column stacks the cards. A row places them next to each other. Drag a "
+#~ "card onto another card to swap those two; the others stay where they are."
+#~ msgstr ""
+#~ "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס "
+#~ "אחר כדי להחליף ביניהם; השאר נשארים במקומם."
 
 #~ msgid "Drag to reorder"
 #~ msgstr "גרירה לשינוי סדר"
