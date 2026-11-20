@@ -12,11 +12,9 @@ import {
 import { Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-import KpiCard from './kpi-card';
+import KpiList from './kpi-list';
 import { getPalettes } from '../lib/palettes';
 import { resolveTheme } from '../lib/chart-factory';
-
-const EMPTY_KPI = { icon: '', label: '', value: '', icon2: '', value2: '' };
 
 const TEMPLATE = [
 	[
@@ -157,9 +155,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		}
 	);
 
-	const updateKpi = ( index, next ) =>
-		setAttributes( { kpis: kpis.map( ( kpi, i ) => ( i === index ? next : kpi ) ) } );
-
 	return (
 		<>
 			<InspectorControls>
@@ -268,7 +263,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					<SelectControl
 						__nextHasNoMarginBottom
 						label={ __( 'Cards layout', 'statista-charts' ) }
-						help={ __( 'A column stacks the cards. A row places them next to each other.', 'statista-charts' ) }
+						help={ __( 'A column stacks the cards. A row places them next to each other. Drag a card by the handle to change its place.', 'statista-charts' ) }
 						value={ kpiLayout || 'row' }
 						options={ [
 							{ value: 'row', label: __( 'In a row', 'statista-charts' ) },
@@ -397,24 +392,12 @@ export default function Edit( { attributes, setAttributes } ) {
 						className="sd-main"
 						dir={ showPanel && [ 'left', 'right' ].includes( panelPosition ) ? resolvedDirection : undefined }
 					>
-						<div className="sd-kpis">
-							{ kpis.map( ( kpi, index ) => (
-								<KpiCard
-									key={ index }
-									kpi={ kpi }
-									onChange={ ( next ) => updateKpi( index, next ) }
-									onRemove={ () => setAttributes( { kpis: kpis.filter( ( item, i ) => i !== index ) } ) }
-								/>
-							) ) }
-
-							<Button
-								className="sd-kpi sd-kpi--add"
-								icon="plus-alt2"
-								onClick={ () => setAttributes( { kpis: [ ...kpis, { ...EMPTY_KPI } ] } ) }
-							>
-								{ __( 'Add a metric card', 'statista-charts' ) }
-							</Button>
-						</div>
+						<KpiList
+							kpis={ kpis }
+							layout={ kpiLayout || 'row' }
+							rtl={ resolvedDirection === 'rtl' }
+							onChange={ ( next ) => setAttributes( { kpis: next } ) }
+						/>
 
 						<div { ...innerBlocksProps } />
 					</div>

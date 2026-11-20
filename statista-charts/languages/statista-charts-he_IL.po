@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-20T10:12:41+00:00\n"
+"POT-Creation-Date: 2026-11-20T10:48:10+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:744
+#: includes/class-dashboard.php:748
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -770,6 +770,18 @@ msgid "Data source…"
 msgstr "מקור הנתונים…"
 
 #: build/dashboard/index.js:1
+msgid "Drag to reorder"
+msgstr "גרירה לשינוי סדר"
+
+#: build/dashboard/index.js:1
+msgid "Move earlier"
+msgstr "הזזה אחורה"
+
+#: build/dashboard/index.js:1
+msgid "Move later"
+msgstr "הזזה קדימה"
+
+#: build/dashboard/index.js:1
 msgid "Back to a single value"
 msgstr "חזרה לערך אחד"
 
@@ -800,6 +812,10 @@ msgstr "שם פלטפורמה שנייה או סמל"
 #: build/dashboard/index.js:1
 msgid "Second value"
 msgstr "ערך שני"
+
+#: build/dashboard/index.js:1
+msgid "Add a metric card"
+msgstr "הוספת כרטיס מדד"
 
 #: build/dashboard/index.js:1
 msgid "Revenue"
@@ -960,8 +976,10 @@ msgid "Cards layout"
 msgstr "סידור הכרטיסים"
 
 #: build/dashboard/index.js:1
-msgid "A column stacks the cards. A row places them next to each other."
-msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה."
+msgid ""
+"A column stacks the cards. A row places them next to each other. Drag a card "
+"by the handle to change its place."
+msgstr "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס מהידית כדי להחליף מקום."
 
 #: build/dashboard/index.js:1
 msgid "In a row"
@@ -998,10 +1016,6 @@ msgstr "שורת מידע"
 #: build/dashboard/index.js:1
 msgid "Last updated"
 msgstr "עודכן לאחרונה"
-
-#: build/dashboard/index.js:1
-msgid "Add a metric card"
-msgstr "הוספת כרטיס מדד"
 
 #: build/dashboard/index.js:1
 msgid "Small line above"

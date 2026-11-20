@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.9 =
+* Metric cards in the dashboard can be reordered by dragging the handle, or with the move buttons on each card.
 
 = 1.4.8 =
 * The side panel can sit before or after the charts, on the left, on the right, or below them.

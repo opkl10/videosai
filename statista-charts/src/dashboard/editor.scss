@@ -70,6 +70,47 @@
 
 	.sd-kpi--editing {
 		position: relative;
+		padding-inline-start: 28px;
+	}
+
+	.sd-kpi__drag {
+		position: absolute;
+		inset-block-start: 8px;
+		inset-inline-start: 6px;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 28px;
+		padding: 0;
+		border: 0;
+		border-radius: 6px;
+		background: transparent;
+		color: var(--sd-muted);
+		cursor: grab;
+		touch-action: none;
+		opacity: 0.65;
+
+		&:hover,
+		&:focus {
+			opacity: 1;
+			background: color-mix(in srgb, var(--sd-fg) 8%, transparent);
+			outline: none;
+		}
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	.sd-kpi__drag-dots {
+		width: 10px;
+		height: 14px;
+		background-image: radial-gradient(currentColor 1.1px, transparent 1.25px);
+		background-size: 5px 5px;
+		background-position: 0 0;
+		pointer-events: none;
 	}
 
 	.sd-kpi__toolbar {
@@ -83,8 +124,56 @@
 	}
 
 	.sd-kpi--editing:hover .sd-kpi__toolbar,
-	.sd-kpi--editing:focus-within .sd-kpi__toolbar {
+	.sd-kpi--editing:focus-within .sd-kpi__toolbar,
+	.sd-kpi--editing:hover .sd-kpi__drag,
+	.sd-kpi--editing:focus-within .sd-kpi__drag {
 		opacity: 1;
+	}
+
+	.sd-kpi--dragging {
+		opacity: 0.45;
+	}
+
+	.sd-kpi--drop-before::before,
+	.sd-kpi--drop-after::after {
+		content: "";
+		position: absolute;
+		z-index: 3;
+		background: var(--sc-accent);
+		border-radius: 2px;
+		pointer-events: none;
+	}
+
+	.sd-kpi--drop-before::before {
+		inset-inline-start: -8px;
+		inset-block: 6px;
+		width: 3px;
+	}
+
+	.sd-kpi--drop-after::after {
+		inset-inline-end: -8px;
+		inset-block: 6px;
+		width: 3px;
+	}
+
+	.sd-kpis-layout-column .sd-kpi--drop-before::before {
+		inset-inline: 8px;
+		inset-block-start: -8px;
+		inset-block-end: auto;
+		width: auto;
+		height: 3px;
+	}
+
+	.sd-kpis-layout-column .sd-kpi--drop-after::after {
+		inset-inline: 8px;
+		inset-block-end: -8px;
+		inset-block-start: auto;
+		width: auto;
+		height: 3px;
+	}
+
+	.sd-kpis--sorting {
+		user-select: none;
 	}
 
 	.sd-kpi__icon.sd-input,
