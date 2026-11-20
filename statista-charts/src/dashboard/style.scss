@@ -230,6 +230,32 @@
 	line-height: 1;
 }
 
+.statista-dashboard .sd-kpi__badge--text {
+	width: auto;
+	height: auto;
+	min-width: 0;
+	max-width: 9em;
+	padding: 0;
+	border-radius: 0;
+	background: none;
+	font-size: 0.9375rem;
+	font-weight: 600;
+	line-height: 1.25;
+	color: var(--sd-fg);
+	text-align: start;
+}
+
+.statista-dashboard .sd-kpi--split:has(.sd-kpi__badge--text) .sd-kpi__values {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 6px;
+}
+
+.statista-dashboard .sd-kpi--split:has(.sd-kpi__badge--text) .sd-kpi__value {
+	width: 100%;
+	justify-content: flex-start;
+}
+
 .statista-dashboard .sd-kpi__number {
 	font-size: clamp(1.35rem, 2.6vw, 1.85rem);
 	font-weight: 700;

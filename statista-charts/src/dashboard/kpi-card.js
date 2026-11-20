@@ -4,9 +4,22 @@
 import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * A swatch is a colour emoji or symbol. Anything with a letter or digit is a
+ * platform name and should render at normal text size.
+ *
+ * @param {string} value
+ * @return {boolean}
+ */
+export function isTextMark( value ) {
+	return /[\p{L}\p{N}]/u.test( String( value || '' ) );
+}
+
 export default function KpiCard( { kpi, onChange, onRemove } ) {
 	const isSplit = kpi.value2 !== '';
 	const update = ( changes ) => onChange( { ...kpi, ...changes } );
+	const iconIsText = isTextMark( kpi.icon );
+	const icon2IsText = isTextMark( kpi.icon2 );
 
 	return (
 		<div className={ `sd-kpi${ isSplit ? ' sd-kpi--split' : '' } sd-kpi--editing` }>
@@ -52,10 +65,10 @@ export default function KpiCard( { kpi, onChange, onRemove } ) {
 					{ isSplit && (
 						<input
 							type="text"
-							className="sd-kpi__badge sd-input"
+							className={ `sd-kpi__badge sd-input${ iconIsText ? ' sd-kpi__badge--text' : '' }` }
 							value={ kpi.icon }
-							placeholder="🟦"
-							aria-label={ __( 'Icon', 'statista-charts' ) }
+							placeholder={ __( 'iOS', 'statista-charts' ) }
+							aria-label={ __( 'Platform name or icon', 'statista-charts' ) }
 							onChange={ ( event ) => update( { icon: event.target.value } ) }
 						/>
 					) }
@@ -74,10 +87,10 @@ export default function KpiCard( { kpi, onChange, onRemove } ) {
 					<span className="sd-kpi__value">
 						<input
 							type="text"
-							className="sd-kpi__badge sd-input"
+							className={ `sd-kpi__badge sd-input${ icon2IsText ? ' sd-kpi__badge--text' : '' }` }
 							value={ kpi.icon2 }
-							placeholder="🟩"
-							aria-label={ __( 'Second icon', 'statista-charts' ) }
+							placeholder={ __( 'Android', 'statista-charts' ) }
+							aria-label={ __( 'Second platform name or icon', 'statista-charts' ) }
 							onChange={ ( event ) => update( { icon2: event.target.value } ) }
 						/>
 						<input

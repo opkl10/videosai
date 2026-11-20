@@ -764,17 +764,13 @@ class Dashboard {
 
 					<div class="sd-kpi__values">
 						<span class="sd-kpi__value">
-							<?php if ( $split && '' !== $kpi['icon'] ) : ?>
-								<span class="sd-kpi__badge" aria-hidden="true"><?php echo esc_html( $kpi['icon'] ); ?></span>
-							<?php endif; ?>
+							<?php echo self::kpi_mark( $kpi['icon'], $split ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpi_mark(). ?>
 							<span class="sd-kpi__number" dir="ltr"><?php echo esc_html( $kpi['value'] ); ?></span>
 						</span>
 
 						<?php if ( $split ) : ?>
 							<span class="sd-kpi__value">
-								<?php if ( '' !== $kpi['icon2'] ) : ?>
-									<span class="sd-kpi__badge" aria-hidden="true"><?php echo esc_html( $kpi['icon2'] ); ?></span>
-								<?php endif; ?>
+								<?php echo self::kpi_mark( $kpi['icon2'], true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpi_mark(). ?>
 								<span class="sd-kpi__number" dir="ltr"><?php echo esc_html( $kpi['value2'] ); ?></span>
 							</span>
 						<?php endif; ?>
@@ -785,6 +781,41 @@ class Dashboard {
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Renders the colour swatch or platform name next to a split KPI value.
+	 *
+	 * @param string $mark     Icon emoji or a platform name.
+	 * @param bool   $as_badge Whether this card is split (badges only then).
+	 * @return string
+	 */
+	private static function kpi_mark( $mark, $as_badge ) {
+		$mark = (string) $mark;
+
+		if ( ! $as_badge || '' === trim( $mark ) ) {
+			return '';
+		}
+
+		$is_text = self::kpi_mark_is_text( $mark );
+		$class   = 'sd-kpi__badge' . ( $is_text ? ' sd-kpi__badge--text' : '' );
+
+		return sprintf(
+			'<span class="%1$s"%2$s>%3$s</span>',
+			esc_attr( $class ),
+			$is_text ? '' : ' aria-hidden="true"',
+			esc_html( $mark )
+		);
+	}
+
+	/**
+	 * A swatch is a colour emoji or symbol. Letters or digits mean a name.
+	 *
+	 * @param string $mark Icon or label.
+	 * @return bool
+	 */
+	private static function kpi_mark_is_text( $mark ) {
+		return (bool) preg_match( '/\p{L}|\p{N}/u', (string) $mark );
 	}
 
 	/**

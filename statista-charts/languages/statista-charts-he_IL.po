@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-19T17:14:57+00:00\n"
+"POT-Creation-Date: 2026-11-20T06:59:23+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:294
+#: includes/class-dashboard.php:719
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -778,8 +778,20 @@ msgid "Metric name"
 msgstr "שם המדד"
 
 #: build/dashboard/index.js:1
-msgid "Second icon"
-msgstr "אייקון שני"
+msgid "iOS"
+msgstr "iOS"
+
+#: build/dashboard/index.js:1
+msgid "Platform name or icon"
+msgstr "שם פלטפורמה או סמל"
+
+#: build/dashboard/index.js:1
+msgid "Android"
+msgstr "אנדרואיד"
+
+#: build/dashboard/index.js:1
+msgid "Second platform name or icon"
+msgstr "שם פלטפורמה שנייה או סמל"
 
 #: build/dashboard/index.js:1
 msgid "Second value"
@@ -1073,6 +1085,9 @@ msgstr "מספר"
 msgctxt "block keyword"
 msgid "card"
 msgstr "כרטיס"
+
+#~ msgid "Second icon"
+#~ msgstr "אייקון שני"
 
 #~ msgid ""
 #~ "Beautiful, responsive statistics and charts inside posts — a Gutenberg block"
