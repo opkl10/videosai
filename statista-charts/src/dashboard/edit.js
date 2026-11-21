@@ -6,10 +6,14 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
+	store as blockEditorStore,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { createBlock } from '@wordpress/blocks';
 import { BaseControl, Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import KpiList from './kpi-list';
@@ -36,6 +40,10 @@ const TEMPLATE = [
 		},
 	],
 ];
+
+function defaultChartBlocks() {
+	return TEMPLATE.map( ( [ name, attrs ] ) => createBlock( name, attrs ) );
+}
 
 function exampleContent() {
 	return {
@@ -164,7 +172,7 @@ function ColorField( { label, help, value, onChange } ) {
 	);
 }
 
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit( { attributes, setAttributes, clientId } ) {
 	const {
 		brandName,
 		logoUrl,
@@ -198,6 +206,24 @@ export default function Edit( { attributes, setAttributes } ) {
 		panelButtonText,
 		panelButtonUrl,
 	} = attributes;
+
+	const { replaceInnerBlocks } = useDispatch( blockEditorStore );
+	const justInserted = useSelect(
+		( select ) => select( blockEditorStore ).wasBlockJustInserted( clientId ),
+		[ clientId ]
+	);
+	const innerCount = useSelect(
+		( select ) => select( blockEditorStore ).getBlockCount( clientId ),
+		[ clientId ]
+	);
+
+	useEffect( () => {
+		if ( ! justInserted || innerCount > 0 ) {
+			return;
+		}
+
+		replaceInnerBlocks( clientId, defaultChartBlocks(), false );
+	}, [ justInserted, innerCount, clientId, replaceInnerBlocks ] );
 
 	const palettes = getPalettes();
 	const colors = ( palettes[ palette ] || palettes.statista ).colors;
@@ -233,11 +259,12 @@ export default function Edit( { attributes, setAttributes } ) {
 		},
 	} );
 
+	// No `template` here: Gutenberg re-fills an empty inner area from the
+	// template on every load, so deleted charts came back after updates.
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'sd-grid' },
 		{
 			allowedBlocks: [ 'statista/chart' ],
-			template: TEMPLATE,
 			templateLock: false,
 		}
 	);

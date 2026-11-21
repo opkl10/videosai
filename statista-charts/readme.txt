@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.14,
+Stable tag: 1.4.15,
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.15 =
+* Removing every chart from a dashboard now stays empty after you reopen or update the plugin. The two example charts are added only when you first insert the block.
 
 = 1.4.14 =
 * The logo and title banner can use your own colours, a second colour for a gradient, a text colour, and a wallpaper. A leftover metric card can span the full row.
