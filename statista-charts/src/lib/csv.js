@@ -2,10 +2,62 @@
  * CSV helpers for the editor.
  *
  * The REST endpoint does the real parsing; this is the offline fallback and the
- * "copy the current table as CSV" helper.
+ * "copy the current table as CSV" helper. Column classification matches
+ * Config::parse_csv() in PHP: a text column labels the axis, numeric columns
+ * become series, and dimension headers (Category, Year, Source, …) are skipped.
  */
 
 const DELIMITERS = [ ',', '\t', ';', '|' ];
+
+const LABEL_HEADERS = new Set( [
+	'title',
+	'name',
+	'label',
+	'product',
+	'game',
+	'item',
+	'movie',
+	'album',
+	'app',
+	'כותרת',
+	'שם',
+	'מוצר',
+	'משחק',
+] );
+
+const DIMENSION_HEADERS = new Set( [
+	'category',
+	'categories',
+	'type',
+	'types',
+	'genre',
+	'source',
+	'datasource',
+	'timeframe',
+	'period',
+	'date',
+	'year',
+	'releaseyear',
+	'releasedate',
+	'id',
+	'uid',
+	'url',
+	'link',
+	'notes',
+	'note',
+	'comment',
+	'platform',
+	'region',
+	'country',
+	'status',
+	'format',
+	'קטגוריה',
+	'סוג',
+	'מקור',
+	'שנה',
+	'תאריך',
+	'תקופה',
+] );
 
 function detectDelimiter( line ) {
 	let best = ',';
@@ -55,6 +107,76 @@ function splitLine( line, delimiter ) {
 	return cells;
 }
 
+function normalizeHeader( name ) {
+	return String( name || '' )
+		.trim()
+		.toLowerCase()
+		.replace( /[ \-_]/g, '' );
+}
+
+function headerIsDimension( name ) {
+	if ( DIMENSION_HEADERS.has( normalizeHeader( name ) ) ) {
+		return true;
+	}
+
+	return /(^|[_\s-])(category|categories|source|timeframe|genre|platform|year|date|id|type)s?$/i.test( name );
+}
+
+function columnMostlyNumeric( values ) {
+	let numeric = 0;
+	let filled = 0;
+
+	( values || [] ).forEach( ( value ) => {
+		if ( String( value ?? '' ).trim() === '' ) {
+			return;
+		}
+
+		filled++;
+
+		if ( toNumber( value ) !== null ) {
+			numeric++;
+		}
+	} );
+
+	return filled > 0 && numeric / filled >= 0.7;
+}
+
+function isMeasure( name, values ) {
+	return ! headerIsDimension( name ) && columnMostlyNumeric( values );
+}
+
+function allEmpty( data ) {
+	return data.every( ( value ) => value === null );
+}
+
+function labelIndex( header, columns ) {
+	const preferred = header.findIndex( ( name ) => LABEL_HEADERS.has( normalizeHeader( name ) ) );
+
+	if ( preferred !== -1 ) {
+		return preferred;
+	}
+
+	const text = header.findIndex( ( name, index ) => ! columnMostlyNumeric( columns[ index ] || [] ) );
+
+	return text === -1 ? 0 : text;
+}
+
+export function usableSeries( series ) {
+	const list = Array.isArray( series ) ? series : [];
+	const kept = list.filter( ( set ) => {
+		const label = set && set.label ? String( set.label ) : '';
+		const data = set && Array.isArray( set.data ) ? set.data : [];
+
+		if ( headerIsDimension( label ) ) {
+			return false;
+		}
+
+		return data.some( ( value ) => value !== null && value !== undefined && value !== '' );
+	} );
+
+	return kept.length ? kept : list;
+}
+
 export function parseCsv( text ) {
 	const lines = String( text )
 		.replace( /^\uFEFF/, '' )
@@ -68,14 +190,52 @@ export function parseCsv( text ) {
 
 	const delimiter = detectDelimiter( lines[ 0 ] );
 	const rows = lines.map( ( line ) => splitLine( line, delimiter ) );
-	const header = rows.shift();
-	const names = header.slice( 1 );
+	const header = ( rows.shift() || [] ).map( ( cell ) => String( cell || '' ).trim() );
+	let width = header.length;
 
-	const labels = rows.map( ( row ) => row[ 0 ] || '' );
-	const series = names.map( ( name, index ) => ( {
-		label: name,
-		data: rows.map( ( row ) => toNumber( row[ index + 1 ] ) ),
-	} ) );
+	rows.forEach( ( row ) => {
+		width = Math.max( width, row.length );
+	} );
+
+	const columns = [];
+
+	for ( let index = 0; index < width; index++ ) {
+		columns[ index ] = rows.map( ( row ) => ( row[ index ] == null ? '' : String( row[ index ] ) ) );
+	}
+
+	const labelsAt = labelIndex( header, columns );
+	const labels = columns[ labelsAt ] || [];
+	let series = [];
+
+	header.forEach( ( name, index ) => {
+		if ( index === labelsAt || ! columns[ index ] ) {
+			return;
+		}
+
+		if ( ! isMeasure( name, columns[ index ] ) ) {
+			return;
+		}
+
+		const data = columns[ index ].map( toNumber );
+
+		if ( allEmpty( data ) ) {
+			return;
+		}
+
+		series.push( { label: name, data } );
+	} );
+
+	if ( ! series.length ) {
+		series = header
+			.map( ( name, index ) => {
+				if ( index === labelsAt || ! columns[ index ] ) {
+					return null;
+				}
+
+				return { label: name, data: columns[ index ].map( toNumber ) };
+			} )
+			.filter( Boolean );
+	}
 
 	return { labels, series };
 }

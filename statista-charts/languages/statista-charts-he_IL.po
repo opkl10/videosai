@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/statista-charts\n"
-"POT-Creation-Date: 2026-11-19T17:14:57+00:00\n"
+"POT-Creation-Date: 2026-11-20T12:09:37+00:00\n"
 "Language: he_IL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +23,11 @@ msgstr ""
 #. Description of the plugin
 #: statista-charts.php
 msgid ""
-"Beautiful, responsive statistics and charts inside posts — Gutenberg blocks,"
-" Elementor widgets and a matching [statista_chart] shortcode."
+"Beautiful, responsive statistics and charts inside posts — Gutenberg blocks, "
+"Elementor widgets and a matching [statista_chart] shortcode."
 msgstr ""
-"סטטיסטיקות וגרפים יפים ורספונסיביים בתוך פוסטים — בלוקים לגוטנברג, ווידג'טים"
-" לאלמנטור ושורטקוד [statista_chart]."
+"סטטיסטיקות וגרפים יפים ורספונסיביים בתוך פוסטים — בלוקים לגוטנברג, ווידג'טים "
+"לאלמנטור ושורטקוד [statista_chart]."
 
 #: includes/class-block.php:82
 msgid ""
@@ -68,7 +68,7 @@ msgid "Monochrome"
 msgstr "מונוכרום"
 
 #. translators: %s: date or time the data was last refreshed.
-#: includes/class-dashboard.php:294
+#: includes/class-dashboard.php:838
 #, php-format
 msgid "Last updated %s"
 msgstr "עודכן לאחרונה %s"
@@ -212,7 +212,8 @@ msgstr "הנתונים שלכם — שורה לכל פריט"
 msgid ""
 "Write a name and a number on each line, for example \"January: 120\". A "
 "pasted CSV table works too."
-msgstr "כתבו בכל שורה שם ומספר — למשל \"ינואר: 120\". גם הדבקה של טבלת CSV עובדת."
+msgstr ""
+"כתבו בכל שורה שם ומספר — למשל \"ינואר: 120\". גם הדבקה של טבלת CSV עובדת."
 
 #: includes/elementor/class-chart-widget.php:142 build/chart/index.js:5
 msgid "The number"
@@ -354,8 +355,7 @@ msgid "Figure"
 msgstr "הנתון"
 
 #: includes/elementor/class-stats-widget.php:116
-msgid ""
-"A percentage, a sum or any short number. A percentage also draws a bar."
+msgid "A percentage, a sum or any short number. A percentage also draws a bar."
 msgstr "אחוז, סכום או כל מספר קצר. אחוז גם מצייר פס התקדמות."
 
 #: includes/elementor/class-stats-widget.php:136
@@ -372,7 +372,8 @@ msgstr "הערה"
 msgid "Cart abandonment"
 msgstr "נטישת עגלה"
 
-#: includes/elementor/class-stats-widget.php:192 build/stats/index.js:1
+#: includes/elementor/class-stats-widget.php:192 build/dashboard/index.js:1
+#: build/stats/index.js:1
 msgid "Cards per row"
 msgstr "כרטיסים בשורה"
 
@@ -399,8 +400,12 @@ msgid "Paste CSV"
 msgstr "הדבקת CSV"
 
 #: build/chart/index.js:3
-msgid "First row: the category column followed by one column per series."
-msgstr "השורה הראשונה: עמודת הקטגוריות ואחריה עמודה לכל סדרה."
+msgid ""
+"A name column (Title, Name, …) labels the chart. Only numeric columns become "
+"series — Category, Year, Source and similar are skipped."
+msgstr ""
+"עמודה של שמות (כותרת, שם וכו') מסמנת את הציר. רק עמודות מספריות הופכות "
+"לסדרות — קטגוריה, שנה ומקור לא נכנסות לגרף."
 
 #: build/chart/index.js:3
 msgid "Import data"
@@ -766,6 +771,18 @@ msgid "Data source…"
 msgstr "מקור הנתונים…"
 
 #: build/dashboard/index.js:1
+msgid "Drag to move this card"
+msgstr "גרירה להזזת הכרטיס"
+
+#: build/dashboard/index.js:1
+msgid "Move earlier"
+msgstr "הזזה אחורה"
+
+#: build/dashboard/index.js:1
+msgid "Move later"
+msgstr "הזזה קדימה"
+
+#: build/dashboard/index.js:1
 msgid "Back to a single value"
 msgstr "חזרה לערך אחד"
 
@@ -774,16 +791,56 @@ msgid "Split into two values"
 msgstr "פיצול לשני ערכים"
 
 #: build/dashboard/index.js:1
+msgid "Back to normal width"
+msgstr "חזרה לרוחב רגיל"
+
+#: build/dashboard/index.js:1
+msgid "Span the full row"
+msgstr "לרוחב השורה"
+
+#: build/dashboard/index.js:1
 msgid "Metric name"
 msgstr "שם המדד"
 
 #: build/dashboard/index.js:1
-msgid "Second icon"
-msgstr "אייקון שני"
+msgid "iOS"
+msgstr "iOS"
+
+#: build/dashboard/index.js:1
+msgid "Platform name or icon"
+msgstr "שם פלטפורמה או סמל"
+
+#: build/dashboard/index.js:1
+msgid "Android"
+msgstr "אנדרואיד"
+
+#: build/dashboard/index.js:1
+msgid "Second platform name or icon"
+msgstr "שם פלטפורמה שנייה או סמל"
 
 #: build/dashboard/index.js:1
 msgid "Second value"
 msgstr "ערך שני"
+
+#: build/dashboard/index.js:1
+msgid "Empty space"
+msgstr "רווח ריק"
+
+#: build/dashboard/index.js:1
+msgid "Add a card here"
+msgstr "הוספת כרטיס כאן"
+
+#: build/dashboard/index.js:1
+msgid "Remove empty space"
+msgstr "הסרת רווח ריק"
+
+#: build/dashboard/index.js:1
+msgid "Add empty space"
+msgstr "הוספת רווח ריק"
+
+#: build/dashboard/index.js:1
+msgid "Add a metric card"
+msgstr "הוספת כרטיס מדד"
 
 #: build/dashboard/index.js:1
 msgid "Revenue"
@@ -802,12 +859,15 @@ msgid "Remove"
 msgstr "הסרה"
 
 #: build/dashboard/index.js:1
+msgid "Reset"
+msgstr "איפוס"
+
+#: build/dashboard/index.js:1
 msgid "Dashboard"
 msgstr "לוח מחוונים"
 
 #: build/dashboard/index.js:1
-msgid ""
-"The texts are edited straight on the dashboard. Images are chosen here."
+msgid "The texts are edited straight on the dashboard. Images are chosen here."
 msgstr "את הטקסטים עורכים ישירות על הלוח. את התמונות בוחרים כאן."
 
 #: build/dashboard/index.js:1
@@ -844,8 +904,8 @@ msgstr "מה המספרים אומרים"
 
 #: build/dashboard/index.js:1
 msgid ""
-"A short paragraph that explains the dashboard and invites the reader to keep"
-" going."
+"A short paragraph that explains the dashboard and invites the reader to keep "
+"going."
 msgstr "פסקה קצרה שמסבירה את הלוח ומזמינה את הקוראים להמשיך לקרוא."
 
 #: build/dashboard/index.js:1
@@ -869,8 +929,72 @@ msgid "Logo size (px)"
 msgstr "גודל הלוגו (פיקסלים)"
 
 #: build/dashboard/index.js:1
-msgid "Banner background"
-msgstr "רקע הבאנר"
+msgid "Logo position"
+msgstr "מיקום הלוגו"
+
+#: build/dashboard/index.js:1
+msgid "Next to the name, before it"
+msgstr "ליד השם, לפניו"
+
+#: build/dashboard/index.js:1
+msgid "Next to the name, after it"
+msgstr "ליד השם, אחריו"
+
+#: build/dashboard/index.js:1
+msgid "Above the titles"
+msgstr "מעל הכותרות"
+
+#: build/dashboard/index.js:1
+msgid "Below the titles"
+msgstr "מתחת לכותרות"
+
+#: build/dashboard/index.js:1
+msgid "Left"
+msgstr "שמאל"
+
+#: build/dashboard/index.js:1
+msgid "Right"
+msgstr "ימין"
+
+#: build/dashboard/index.js:1
+msgid "Show the name next to the logo"
+msgstr "הצגת השם ליד הלוגו"
+
+#: build/dashboard/index.js:1
+msgid "Turn off to hide the brand sentence without deleting it."
+msgstr "כבו כדי להסתיר את המשפט ליד הלוגו בלי למחוק אותו."
+
+#: build/dashboard/index.js:1
+msgid "Banner wallpaper"
+msgstr "טפט הבאנר"
+
+#: build/dashboard/index.js:1
+msgid "Banner colour"
+msgstr "צבע הבאנר"
+
+#: build/dashboard/index.js:1
+msgid ""
+"Leave empty to use the palette. With a wallpaper this tints the left side so "
+"the title stays readable."
+msgstr ""
+"השאירו ריק כדי להשתמש בלוח הצבעים. עם טפט הצבע מכהה את הצד השמאלי כדי "
+"שהכותרת תישאר קריאה."
+
+#: build/dashboard/index.js:1
+msgid "Second banner colour"
+msgstr "צבע באנר שני"
+
+#: build/dashboard/index.js:1
+msgid "Optional. Makes a gradient with the first colour."
+msgstr "אופציונלי. יוצר מעבר צבע עם הצבע הראשון."
+
+#: build/dashboard/index.js:1
+msgid "Banner text colour"
+msgstr "צבע טקסט הבאנר"
+
+#: build/dashboard/index.js:1
+msgid "Title, brand and meta in the banner. Leave empty for white."
+msgstr "כותרת, מותג ומטא בבאנר. השאירו ריק ללבן."
 
 #: build/dashboard/index.js:1
 msgid "Banner artwork"
@@ -889,6 +1013,26 @@ msgid "Show the side panel"
 msgstr "הצגת הפאנל הצדדי"
 
 #: build/dashboard/index.js:1
+msgid "Panel position"
+msgstr "מיקום הפאנל"
+
+#: build/dashboard/index.js:1
+msgid "Left and right stay put even when the page is in Hebrew."
+msgstr "ימין ושמאל נשארים במקום גם כשהעמוד בעברית."
+
+#: build/dashboard/index.js:1
+msgid "Beside the charts, after them"
+msgstr "בצד, אחרי הגרפים"
+
+#: build/dashboard/index.js:1
+msgid "Beside the charts, before them"
+msgstr "בצד, לפני הגרפים"
+
+#: build/dashboard/index.js:1
+msgid "Below the charts"
+msgstr "מתחת לגרפים"
+
+#: build/dashboard/index.js:1
 msgid "Show the button"
 msgstr "הצגת הכפתור"
 
@@ -899,6 +1043,60 @@ msgstr "כבו כדי להשאיר את הפאנל בלי כפתור."
 #: build/dashboard/index.js:1
 msgid "Button link"
 msgstr "קישור הכפתור"
+
+#: build/dashboard/index.js:1
+msgid "Metric cards"
+msgstr "כרטיסי מדד"
+
+#: build/dashboard/index.js:1
+msgid "Cards position"
+msgstr "מיקום הכרטיסים"
+
+#: build/dashboard/index.js:1
+msgid "Above the charts"
+msgstr "מעל הגרפים"
+
+#: build/dashboard/index.js:1
+msgid "Cards layout"
+msgstr "סידור הכרטיסים"
+
+#: build/dashboard/index.js:1
+msgid ""
+"A column stacks the cards. A row places them next to each other. Drag a card "
+"onto another card to swap them, or onto empty space to move it and leave a "
+"gap behind."
+msgstr ""
+"עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס אחר "
+"כדי להחליף ביניהם, או על רווח ריק כדי להזיז אותו ולהשאיר פער במקום הישן."
+
+#: build/dashboard/index.js:1
+msgid "In a row"
+msgstr "בשורה"
+
+#: build/dashboard/index.js:1
+msgid "In a column"
+msgstr "בעמודה"
+
+#: build/dashboard/index.js:1
+msgid "How many cards sit side by side. Auto fits as many as the width allows."
+msgstr "כמה כרטיסים יושבים זה לצד זה. אוטומטי ממלא לפי הרוחב."
+
+#: build/dashboard/index.js:1
+msgid "Auto"
+msgstr "אוטומטי"
+
+#: build/dashboard/index.js:1
+msgid "Leftover card fills the row"
+msgstr "כרטיס בודד ממלא את השורה"
+
+#: build/dashboard/index.js:1
+msgid ""
+"When a card sits alone on the last row, stretch it across the row. You can "
+"also tap the width button on any card. With Auto, leftover is counted as if "
+"two cards sat per row."
+msgstr ""
+"כשכרטיס נשאר לבד בשורה האחרונה, הוא יימתח על פני כל השורה. אפשר גם ללחוץ על "
+"כפתור הרוחב בכל כרטיס. בבחירת אוטומטי סופרים כאילו יושבים שניים בשורה."
 
 #: build/dashboard/index.js:1
 msgid "Brand"
@@ -927,10 +1125,6 @@ msgstr "שורת מידע"
 #: build/dashboard/index.js:1
 msgid "Last updated"
 msgstr "עודכן לאחרונה"
-
-#: build/dashboard/index.js:1
-msgid "Add a metric card"
-msgstr "הוספת כרטיס מדד"
 
 #: build/dashboard/index.js:1
 msgid "Small line above"
@@ -1055,8 +1249,8 @@ msgstr "כרטיסי נתונים סטטיסטה"
 #: build/stats/block.json
 msgctxt "block description"
 msgid ""
-"A row of cards for percentages and single figures, written straight into the"
-" card."
+"A row of cards for percentages and single figures, written straight into the "
+"card."
 msgstr "שורת כרטיסים לאחוזים ולמספרים בודדים, שנכתבים ישר בתוך הכרטיס."
 
 #: build/stats/block.json
@@ -1074,9 +1268,38 @@ msgctxt "block keyword"
 msgid "card"
 msgstr "כרטיס"
 
+#~ msgid "Banner background"
+#~ msgstr "רקע הבאנר"
+
+#~ msgid "Drag onto another card to swap"
+#~ msgstr "גרירה על כרטיס אחר להחלפה"
+
 #~ msgid ""
-#~ "Beautiful, responsive statistics and charts inside posts — a Gutenberg block"
-#~ " plus a matching [statista_chart] shortcode."
+#~ "A column stacks the cards. A row places them next to each other. Drag a "
+#~ "card onto another card to swap those two; the others stay where they are."
+#~ msgstr ""
+#~ "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס על כרטיס "
+#~ "אחר כדי להחליף ביניהם; השאר נשארים במקומם."
+
+#~ msgid "Drag to reorder"
+#~ msgstr "גרירה לשינוי סדר"
+
+#~ msgid ""
+#~ "A column stacks the cards. A row places them next to each other. Drag a "
+#~ "card by the handle to change its place."
+#~ msgstr ""
+#~ "עמודה עורמת את הכרטיסים. שורה מציבה אותם זה לצד זה. גררו כרטיס מהידית כדי "
+#~ "להחליף מקום."
+
+#~ msgid "First row: the category column followed by one column per series."
+#~ msgstr "השורה הראשונה: עמודת הקטגוריות ואחריה עמודה לכל סדרה."
+
+#~ msgid "Second icon"
+#~ msgstr "אייקון שני"
+
+#~ msgid ""
+#~ "Beautiful, responsive statistics and charts inside posts — a Gutenberg "
+#~ "block plus a matching [statista_chart] shortcode."
 #~ msgstr ""
 #~ "סטטיסטיקות וגרפים נקיים ורספונסיביים בתוך הפוסטים — בלוק לגוטנברג ולצידו "
 #~ "שורטקוד [statista_chart]."

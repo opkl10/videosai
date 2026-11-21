@@ -187,6 +187,7 @@ class Config {
 			return array();
 		}
 
+		$all   = array();
 		$clean = array();
 		foreach ( $series as $set ) {
 			if ( ! is_array( $set ) ) {
@@ -204,13 +205,21 @@ class Config {
 				$values = array_pad( $values, $label_count, null );
 			}
 
-			$clean[] = array(
+			$item = array(
 				'label' => isset( $set['label'] ) && is_scalar( $set['label'] ) ? sanitize_text_field( (string) $set['label'] ) : '',
 				'data'  => $values,
 			);
+
+			$all[] = $item;
+
+			if ( self::csv_header_is_dimension( $item['label'] ) || self::csv_all_empty( $values ) ) {
+				continue;
+			}
+
+			$clean[] = $item;
 		}
 
-		return $clean;
+		return empty( $clean ) ? $all : $clean;
 	}
 
 	/**
@@ -300,6 +309,15 @@ class Config {
 				'labels' => array(),
 				'series' => array(),
 			);
+		}
+
+		$delimiter = self::detect_delimiter( $lines[0] );
+		$header    = str_getcsv( $lines[0], $delimiter, '"', '\\' );
+
+		// A row with three or more cells is a table, even when titles contain
+		// a colon ("Avengers: Endgame,1209,Movie").
+		if ( count( $header ) >= 3 ) {
+			return self::parse_csv( $text );
 		}
 
 		$with_colon = 0;
@@ -416,8 +434,10 @@ class Config {
 	/**
 	 * Parses a CSV/TSV string into labels and series.
 	 *
-	 * The first row is treated as the header: its first cell names the category
-	 * column and every other cell names a series.
+	 * The first row is the header. A text column (Title, Name, …) becomes the
+	 * category axis; columns that are mostly numbers become series. Dimension
+	 * columns such as Category, Year, Timeframe or Data_Source are skipped so
+	 * they do not show up as empty legend entries or as stacked bars.
 	 *
 	 * @param string $csv Raw CSV text.
 	 * @return array{labels: string[], series: array<int, array<string, mixed>>} Parsed data.
@@ -444,30 +464,202 @@ class Config {
 			$rows[] = str_getcsv( $line, $delimiter, '"', '\\' );
 		}
 
-		$header       = array_shift( $rows );
-		$series_names = array_slice( $header, 1 );
-		$labels       = array();
-		$columns      = array();
+		$header = array_map( 'trim', array_shift( $rows ) );
+		$width  = count( $header );
 
 		foreach ( $rows as $row ) {
-			$labels[] = isset( $row[0] ) ? (string) $row[0] : '';
-			foreach ( $series_names as $index => $unused ) {
-				$columns[ $index ][] = isset( $row[ $index + 1 ] ) ? $row[ $index + 1 ] : '';
+			$width = max( $width, count( $row ) );
+		}
+
+		$columns = array();
+		for ( $index = 0; $index < $width; $index++ ) {
+			$columns[ $index ] = array();
+			foreach ( $rows as $row ) {
+				$columns[ $index ][] = isset( $row[ $index ] ) ? (string) $row[ $index ] : '';
 			}
 		}
 
-		$series = array();
-		foreach ( $series_names as $index => $name ) {
+		$label_index = self::csv_label_index( $header, $columns );
+		$labels      = isset( $columns[ $label_index ] ) ? $columns[ $label_index ] : array();
+		$series      = array();
+
+		foreach ( $header as $index => $name ) {
+			if ( $index === $label_index || ! isset( $columns[ $index ] ) ) {
+				continue;
+			}
+
+			if ( ! self::csv_is_measure( $name, $columns[ $index ] ) ) {
+				continue;
+			}
+
+			$data = array_map( array( __CLASS__, 'to_number' ), $columns[ $index ] );
+
+			if ( self::csv_all_empty( $data ) ) {
+				continue;
+			}
+
 			$series[] = array(
 				'label' => (string) $name,
-				'data'  => isset( $columns[ $index ] ) ? array_map( array( __CLASS__, 'to_number' ), $columns[ $index ] ) : array(),
+				'data'  => $data,
 			);
+		}
+
+		if ( empty( $series ) ) {
+			foreach ( $header as $index => $name ) {
+				if ( $index === $label_index || ! isset( $columns[ $index ] ) ) {
+					continue;
+				}
+
+				$series[] = array(
+					'label' => (string) $name,
+					'data'  => array_map( array( __CLASS__, 'to_number' ), $columns[ $index ] ),
+				);
+			}
 		}
 
 		return array(
 			'labels' => $labels,
 			'series' => $series,
 		);
+	}
+
+	/**
+	 * Picks the column that should label the x-axis.
+	 *
+	 * @param string[] $header  Header cells.
+	 * @param array    $columns Column values, keyed by index.
+	 * @return int Column index.
+	 */
+	private static function csv_label_index( $header, $columns ) {
+		$preferred = array( 'title', 'name', 'label', 'product', 'game', 'item', 'movie', 'album', 'app', 'כותרת', 'שם', 'מוצר', 'משחק' );
+
+		foreach ( $header as $index => $name ) {
+			if ( in_array( self::csv_normalize_header( $name ), $preferred, true ) ) {
+				return (int) $index;
+			}
+		}
+
+		foreach ( $header as $index => $name ) {
+			if ( ! self::csv_column_mostly_numeric( isset( $columns[ $index ] ) ? $columns[ $index ] : array() ) ) {
+				return (int) $index;
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Whether a column should be plotted as a numeric series.
+	 *
+	 * @param string $name   Header.
+	 * @param array  $values Column cells.
+	 * @return bool
+	 */
+	private static function csv_is_measure( $name, $values ) {
+		if ( self::csv_header_is_dimension( $name ) ) {
+			return false;
+		}
+
+		return self::csv_column_mostly_numeric( $values );
+	}
+
+	/**
+	 * Headers that name a dimension, not a measured value.
+	 *
+	 * @param string $name Header.
+	 * @return bool
+	 */
+	private static function csv_header_is_dimension( $name ) {
+		$normalized = self::csv_normalize_header( $name );
+		$exact      = array(
+			'category',
+			'categories',
+			'type',
+			'types',
+			'genre',
+			'source',
+			'datasource',
+			'timeframe',
+			'period',
+			'date',
+			'year',
+			'releaseyear',
+			'releasedate',
+			'id',
+			'uid',
+			'url',
+			'link',
+			'notes',
+			'note',
+			'comment',
+			'platform',
+			'region',
+			'country',
+			'status',
+			'format',
+			'קטגוריה',
+			'סוג',
+			'מקור',
+			'שנה',
+			'תאריך',
+			'תקופה',
+		);
+
+		if ( in_array( $normalized, $exact, true ) ) {
+			return true;
+		}
+
+		return (bool) preg_match( '/(^|[_\s-])(category|categories|source|timeframe|genre|platform|year|date|id|type)s?$/i', $name );
+	}
+
+	/**
+	 * Whether at least 70% of filled cells in a column are numbers.
+	 *
+	 * @param array $values Column cells.
+	 * @return bool
+	 */
+	private static function csv_column_mostly_numeric( $values ) {
+		$numeric = 0;
+		$filled  = 0;
+
+		foreach ( $values as $value ) {
+			if ( '' === trim( (string) $value ) ) {
+				continue;
+			}
+
+			++$filled;
+
+			if ( null !== self::to_number( $value ) ) {
+				++$numeric;
+			}
+		}
+
+		return $filled > 0 && ( $numeric / $filled ) >= 0.7;
+	}
+
+	/**
+	 * @param array $data Series values.
+	 * @return bool
+	 */
+	private static function csv_all_empty( $data ) {
+		foreach ( $data as $value ) {
+			if ( null !== $value ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param string $name Header.
+	 * @return string
+	 */
+	private static function csv_normalize_header( $name ) {
+		$name = strtolower( trim( (string) $name ) );
+		$name = str_replace( array( ' ', '-', '_' ), '', $name );
+
+		return $name;
 	}
 
 	/**

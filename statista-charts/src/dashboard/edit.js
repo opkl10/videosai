@@ -6,17 +6,19 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
+	store as blockEditorStore,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
+import { createBlock } from '@wordpress/blocks';
+import { BaseControl, Button, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import KpiCard from './kpi-card';
+import KpiList from './kpi-list';
 import { getPalettes } from '../lib/palettes';
 import { resolveTheme } from '../lib/chart-factory';
-
-const EMPTY_KPI = { icon: '', label: '', value: '', icon2: '', value2: '' };
 
 const TEMPLATE = [
 	[
@@ -38,6 +40,10 @@ const TEMPLATE = [
 		},
 	],
 ];
+
+function defaultChartBlocks() {
+	return TEMPLATE.map( ( [ name, attrs ] ) => createBlock( name, attrs ) );
+}
 
 function exampleContent() {
 	return {
@@ -91,16 +97,96 @@ function ImageField( { label, url, onSelect, onClear } ) {
 	);
 }
 
-export default function Edit( { attributes, setAttributes } ) {
+function LogoImage( { url } ) {
+	if ( ! url ) {
+		return null;
+	}
+
+	return <img className="sd-brand__logo" src={ url } alt="" />;
+}
+
+/**
+ * Turns a 3- or 6-digit hex into #rrggbb, or falls back.
+ *
+ * @param {string} value
+ * @param {string} fallback
+ * @return {string}
+ */
+function normalizeHex( value, fallback ) {
+	let hex = String( value || '' ).trim();
+
+	if ( /^#[0-9A-Fa-f]{3}$/.test( hex ) ) {
+		hex = '#' + hex[ 1 ] + hex[ 1 ] + hex[ 2 ] + hex[ 2 ] + hex[ 3 ] + hex[ 3 ];
+	}
+
+	return /^#[0-9A-Fa-f]{6}$/.test( hex ) ? hex : fallback;
+}
+
+/**
+ * Banner background: custom colours, or the palette, plus an optional wallpaper.
+ *
+ * @param {string[]} colors
+ * @param {string}   bannerImage
+ * @param {string}   bannerColor
+ * @param {string}   bannerColor2
+ * @return {string}
+ */
+function bannerBackground( colors, bannerImage, bannerColor, bannerColor2 ) {
+	const start = normalizeHex( bannerColor, colors[ 0 ] );
+	const mid = normalizeHex( bannerColor2, bannerColor ? start : colors[ 4 ] );
+	const end = normalizeHex( bannerColor2, bannerColor ? start : colors[ 1 ] );
+
+	if ( bannerImage ) {
+		return `linear-gradient(90deg, ${ start }f5 0%, ${ start }b8 45%, ${ start }00 85%), url(${ bannerImage })`;
+	}
+
+	return `linear-gradient(115deg, ${ start } 0%, ${ mid } 55%, ${ end } 100%)`;
+}
+
+function ColorField( { label, help, value, onChange } ) {
+	const hex = normalizeHex( value, '#ffffff' );
+
+	return (
+		<BaseControl label={ label } help={ help } __nextHasNoMarginBottom className="sd-color-field">
+			<div className="sd-color-field__row">
+				<input
+					type="color"
+					value={ hex }
+					aria-label={ label }
+					onChange={ ( event ) => onChange( event.target.value ) }
+				/>
+				<input
+					type="text"
+					className="sd-color-field__hex"
+					value={ value }
+					placeholder="#1f6feb"
+					onChange={ ( event ) => onChange( event.target.value ) }
+				/>
+				{ value !== '' && (
+					<Button variant="tertiary" size="compact" onClick={ () => onChange( '' ) }>
+						{ __( 'Reset', 'statista-charts' ) }
+					</Button>
+				) }
+			</div>
+		</BaseControl>
+	);
+}
+
+export default function Edit( { attributes, setAttributes, clientId } ) {
 	const {
 		brandName,
 		logoUrl,
 		logoSize,
+		showBrandName,
+		logoPosition,
 		title,
 		titleAccent,
 		meta,
 		updated,
 		bannerImage,
+		bannerColor,
+		bannerColor2,
+		bannerTextColor,
 		artworkUrl,
 		palette,
 		theme,
@@ -108,6 +194,11 @@ export default function Edit( { attributes, setAttributes } ) {
 		kpis,
 		showPanel,
 		showPanelButton,
+		panelPosition,
+		kpiPosition,
+		kpiLayout,
+		kpiPerRow,
+		kpiOddWide,
 		panelImage,
 		panelKicker,
 		panelTitle,
@@ -116,13 +207,29 @@ export default function Edit( { attributes, setAttributes } ) {
 		panelButtonUrl,
 	} = attributes;
 
+	const { replaceInnerBlocks } = useDispatch( blockEditorStore );
+	const justInserted = useSelect(
+		( select ) => select( blockEditorStore ).wasBlockJustInserted( clientId ),
+		[ clientId ]
+	);
+	const innerCount = useSelect(
+		( select ) => select( blockEditorStore ).getBlockCount( clientId ),
+		[ clientId ]
+	);
+
+	useEffect( () => {
+		if ( ! justInserted || innerCount > 0 ) {
+			return;
+		}
+
+		replaceInnerBlocks( clientId, defaultChartBlocks(), false );
+	}, [ justInserted, innerCount, clientId, replaceInnerBlocks ] );
+
 	const palettes = getPalettes();
 	const colors = ( palettes[ palette ] || palettes.statista ).colors;
 	const resolvedDirection = direction === 'auto' ? ( document.dir === 'rtl' ? 'rtl' : 'ltr' ) : direction;
 
-	const banner = bannerImage
-		? `linear-gradient(90deg, ${ colors[ 0 ] }f5 0%, ${ colors[ 0 ] }b8 45%, ${ colors[ 0 ] }00 85%), url(${ bannerImage })`
-		: `linear-gradient(115deg, ${ colors[ 0 ] } 0%, ${ colors[ 4 ] } 55%, ${ colors[ 1 ] } 100%)`;
+	const banner = bannerBackground( colors, bannerImage, bannerColor, bannerColor2 );
 
 	const blockProps = useBlockProps( {
 		className: [
@@ -130,7 +237,10 @@ export default function Edit( { attributes, setAttributes } ) {
 			'sd-editor',
 			`sc-theme-${ resolveTheme( theme ) }`,
 			`sc-dir-${ resolvedDirection }`,
-			showPanel ? '' : 'sd-no-panel',
+			showPanel ? `sd-panel-pos-${ panelPosition || 'end' }` : 'sd-no-panel',
+			`sd-kpis-pos-${ kpiPosition || 'top' }`,
+			`sd-kpis-layout-${ kpiLayout || 'row' }`,
+			kpiLayout !== 'column' && ( kpiPerRow || 0 ) >= 1 ? 'sd-kpis-cols' : '',
 		]
 			.filter( Boolean )
 			.join( ' ' ),
@@ -140,20 +250,24 @@ export default function Edit( { attributes, setAttributes } ) {
 			'--sc-accent-2': colors[ 1 ],
 			'--sd-banner': banner,
 			'--sd-logo-size': `${ logoSize }px`,
+			...( normalizeHex( bannerTextColor, '' )
+				? { '--sd-banner-fg': normalizeHex( bannerTextColor, '' ) }
+				: {} ),
+			...( kpiLayout !== 'column' && ( kpiPerRow || 0 ) >= 1
+				? { '--sd-kpi-cols': String( kpiPerRow ) }
+				: {} ),
 		},
 	} );
 
+	// No `template` here: Gutenberg re-fills an empty inner area from the
+	// template on every load, so deleted charts came back after updates.
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'sd-grid' },
 		{
 			allowedBlocks: [ 'statista/chart' ],
-			template: TEMPLATE,
 			templateLock: false,
 		}
 	);
-
-	const updateKpi = ( index, next ) =>
-		setAttributes( { kpis: kpis.map( ( kpi, i ) => ( i === index ? next : kpi ) ) } );
 
 	return (
 		<>
@@ -175,22 +289,63 @@ export default function Edit( { attributes, setAttributes } ) {
 						onClear={ () => setAttributes( { logoUrl: '' } ) }
 					/>
 					{ logoUrl !== '' && (
-						<RangeControl
-							__nextHasNoMarginBottom
-							label={ __( 'Logo size (px)', 'statista-charts' ) }
-							value={ logoSize }
-							min={ 14 }
-							max={ 160 }
-							step={ 2 }
-							onChange={ ( value ) => setAttributes( { logoSize: value || 22 } ) }
-						/>
+						<>
+							<RangeControl
+								__nextHasNoMarginBottom
+								label={ __( 'Logo size (px)', 'statista-charts' ) }
+								value={ logoSize }
+								min={ 14 }
+								max={ 320 }
+								step={ 2 }
+								onChange={ ( value ) => setAttributes( { logoSize: value || 22 } ) }
+							/>
+							<SelectControl
+								__nextHasNoMarginBottom
+								label={ __( 'Logo position', 'statista-charts' ) }
+								value={ logoPosition || 'start' }
+								options={ [
+									{ value: 'start', label: __( 'Next to the name, before it', 'statista-charts' ) },
+									{ value: 'end', label: __( 'Next to the name, after it', 'statista-charts' ) },
+									{ value: 'top', label: __( 'Above the titles', 'statista-charts' ) },
+									{ value: 'bottom', label: __( 'Below the titles', 'statista-charts' ) },
+									{ value: 'left', label: __( 'Left', 'statista-charts' ) },
+									{ value: 'right', label: __( 'Right', 'statista-charts' ) },
+								] }
+								onChange={ ( value ) => setAttributes( { logoPosition: value } ) }
+							/>
+						</>
 					) }
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Show the name next to the logo', 'statista-charts' ) }
+						help={ __( 'Turn off to hide the brand sentence without deleting it.', 'statista-charts' ) }
+						checked={ showBrandName !== false }
+						onChange={ ( value ) => setAttributes( { showBrandName: value } ) }
+					/>
 
 					<ImageField
-						label={ __( 'Banner background', 'statista-charts' ) }
+						label={ __( 'Banner wallpaper', 'statista-charts' ) }
 						url={ bannerImage }
 						onSelect={ ( url ) => setAttributes( { bannerImage: url } ) }
 						onClear={ () => setAttributes( { bannerImage: '' } ) }
+					/>
+					<ColorField
+						label={ __( 'Banner colour', 'statista-charts' ) }
+						help={ __( 'Leave empty to use the palette. With a wallpaper this tints the left side so the title stays readable.', 'statista-charts' ) }
+						value={ bannerColor || '' }
+						onChange={ ( value ) => setAttributes( { bannerColor: value } ) }
+					/>
+					<ColorField
+						label={ __( 'Second banner colour', 'statista-charts' ) }
+						help={ __( 'Optional. Makes a gradient with the first colour.', 'statista-charts' ) }
+						value={ bannerColor2 || '' }
+						onChange={ ( value ) => setAttributes( { bannerColor2: value } ) }
+					/>
+					<ColorField
+						label={ __( 'Banner text colour', 'statista-charts' ) }
+						help={ __( 'Title, brand and meta in the banner. Leave empty for white.', 'statista-charts' ) }
+						value={ bannerTextColor || '' }
+						onChange={ ( value ) => setAttributes( { bannerTextColor: value } ) }
 					/>
 					<ImageField
 						label={ __( 'Banner artwork', 'statista-charts' ) }
@@ -213,6 +368,22 @@ export default function Edit( { attributes, setAttributes } ) {
 						checked={ showPanel }
 						onChange={ ( value ) => setAttributes( { showPanel: value } ) }
 					/>
+					{ showPanel && (
+						<SelectControl
+							__nextHasNoMarginBottom
+							label={ __( 'Panel position', 'statista-charts' ) }
+							help={ __( 'Left and right stay put even when the page is in Hebrew.', 'statista-charts' ) }
+							value={ panelPosition || 'end' }
+							options={ [
+								{ value: 'end', label: __( 'Beside the charts, after them', 'statista-charts' ) },
+								{ value: 'start', label: __( 'Beside the charts, before them', 'statista-charts' ) },
+								{ value: 'right', label: __( 'Right', 'statista-charts' ) },
+								{ value: 'left', label: __( 'Left', 'statista-charts' ) },
+								{ value: 'bottom', label: __( 'Below the charts', 'statista-charts' ) },
+							] }
+							onChange={ ( value ) => setAttributes( { panelPosition: value } ) }
+						/>
+					) }
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __( 'Show the button', 'statista-charts' ) }
@@ -227,6 +398,59 @@ export default function Edit( { attributes, setAttributes } ) {
 							value={ panelButtonUrl }
 							placeholder="https://…"
 							onChange={ ( value ) => setAttributes( { panelButtonUrl: value } ) }
+						/>
+					) }
+				</PanelBody>
+
+				<PanelBody title={ __( 'Metric cards', 'statista-charts' ) } initialOpen={ false }>
+					<SelectControl
+						__nextHasNoMarginBottom
+						label={ __( 'Cards position', 'statista-charts' ) }
+						value={ kpiPosition || 'top' }
+						options={ [
+							{ value: 'top', label: __( 'Above the charts', 'statista-charts' ) },
+							{ value: 'bottom', label: __( 'Below the charts', 'statista-charts' ) },
+							{ value: 'start', label: __( 'Beside the charts, before them', 'statista-charts' ) },
+							{ value: 'end', label: __( 'Beside the charts, after them', 'statista-charts' ) },
+						] }
+						onChange={ ( value ) => setAttributes( { kpiPosition: value } ) }
+					/>
+					<SelectControl
+						__nextHasNoMarginBottom
+						label={ __( 'Cards layout', 'statista-charts' ) }
+						help={ __( 'A column stacks the cards. A row places them next to each other. Drag a card onto another card to swap them, or onto empty space to move it and leave a gap behind.', 'statista-charts' ) }
+						value={ kpiLayout || 'row' }
+						options={ [
+							{ value: 'row', label: __( 'In a row', 'statista-charts' ) },
+							{ value: 'column', label: __( 'In a column', 'statista-charts' ) },
+						] }
+						onChange={ ( value ) => setAttributes( { kpiLayout: value } ) }
+					/>
+					{ kpiLayout !== 'column' && (
+						<SelectControl
+							__nextHasNoMarginBottom
+							label={ __( 'Cards per row', 'statista-charts' ) }
+							help={ __( 'How many cards sit side by side. Auto fits as many as the width allows.', 'statista-charts' ) }
+							value={ String( kpiPerRow || 0 ) }
+							options={ [
+								{ value: '0', label: __( 'Auto', 'statista-charts' ) },
+								{ value: '1', label: '1' },
+								{ value: '2', label: '2' },
+								{ value: '3', label: '3' },
+								{ value: '4', label: '4' },
+								{ value: '5', label: '5' },
+								{ value: '6', label: '6' },
+							] }
+							onChange={ ( value ) => setAttributes( { kpiPerRow: parseInt( value, 10 ) || 0 } ) }
+						/>
+					) }
+					{ kpiLayout !== 'column' && (
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Leftover card fills the row', 'statista-charts' ) }
+							help={ __( 'When a card sits alone on the last row, stretch it across the row. You can also tap the width button on any card. With Auto, leftover is counted as if two cards sat per row.', 'statista-charts' ) }
+							checked={ Boolean( kpiOddWide ) }
+							onChange={ ( value ) => setAttributes( { kpiOddWide: value } ) }
 						/>
 					) }
 				</PanelBody>
@@ -279,19 +503,34 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 
 			<section { ...blockProps }>
-				<header className="sd-banner">
-					<div className="sd-banner__text">
-						<div className="sd-brand">
-							{ logoUrl && <img className="sd-brand__logo" src={ logoUrl } alt="" /> }
-							<input
-								type="text"
-								className="sd-brand__name sd-input"
-								value={ brandName }
-								placeholder={ __( 'Brand', 'statista-charts' ) }
-								aria-label={ __( 'Brand', 'statista-charts' ) }
-								onChange={ ( event ) => setAttributes( { brandName: event.target.value } ) }
-							/>
-						</div>
+				<header
+					className={ `sd-banner${ logoUrl ? ` sd-logo-pos-${ logoPosition || 'start' }` : '' }` }
+					dir={ logoUrl && [ 'left', 'right' ].includes( logoPosition ) ? 'ltr' : undefined }
+				>
+					{ logoUrl && logoPosition === 'left' && <LogoImage url={ logoUrl } /> }
+
+					<div
+						className="sd-banner__text"
+						dir={ logoUrl && [ 'left', 'right' ].includes( logoPosition ) ? resolvedDirection : undefined }
+					>
+						{ logoUrl && logoPosition === 'top' && <LogoImage url={ logoUrl } /> }
+
+						{ ( showBrandName !== false || ( logoUrl && [ 'start', 'end' ].includes( logoPosition || 'start' ) ) ) && (
+							<div className="sd-brand">
+								{ logoUrl && ( logoPosition || 'start' ) === 'start' && <LogoImage url={ logoUrl } /> }
+								{ showBrandName !== false && (
+									<input
+										type="text"
+										className="sd-brand__name sd-input"
+										value={ brandName }
+										placeholder={ __( 'Brand', 'statista-charts' ) }
+										aria-label={ __( 'Brand', 'statista-charts' ) }
+										onChange={ ( event ) => setAttributes( { brandName: event.target.value } ) }
+									/>
+								) }
+								{ logoUrl && logoPosition === 'end' && <LogoImage url={ logoUrl } /> }
+							</div>
+						) }
 
 						<div className="sd-title">
 							<input
@@ -333,6 +572,8 @@ export default function Edit( { attributes, setAttributes } ) {
 								/>
 							</span>
 						</div>
+
+						{ logoUrl && logoPosition === 'bottom' && <LogoImage url={ logoUrl } /> }
 					</div>
 
 					{ artworkUrl && (
@@ -340,34 +581,35 @@ export default function Edit( { attributes, setAttributes } ) {
 							<img src={ artworkUrl } alt="" />
 						</div>
 					) }
+
+					{ logoUrl && logoPosition === 'right' && <LogoImage url={ logoUrl } /> }
 				</header>
 
-				<div className="sd-body">
-					<div className="sd-main">
-						<div className="sd-kpis">
-							{ kpis.map( ( kpi, index ) => (
-								<KpiCard
-									key={ index }
-									kpi={ kpi }
-									onChange={ ( next ) => updateKpi( index, next ) }
-									onRemove={ () => setAttributes( { kpis: kpis.filter( ( item, i ) => i !== index ) } ) }
-								/>
-							) ) }
-
-							<Button
-								className="sd-kpi sd-kpi--add"
-								icon="plus-alt2"
-								onClick={ () => setAttributes( { kpis: [ ...kpis, { ...EMPTY_KPI } ] } ) }
-							>
-								{ __( 'Add a metric card', 'statista-charts' ) }
-							</Button>
-						</div>
+				<div
+					className="sd-body"
+					dir={ showPanel && [ 'left', 'right' ].includes( panelPosition ) ? 'ltr' : undefined }
+				>
+					<div
+						className="sd-main"
+						dir={ showPanel && [ 'left', 'right' ].includes( panelPosition ) ? resolvedDirection : undefined }
+					>
+						<KpiList
+							kpis={ kpis }
+							layout={ kpiLayout || 'row' }
+							rtl={ resolvedDirection === 'rtl' }
+							perRow={ kpiPerRow || 0 }
+							oddWide={ Boolean( kpiOddWide ) }
+							onChange={ ( next ) => setAttributes( { kpis: next } ) }
+						/>
 
 						<div { ...innerBlocksProps } />
 					</div>
 
 					{ showPanel && (
-						<aside className="sd-panel">
+						<aside
+							className="sd-panel"
+							dir={ [ 'left', 'right' ].includes( panelPosition ) ? resolvedDirection : undefined }
+						>
 							{ panelImage && <img className="sd-panel__image" src={ panelImage } alt="" /> }
 							<input
 								type="text"

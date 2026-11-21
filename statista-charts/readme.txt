@@ -4,7 +4,7 @@ Tags: chart, graph, statistics, gutenberg, elementor
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.4.2
+Stable tag: 1.4.15,
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,46 @@ Shortcode attributes: type, title, show_title, source, show_source, show_chart, 
 `npm run make-pot` and `npm run make-json` (WP-CLI) refresh the translation templates.
 
 == Changelog ==
+
+= 1.4.15 =
+* Removing every chart from a dashboard now stays empty after you reopen or update the plugin. The two example charts are added only when you first insert the block.
+
+= 1.4.14 =
+* The logo and title banner can use your own colours, a second colour for a gradient, a text colour, and a wallpaper. A leftover metric card can span the full row.
+
+= 1.4.13 =
+* The banner logo can be larger (up to 320px), placed left, right, above, below or beside the name, and the brand sentence next to it can be hidden or shown.
+
+= 1.4.12 =
+* Choose how many metric cards sit in each row (auto, or 1–6).
+
+= 1.4.11 =
+* Dragging a metric card onto empty space moves it and leaves a gap behind. The other cards stay where they are. Drop onto another card still swaps those two.
+
+= 1.4.10 =
+* Dragging a metric card onto another card swaps those two. The other cards stay where they are.
+
+= 1.4.9 =
+* Metric cards in the dashboard can be reordered by dragging the handle, or with the move buttons on each card.
+
+= 1.4.8 =
+* The side panel can sit before or after the charts, on the left, on the right, or below them.
+* Metric cards can sit above, below or beside the charts, in a row or stacked as a column.
+
+= 1.4.7 =
+* CSV import uses a name column for the axis and only numeric columns as series. Category, Year, Timeframe and Data_Source no longer appear in the legend or as empty tooltip rows.
+
+= 1.4.6 =
+* Long category names on bar and line charts are wrapped and given extra canvas padding so they are no longer clipped at the bottom or sides.
+
+= 1.4.5 =
+* With the side panel on, KPI cards keep their natural height instead of stretching to match the panel.
+
+= 1.4.4 =
+* KPI card labels and platform names sit at a readable size next to the figures, without the tiny uppercase caption style.
+
+= 1.4.3 =
+* Split KPI cards accept a normal-size platform name next to each value, instead of only a colour square.
 
 = 1.4.2 =
 * WhatsApp and Telegram join boxes no longer land in the dashboard banner. The banner no longer uses headings or paragraphs, so plugins that splice themselves after the first &lt;p&gt; or &lt;h2&gt; miss it. Anything that still gets in is moved below the dashboard, including boxes inserted by JavaScript.

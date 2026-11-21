@@ -63,11 +63,16 @@ class Dashboard {
 			'brandName'       => '',
 			'logoUrl'         => '',
 			'logoSize'        => 22,
+			'showBrandName'   => true,
+			'logoPosition'    => 'start',
 			'title'           => '',
 			'titleAccent'     => '',
 			'meta'            => '',
 			'updated'         => '',
 			'bannerImage'     => '',
+			'bannerColor'     => '',
+			'bannerColor2'    => '',
+			'bannerTextColor' => '',
 			'artworkUrl'      => '',
 			'palette'         => 'statista',
 			'theme'           => 'light',
@@ -75,6 +80,11 @@ class Dashboard {
 			'kpis'            => array(),
 			'showPanel'       => true,
 			'showPanelButton' => true,
+			'panelPosition'   => 'end',
+			'kpiPosition'     => 'top',
+			'kpiLayout'       => 'row',
+			'kpiPerRow'       => 0,
+			'kpiOddWide'      => false,
 			'panelImage'      => '',
 			'panelKicker'     => '',
 			'panelTitle'      => '',
@@ -118,13 +128,56 @@ class Dashboard {
 			$clean['showPanelButton'] = Config::to_bool( $raw['showPanelButton'] );
 		}
 
-		if ( isset( $raw['logoSize'] ) ) {
-			$clean['logoSize'] = min( 160, max( 14, absint( $raw['logoSize'] ) ) );
+		if ( isset( $raw['showBrandName'] ) ) {
+			$clean['showBrandName'] = Config::to_bool( $raw['showBrandName'] );
 		}
+
+		if ( isset( $raw['kpiOddWide'] ) ) {
+			$clean['kpiOddWide'] = Config::to_bool( $raw['kpiOddWide'] );
+		}
+
+		foreach ( array( 'bannerColor', 'bannerColor2', 'bannerTextColor' ) as $key ) {
+			if ( isset( $raw[ $key ] ) ) {
+				$clean[ $key ] = self::sanitize_hex( $raw[ $key ] );
+			}
+		}
+
+		$panel_position = isset( $raw['panelPosition'] ) ? sanitize_key( (string) $raw['panelPosition'] ) : '';
+		$clean['panelPosition'] = in_array( $panel_position, array( 'end', 'start', 'left', 'right', 'bottom' ), true )
+			? $panel_position
+			: 'end';
+
+		$kpi_position = isset( $raw['kpiPosition'] ) ? sanitize_key( (string) $raw['kpiPosition'] ) : '';
+		$clean['kpiPosition'] = in_array( $kpi_position, array( 'top', 'bottom', 'start', 'end' ), true )
+			? $kpi_position
+			: 'top';
+
+		$kpi_layout = isset( $raw['kpiLayout'] ) ? sanitize_key( (string) $raw['kpiLayout'] ) : '';
+		$clean['kpiLayout'] = in_array( $kpi_layout, array( 'row', 'column' ), true ) ? $kpi_layout : 'row';
+
+		if ( isset( $raw['kpiPerRow'] ) ) {
+			$clean['kpiPerRow'] = min( 6, max( 0, absint( $raw['kpiPerRow'] ) ) );
+		}
+
+		if ( isset( $raw['logoSize'] ) ) {
+			$clean['logoSize'] = min( 320, max( 14, absint( $raw['logoSize'] ) ) );
+		}
+
+		$logo_position = isset( $raw['logoPosition'] ) ? sanitize_key( (string) $raw['logoPosition'] ) : '';
+		$clean['logoPosition'] = in_array( $logo_position, array( 'start', 'end', 'top', 'bottom', 'left', 'right' ), true )
+			? $logo_position
+			: 'start';
 
 		if ( isset( $raw['kpis'] ) && is_array( $raw['kpis'] ) ) {
 			foreach ( $raw['kpis'] as $kpi ) {
 				if ( ! is_array( $kpi ) ) {
+					continue;
+				}
+
+				if ( ! empty( $kpi['empty'] ) ) {
+					$clean['kpis'][] = array(
+						'empty' => true,
+					);
 					continue;
 				}
 
@@ -134,6 +187,7 @@ class Dashboard {
 					'value'  => isset( $kpi['value'] ) ? sanitize_text_field( (string) $kpi['value'] ) : '',
 					'icon2'  => isset( $kpi['icon2'] ) ? sanitize_text_field( (string) $kpi['icon2'] ) : '',
 					'value2' => isset( $kpi['value2'] ) ? sanitize_text_field( (string) $kpi['value2'] ) : '',
+					'wide'   => ! empty( $kpi['wide'] ),
 				);
 			}
 		}
@@ -165,6 +219,19 @@ class Dashboard {
 
 		if ( ! $data['showPanel'] || '' === $data['panelTitle'] . $data['panelText'] . $panel_button ) {
 			$classes[] = 'sd-no-panel';
+		} else {
+			$classes[] = 'sd-panel-pos-' . $data['panelPosition'];
+		}
+
+		if ( empty( $data['kpis'] ) ) {
+			$classes[] = 'sd-no-kpis';
+		} else {
+			$classes[] = 'sd-kpis-pos-' . $data['kpiPosition'];
+			$classes[] = 'sd-kpis-layout-' . $data['kpiLayout'];
+
+			if ( 'column' !== $data['kpiLayout'] && $data['kpiPerRow'] >= 1 ) {
+				$classes[] = 'sd-kpis-cols';
+			}
 		}
 
 		$style = sprintf(
@@ -174,6 +241,18 @@ class Dashboard {
 			self::banner_background( $data ),
 			$data['logoSize']
 		);
+
+		if ( '' !== $data['bannerTextColor'] ) {
+			$style .= sprintf( ' --sd-banner-fg: %s;', $data['bannerTextColor'] );
+		}
+
+		if ( 'column' !== $data['kpiLayout'] && $data['kpiPerRow'] >= 1 ) {
+			$style .= sprintf( ' --sd-kpi-cols: %d;', (int) $data['kpiPerRow'] );
+		}
+
+		$data['resolvedDirection'] = $direction;
+		$pin_panel                 = in_array( $data['panelPosition'], array( 'left', 'right' ), true )
+			&& ! in_array( 'sd-no-panel', $classes, true );
 
 		ob_start();
 		?>
@@ -185,8 +264,8 @@ class Dashboard {
 		>
 			<?php echo self::banner( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in banner(). ?>
 
-			<div class="sd-body">
-				<div class="sd-main">
+			<div class="sd-body"<?php echo $pin_panel ? ' dir="ltr"' : ''; ?>>
+				<div class="sd-main"<?php echo $pin_panel ? ' dir="' . esc_attr( $direction ) . '"' : ''; ?>>
 					<?php echo self::kpis( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpis(). ?>
 
 					<?php if ( '' !== trim( (string) $content ) ) : ?>
@@ -628,11 +707,15 @@ class Dashboard {
 	 * @return string CSS background-image value.
 	 */
 	private static function banner_background( $data ) {
+		$start = '' !== $data['bannerColor'] ? $data['bannerColor'] : $data['colors'][0];
+		$mid   = '' !== $data['bannerColor2'] ? $data['bannerColor2'] : ( '' !== $data['bannerColor'] ? $start : $data['colors'][4] );
+		$end   = '' !== $data['bannerColor2'] ? $data['bannerColor2'] : ( '' !== $data['bannerColor'] ? $start : $data['colors'][1] );
+
 		$gradient = sprintf(
 			'linear-gradient(115deg, %1$s 0%%, %2$s 55%%, %3$s 100%%)',
-			$data['colors'][0],
-			$data['colors'][4],
-			$data['colors'][1]
+			$start,
+			$mid,
+			$end
 		);
 
 		if ( '' === $data['bannerImage'] ) {
@@ -641,11 +724,28 @@ class Dashboard {
 
 		return sprintf(
 			'linear-gradient(90deg, %1$s 0%%, %2$s 45%%, %3$s 85%%), url(%4$s)',
-			self::rgba( $data['colors'][0], 0.97 ),
-			self::rgba( $data['colors'][0], 0.72 ),
-			self::rgba( $data['colors'][0], 0 ),
+			self::rgba( $start, 0.97 ),
+			self::rgba( $start, 0.72 ),
+			self::rgba( $start, 0 ),
 			esc_url( $data['bannerImage'] )
 		);
+	}
+
+	/**
+	 * Accepts a 3- or 6-digit hex colour, or an empty string.
+	 *
+	 * @param mixed $raw Raw value.
+	 * @return string
+	 */
+	private static function sanitize_hex( $raw ) {
+		$raw = sanitize_text_field( (string) $raw );
+
+		if ( function_exists( 'sanitize_hex_color' ) ) {
+			$clean = sanitize_hex_color( $raw );
+			return is_string( $clean ) ? $clean : '';
+		}
+
+		return preg_match( '/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $raw ) ? $raw : '';
 	}
 
 	/**
@@ -682,17 +782,36 @@ class Dashboard {
 	 * @return string Banner HTML.
 	 */
 	private static function banner( $data ) {
+		$has_logo     = '' !== $data['logoUrl'];
+		$show_name    = ! empty( $data['showBrandName'] ) && '' !== $data['brandName'];
+		$logo_pos     = $has_logo ? $data['logoPosition'] : 'start';
+		$logo_aside   = $has_logo && in_array( $logo_pos, array( 'left', 'right' ), true );
+		$logo_in_row  = $has_logo && in_array( $logo_pos, array( 'start', 'end' ), true );
+		$banner_class = 'sd-banner' . ( $has_logo ? ' sd-logo-pos-' . $logo_pos : '' );
+		$direction    = isset( $data['resolvedDirection'] ) ? $data['resolvedDirection'] : 'ltr';
+
 		ob_start();
 		?>
-		<header class="sd-banner">
-			<div class="sd-banner__text">
-				<?php if ( '' !== $data['logoUrl'] || '' !== $data['brandName'] ) : ?>
+		<header class="<?php echo esc_attr( $banner_class ); ?>"<?php echo $logo_aside ? ' dir="ltr"' : ''; ?>>
+			<?php if ( $has_logo && 'left' === $logo_pos ) : ?>
+				<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+			<?php endif; ?>
+
+			<div class="sd-banner__text"<?php echo $logo_aside ? ' dir="' . esc_attr( $direction ) . '"' : ''; ?>>
+				<?php if ( $has_logo && 'top' === $logo_pos ) : ?>
+					<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+				<?php endif; ?>
+
+				<?php if ( $logo_in_row || $show_name ) : ?>
 					<div class="sd-brand">
-						<?php if ( '' !== $data['logoUrl'] ) : ?>
-							<img class="sd-brand__logo" src="<?php echo esc_url( $data['logoUrl'] ); ?>" alt="" />
+						<?php if ( $has_logo && 'start' === $logo_pos ) : ?>
+							<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
 						<?php endif; ?>
-						<?php if ( '' !== $data['brandName'] ) : ?>
+						<?php if ( $show_name ) : ?>
 							<span class="sd-brand__name"><?php echo esc_html( $data['brandName'] ); ?></span>
+						<?php endif; ?>
+						<?php if ( $has_logo && 'end' === $logo_pos ) : ?>
+							<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
@@ -724,6 +843,10 @@ class Dashboard {
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
+
+				<?php if ( $has_logo && 'bottom' === $logo_pos ) : ?>
+					<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+				<?php endif; ?>
 			</div>
 
 			<?php if ( '' !== $data['artworkUrl'] ) : ?>
@@ -731,10 +854,58 @@ class Dashboard {
 					<img src="<?php echo esc_url( $data['artworkUrl'] ); ?>" alt="" />
 				</div>
 			<?php endif; ?>
+
+			<?php if ( $has_logo && 'right' === $logo_pos ) : ?>
+				<?php echo self::logo_img( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in logo_img(). ?>
+			<?php endif; ?>
 		</header>
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Renders the banner logo image.
+	 *
+	 * @param array $data Clean attributes.
+	 * @return string
+	 */
+	private static function logo_img( $data ) {
+		if ( '' === $data['logoUrl'] ) {
+			return '';
+		}
+
+		return sprintf(
+			'<img class="sd-brand__logo" src="%s" alt="" />',
+			esc_url( $data['logoUrl'] )
+		);
+	}
+
+	/**
+	 * Whether this KPI slot should span the full row.
+	 *
+	 * @param array $kpi   One card or empty slot.
+	 * @param int   $index Slot index.
+	 * @param int   $count Number of slots.
+	 * @param array $data  Clean attributes.
+	 * @return bool
+	 */
+	private static function kpi_is_wide( $kpi, $index, $count, $data ) {
+		if ( 'column' === $data['kpiLayout'] ) {
+			return false;
+		}
+
+		if ( ! empty( $kpi['wide'] ) ) {
+			return true;
+		}
+
+		if ( empty( $data['kpiOddWide'] ) ) {
+			return false;
+		}
+
+		$cols = $data['kpiPerRow'] >= 1 ? (int) $data['kpiPerRow'] : 2;
+
+		return $index === ( $count - 1 ) && 1 === ( ( $index + 1 ) % $cols );
 	}
 
 	/**
@@ -748,12 +919,19 @@ class Dashboard {
 			return '';
 		}
 
+		$count = count( $data['kpis'] );
+
 		ob_start();
 		?>
 		<div class="sd-kpis">
-			<?php foreach ( $data['kpis'] as $kpi ) : ?>
+			<?php foreach ( $data['kpis'] as $index => $kpi ) : ?>
+				<?php $wide_class = self::kpi_is_wide( $kpi, $index, $count, $data ) ? ' sd-kpi--wide' : ''; ?>
+				<?php if ( ! empty( $kpi['empty'] ) ) : ?>
+					<div class="sd-kpi sd-kpi--slot<?php echo esc_attr( $wide_class ); ?>" aria-hidden="true"></div>
+					<?php continue; ?>
+				<?php endif; ?>
 				<?php $split = '' !== $kpi['value2']; ?>
-				<div class="sd-kpi<?php echo $split ? ' sd-kpi--split' : ''; ?>">
+				<div class="sd-kpi<?php echo $split ? ' sd-kpi--split' : ''; ?><?php echo esc_attr( $wide_class ); ?>">
 					<?php if ( '' !== $kpi['icon'] && ! $split ) : ?>
 						<span class="sd-kpi__icon" aria-hidden="true"><?php echo esc_html( $kpi['icon'] ); ?></span>
 					<?php endif; ?>
@@ -764,17 +942,13 @@ class Dashboard {
 
 					<div class="sd-kpi__values">
 						<span class="sd-kpi__value">
-							<?php if ( $split && '' !== $kpi['icon'] ) : ?>
-								<span class="sd-kpi__badge" aria-hidden="true"><?php echo esc_html( $kpi['icon'] ); ?></span>
-							<?php endif; ?>
+							<?php echo self::kpi_mark( $kpi['icon'], $split ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpi_mark(). ?>
 							<span class="sd-kpi__number" dir="ltr"><?php echo esc_html( $kpi['value'] ); ?></span>
 						</span>
 
 						<?php if ( $split ) : ?>
 							<span class="sd-kpi__value">
-								<?php if ( '' !== $kpi['icon2'] ) : ?>
-									<span class="sd-kpi__badge" aria-hidden="true"><?php echo esc_html( $kpi['icon2'] ); ?></span>
-								<?php endif; ?>
+								<?php echo self::kpi_mark( $kpi['icon2'], true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in kpi_mark(). ?>
 								<span class="sd-kpi__number" dir="ltr"><?php echo esc_html( $kpi['value2'] ); ?></span>
 							</span>
 						<?php endif; ?>
@@ -785,6 +959,41 @@ class Dashboard {
 		<?php
 
 		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Renders the colour swatch or platform name next to a split KPI value.
+	 *
+	 * @param string $mark     Icon emoji or a platform name.
+	 * @param bool   $as_badge Whether this card is split (badges only then).
+	 * @return string
+	 */
+	private static function kpi_mark( $mark, $as_badge ) {
+		$mark = (string) $mark;
+
+		if ( ! $as_badge || '' === trim( $mark ) ) {
+			return '';
+		}
+
+		$is_text = self::kpi_mark_is_text( $mark );
+		$class   = 'sd-kpi__badge' . ( $is_text ? ' sd-kpi__badge--text' : '' );
+
+		return sprintf(
+			'<span class="%1$s"%2$s>%3$s</span>',
+			esc_attr( $class ),
+			$is_text ? '' : ' aria-hidden="true"',
+			esc_html( $mark )
+		);
+	}
+
+	/**
+	 * A swatch is a colour emoji or symbol. Letters or digits mean a name.
+	 *
+	 * @param string $mark Icon or label.
+	 * @return bool
+	 */
+	private static function kpi_mark_is_text( $mark ) {
+		return (bool) preg_match( '/\p{L}|\p{N}/u', (string) $mark );
 	}
 
 	/**
@@ -801,9 +1010,12 @@ class Dashboard {
 			return '';
 		}
 
+		$pin = in_array( $data['panelPosition'], array( 'left', 'right' ), true );
+		$dir = isset( $data['resolvedDirection'] ) ? $data['resolvedDirection'] : '';
+
 		ob_start();
 		?>
-		<aside class="sd-panel">
+		<aside class="sd-panel"<?php echo $pin && '' !== $dir ? ' dir="' . esc_attr( $dir ) . '"' : ''; ?>>
 			<?php if ( '' !== $data['panelImage'] ) : ?>
 				<img class="sd-panel__image" src="<?php echo esc_url( $data['panelImage'] ); ?>" alt="" />
 			<?php endif; ?>

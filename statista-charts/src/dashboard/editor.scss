@@ -35,7 +35,7 @@
 	}
 
 	.sd-banner .sd-input {
-		color: #ffffff;
+		color: inherit;
 	}
 
 	.sd-brand__name,
@@ -70,6 +70,47 @@
 
 	.sd-kpi--editing {
 		position: relative;
+		padding-inline-start: 28px;
+	}
+
+	.sd-kpi__drag {
+		position: absolute;
+		inset-block-start: 8px;
+		inset-inline-start: 6px;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 28px;
+		padding: 0;
+		border: 0;
+		border-radius: 6px;
+		background: transparent;
+		color: var(--sd-muted);
+		cursor: grab;
+		touch-action: none;
+		opacity: 0.65;
+
+		&:hover,
+		&:focus {
+			opacity: 1;
+			background: color-mix(in srgb, var(--sd-fg) 8%, transparent);
+			outline: none;
+		}
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	.sd-kpi__drag-dots {
+		width: 10px;
+		height: 14px;
+		background-image: radial-gradient(currentColor 1.1px, transparent 1.25px);
+		background-size: 5px 5px;
+		background-position: 0 0;
+		pointer-events: none;
 	}
 
 	.sd-kpi__toolbar {
@@ -83,8 +124,48 @@
 	}
 
 	.sd-kpi--editing:hover .sd-kpi__toolbar,
-	.sd-kpi--editing:focus-within .sd-kpi__toolbar {
+	.sd-kpi--editing:focus-within .sd-kpi__toolbar,
+	.sd-kpi--editing:hover .sd-kpi__drag,
+	.sd-kpi--editing:focus-within .sd-kpi__drag {
 		opacity: 1;
+	}
+
+	.sd-kpi--dragging {
+		opacity: 0.45;
+	}
+
+	.sd-kpi--drop-target {
+		box-shadow: 0 0 0 2px var(--sc-accent);
+	}
+
+	.sd-kpi--slot {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		min-height: 104px;
+		padding: 16px;
+		background: transparent;
+		border: 1px dashed var(--sd-border);
+	}
+
+	.sd-kpi--slot .sd-kpi__toolbar {
+		opacity: 0.85;
+	}
+
+	.sd-kpi__slot-label {
+		color: var(--sd-muted);
+		font-size: 13px;
+	}
+
+	.sd-kpi__slot-add.components-button {
+		color: var(--sd-muted);
+	}
+
+	.sd-kpis--sorting {
+		user-select: none;
 	}
 
 	.sd-kpi__icon.sd-input,
@@ -93,14 +174,30 @@
 		text-align: center;
 	}
 
+	.sd-kpi__badge--text.sd-input {
+		width: auto;
+		min-width: 5em;
+		max-width: 12em;
+		text-align: start;
+	}
+
 	.sd-kpi__number.sd-input {
 		width: 100%;
 		max-width: 160px;
 	}
 
 	.sd-kpi--split .sd-kpi__values {
-		flex-wrap: nowrap;
-		gap: 10px;
+		flex-wrap: wrap;
+		gap: 8px 12px;
+	}
+
+	.sd-kpi--split:has(.sd-kpi__badge--text) .sd-kpi__values {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.sd-kpi--split:has(.sd-kpi__badge--text) .sd-kpi__value {
+		width: 100%;
 	}
 
 	.sd-kpi--split .sd-kpi__number.sd-input {
@@ -163,6 +260,36 @@
 
 .sd-image-field {
 	margin-bottom: 16px;
+}
+
+.sd-color-field {
+	margin-bottom: 16px;
+}
+
+.sd-color-field__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.sd-color-field__row input[type="color"] {
+	width: 36px;
+	height: 32px;
+	padding: 0;
+	border: 1px solid #d0d5dd;
+	border-radius: 6px;
+	background: none;
+	cursor: pointer;
+}
+
+.sd-color-field__hex {
+	flex: 1;
+	min-width: 7rem;
+	max-width: 10rem;
+	padding: 6px 8px;
+	border: 1px solid #d0d5dd;
+	border-radius: 6px;
 }
 
 .sd-image-field__actions {

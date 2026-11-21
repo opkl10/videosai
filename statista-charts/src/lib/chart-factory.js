@@ -21,6 +21,7 @@ import {
 	Tooltip,
 } from 'chart.js';
 
+import { usableSeries } from './csv';
 import { getColors } from './palettes';
 
 Chart.register(
@@ -96,6 +97,17 @@ function alpha( hex, opacity ) {
 	/* eslint-enable no-bitwise */
 
 	return `rgba(${ r }, ${ g }, ${ b }, ${ opacity })`;
+}
+
+/**
+ * Keeps category names in left-to-right order on an RTL page so punctuation
+ * such as "Call of Duty:" does not flip.
+ *
+ * @param {string} label
+ * @return {string}
+ */
+function isolateTickLabel( label ) {
+	return `\u2066${ String( label ?? '' ).trim() }\u2069`;
 }
 
 export function createFormatter( config ) {
@@ -234,6 +246,8 @@ export function createChart( canvas, config ) {
 		return null;
 	}
 
+	config = { ...config, series: usableSeries( config.series ) };
+
 	const labels = config.labels || [];
 	const series = config.series || [];
 
@@ -248,6 +262,9 @@ export function createChart( canvas, config ) {
 	const format = createFormatter( config );
 	const chartType = config.type === 'area' ? 'line' : config.type;
 
+	const longestLabel = labels.reduce( ( max, label ) => Math.max( max, String( label || '' ).length ), 0 );
+	const needsAngle = longestLabel > 12 && labels.length > 3;
+
 	const scales = isRound
 		? {}
 		: {
@@ -256,7 +273,22 @@ export function createChart( canvas, config ) {
 					reverse: rtl,
 					grid: { display: false },
 					border: { color: palette.grid },
-					ticks: { color: palette.muted, font: { size: 12 } },
+					ticks: {
+						color: palette.muted,
+						font: { size: 11 },
+						padding: 10,
+						autoSkip: labels.length > 12,
+						autoSkipPadding: 8,
+						maxRotation: needsAngle ? 45 : 0,
+						minRotation: needsAngle ? 35 : 0,
+						callback( value ) {
+							return isolateTickLabel( this.getLabelForValue( value ) );
+						},
+					},
+					afterFit( scale ) {
+						const extra = needsAngle ? Math.min( 110, 36 + longestLabel * 2.1 ) : 36;
+						scale.height = Math.max( scale.height, extra );
+					},
 				},
 				y: {
 					stacked: !! config.stacked,
@@ -287,7 +319,15 @@ export function createChart( canvas, config ) {
 			responsive: true,
 			maintainAspectRatio: false,
 			locale: document.documentElement.lang || undefined,
-			layout: { padding: { top: config.showValues ? 18 : 4, bottom: 0, left: 0, right: 0 } },
+			clip: false,
+			layout: {
+				padding: {
+					top: config.showValues ? 18 : 8,
+					bottom: 24,
+					left: 48,
+					right: 36,
+				},
+			},
 			interaction: { intersect: false, mode: isRound ? 'nearest' : 'index' },
 			animation: { duration: 650, easing: 'easeOutQuart' },
 			plugins: {
